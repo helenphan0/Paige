@@ -1,7 +1,7 @@
 const User = require('../app/models/user');
 const Page = require('../app/models/page');
 const Project = require('../app/models/project');
-const Skill = require('..app/models/skill');
+const Skill = require('../app/models/skill');
 
 module.exports = function(app, passport) { 
     
@@ -88,7 +88,7 @@ module.exports = function(app, passport) {
         });
 
     // ---------------------- Admin endpoint seperator
-    // ----------------------
+    // Endpoints to fetch all documents in Page, Project, and Skill collections
 
         app.get('/cms/pages/get-pages', function(req, res) {
             Page.find(function(err, pages) {
@@ -112,8 +112,19 @@ module.exports = function(app, passport) {
             })
         })
 
-    // ---------------------- Admin endpoint seperator
-    // ----------------------
+        app.get('/cms/skills/get-skills', function(req, res) {
+            Skill.find(function(err, skills) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Internal Server Error'
+                    });
+                }
+                res.status(200).json(skills).end();
+            })
+        })
+
+    // Admin endpoint seperator ----------------------
+    // PAGE endpoints --------------------------------
 
         app.post('/cms/pages/new-page', function(req, res) {
             
@@ -196,8 +207,8 @@ module.exports = function(app, passport) {
             
             })      
         })
-    // ---------------------- Admin endpoint seperator
-    // ----------------------
+    // Admin endpoint seperator ---------------
+    // PROJECT endpoints ----------------------
 
         app.post('/cms/projects/new-project', function(req, res) {
             
@@ -253,6 +264,7 @@ module.exports = function(app, passport) {
 
     // ---------------------- Admin endpoint seperator
     // ----------------------
+
         app.post('/cms/projects/edit-project/:id', function(req, res) {
             
             let id = req.body._id;
@@ -284,14 +296,65 @@ module.exports = function(app, passport) {
             })      
         })
 
+    // ---------------------- Admin endpoint seperator
+    // ----------------------
+
+        app.post('/cms/skills/new-skill', function(req, res) {
+                
+            Skill.findOne({ skill: req.body.skill}, function(err, skill) {
+
+                if (err) {
+                    return res.status(500);
+                }
+
+                if (req.body.skill == '') {
+                    return false;
+                }
+
+                if (skill) {
+                    console.log(skill.skill + ' already exists');
+                    return res.status(200).json(null);
+                }
+
+                else {
+                    var skill = new Skill();
+                    skill.skill = req.body.skill;
+                }
+
+                skill.save(function(err) {
+                    if (err) {
+                        res.status(500);
+                    }
+                    console.log('saved new skill: ' + skill.skill);
+                    res.redirect('/cms/skills/get-skills');
+                });
+            })      
+        }) 
+
+    // Admin endpoint seperator -------------------
+    // SKILL endpoints ----------------------------
+
+        app.delete('/cms/skills/delete/:id', function(req, res) {
+            let id = req.body.id;
+            Skill.findByIdAndRemove(id, function(err, skill) {
+                if (err) {
+                    return res.status(500);
+                }
+                if (skill) {
+                    console.log(skill.skill + ' deleted');
+                    res.redirect('/cms/skills/get-skills');
+                }
+            })
+        })
+
 
     // ====  Refresh page catch-all endpoint ========
 
-    app.get('/*', function(req, res) {
-        console.log('catch-all endpoint');
+        app.get('/*', function(req, res) {
+            console.log('catch-all endpoint');
 
-        res.redirect('/cms');
-    })
+            res.redirect('/cms');
+        })
 
 
 // ----------------

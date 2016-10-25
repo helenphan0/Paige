@@ -15,7 +15,7 @@ const Root = React.createClass({
                     <Match exactly pattern='/cms/home' component={AdminHome} />
                     <Match pattern='/cms/pages' component={AdminPagesMain}/>
                     <Match pattern='/cms/projects' component={AdminProjectsMain} />
-                    <Match pattern='/cms/skills' component={AdminSkills} />
+                    <Match pattern='/cms/skills' component={AdminSkillsMain} />
                     <Miss component={AdminHome} />
                 </div>
             </BrowserRouter>

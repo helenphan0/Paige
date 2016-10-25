@@ -136,7 +136,7 @@ const AdminPagesList = React.createClass({
 									data-url={page.friendlyUrl} 
 									data-content={page.content} 
 									data-id={page._id} 
-									type='button'
+									type='button' 
 									>Edit
 								</button>
 								<button onClick={this.pageDelete} data-id={page._id} type='button'>Delete</button>
@@ -221,7 +221,7 @@ const CreatePage = React.createClass({
 									ref='newpageTitle' 
 									defaultValue={this.props.editPageInput == true ? edits.title : '' } 
 									placeholder={this.props.editPageInput == true ? edits.title : 'About Our Company' } 
-									onChange={this.updateValues}  
+									onChange={this.updateValues} 
 									/>
 						</div>
 						<div className='form-section'>
@@ -241,7 +241,7 @@ const CreatePage = React.createClass({
 									id='content' 
 									defaultValue={this.props.editPageInput == true ? edits.content : '' } 
 									placeholder={this.props.editPageInput == true ? edits.content : 'Content about the company.' } 
-									onChange={this.updateValues} >
+									onChange={this.updateValues}>
 								</textarea>
 						</div>
 						<button className={this.props.newPageInput == true ? '' : 'hidden'} 

@@ -13,7 +13,8 @@ section, #left-menu, #right-view, .page, .project {
 }
 
 .other-login-button, .account-header, .account-header>p, 
-.account-header>h4, #left-menu, #right-view, .page, .project {
+.account-header>h4, #left-menu, #right-view, .page, .project,
+.skillbox, .skill-text, .skill-delete {
 	display: inline-block;
 }
 
@@ -110,4 +111,17 @@ p.user-name {
 	background: white;
 	padding: 15px;
 	z-index: 999;
+}
+
+.skillbox {
+	width: 11%;
+	padding: 3px;
+}
+
+.skill-delete {
+	float: right;
+}
+
+datalist { 
+    display: none;
 }
