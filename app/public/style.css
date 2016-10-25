@@ -114,8 +114,9 @@ p.user-name {
 }
 
 .skillbox {
-	width: 11%;
+	width: 15%;
 	padding: 3px;
+	border: 1px solid lightgrey;
 }
 
 .skill-delete {

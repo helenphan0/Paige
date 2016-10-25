@@ -97,31 +97,45 @@ module.exports = function(app, passport) {
                         message: 'Internal Server Error'
                     });
                 }
+                // WILL NEED TO PULL ALL PROJECTS HERE
                 res.status(200).json(pages).end();
             })
         })
 
         app.get('/cms/projects/get-projects', function(req, res) {
             Project.find(function(err, projects) {
+                console.log('project find endpoint trigger');
                 if (err) {
                     return res.status(500).json({
                         message: 'Internal Server Error'
                     });
                 }
-                res.status(200).json(projects).end();
-            })
-        })
+                let fetchProjects = {
+                    projects: projects
+                };
+                Skill.find(function(err, skills) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Internal Server Error'
+                        });
+                    }
+                    fetchProjects.skills = skills;
+                    res.status(200).json(fetchProjects).end();
+                });
+            });
+        });
 
         app.get('/cms/skills/get-skills', function(req, res) {
             Skill.find(function(err, skills) {
+                console.log('skill find endpoint triggered');
                 if (err) {
                     return res.status(500).json({
                         message: 'Internal Server Error'
                     });
                 }
                 res.status(200).json(skills).end();
-            })
-        })
+            });
+        });
 
     // Admin endpoint seperator ----------------------
     // PAGE endpoints --------------------------------
@@ -155,6 +169,8 @@ module.exports = function(app, passport) {
                         res.status(500);
                     }
                     console.log('saved new page: ' + page.title);
+
+                    // REWORK THE REDIRECT - NEED TO MANUALLY DO IT
                     res.redirect('/cms/pages/get-pages');
                 });
             })      
@@ -256,8 +272,27 @@ module.exports = function(app, passport) {
                     return res.status(500);
                 }
                 if (project) {
-                    console.log(project.title + ' deleted');
-                    res.redirect('/cms/projects/get-projects');
+                    console.log(project.name + ' deleted');
+
+                    Project.find(function(err, projects) {
+                        if (err) {
+                            return res.status(500).json({
+                                message: 'Internal Server Error'
+                            });
+                        }
+                        let fetchProjects = {
+                            projects: projects
+                        };
+                        Skill.find(function(err, skills) {
+                            if (err) {
+                                return res.status(500).json({
+                                    message: 'Internal Server Error'
+                                });
+                            }
+                            fetchProjects.skills = skills;
+                            res.status(200).json(fetchProjects).end();
+                        });
+                    });
                 }
             })
         })
@@ -296,8 +331,8 @@ module.exports = function(app, passport) {
             })      
         })
 
-    // ---------------------- Admin endpoint seperator
-    // ----------------------
+    // Admin endpoint seperator -------------------
+    // SKILL endpoints ----------------------------
 
         app.post('/cms/skills/new-skill', function(req, res) {
                 
@@ -316,23 +351,21 @@ module.exports = function(app, passport) {
                     return res.status(200).json(null);
                 }
 
-                else {
-                    var skill = new Skill();
-                    skill.skill = req.body.skill;
-                }
-
-                skill.save(function(err) {
+                let newskill = new Skill();
+                newskill.skill = req.body.skill;
+                
+                newskill.save(function(err) {
                     if (err) {
                         res.status(500);
                     }
-                    console.log('saved new skill: ' + skill.skill);
+                    console.log('saved new skill: ' + newskill.skill);
                     res.redirect('/cms/skills/get-skills');
                 });
             })      
         }) 
 
-    // Admin endpoint seperator -------------------
-    // SKILL endpoints ----------------------------
+    // ---------------------- Admin endpoint seperator
+    // ----------------------
 
         app.delete('/cms/skills/delete/:id', function(req, res) {
             let id = req.body.id;
@@ -342,8 +375,82 @@ module.exports = function(app, passport) {
                 }
                 if (skill) {
                     console.log(skill.skill + ' deleted');
-                    res.redirect('/cms/skills/get-skills');
+                    
                 }
+                Skill.find(function(err, skills) {
+                    console.log('get skills again after delete');
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Internal Server Error'
+                        });
+                    }
+                    res.status(200).json(skills).end();
+                });
+            })
+        })
+
+    // ---------------------- Admin endpoint seperator
+    // ----------------------
+
+        app.put('/cms/projects/add-skill', function(req, res) {
+            if (req.body.skill == '') {
+                return false
+            }
+
+            let putSkill = req.body.skill;
+            let projectId = req.body.id;
+
+            Skill.findOneAndUpdate({ skill: putSkill}, 
+                { $set: {skill: putSkill}}, { upsert: true, returnNewDocument: true}, function(err, skill) {
+                if (err) {
+                    return res.status(500);
+                }
+
+                if (skill) {
+                    console.log(skill.skill + ' found');
+                    Project.findById(projectId, function(err, project) {
+                        if (err) {
+                            return res.status(500);
+                        }
+                        project.skills.push(skill);
+                        console.log(project);
+                        project.markedModified('skills');
+
+                        project.save(function(err) {
+                            if (err) {
+                                res.status(500);
+                            }
+                        })
+                    });
+                }
+
+                if (!skill) {
+                    let newSkill = new Skill();
+                    newSkill.skill = putSkill;
+                    Project.findById(projectId, function(err, project) {
+                        if (err) {
+                            return res.status(500);
+                        }
+                        project.skills.push(newSkill);
+                        console.log(project);
+                        project.markedModified('skills');
+
+                        project.save(function(err) {
+                            if (err) {
+                                res.status(500);
+                            }
+                        })
+                    });
+                }
+
+                let addSkill = skill || newSkill;
+                console.log(addSkill);
+                addSkill.save(function(err) {
+                    if (err) {
+                        res.status(500);
+                    }
+                    res.redirect('/cms/projects/get-projects');
+                })
             })
         })
 
