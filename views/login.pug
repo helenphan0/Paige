@@ -1,0 +1,33 @@
+doctype html
+html(lang='en')
+    head
+        title Login Page
+        meta(charset='utf-8')
+        include style
+    body
+        h3 This page is produced by Jade engine
+        section
+            h4 Login to your account
+            if message && message.length
+                p
+                    strong #{message}
+            form(id='login-form', method='post', action='/login')
+                div(class='form-group')
+                    label(for='email') Email: 
+                    input(type='email', id='email', name='email')
+                div(class='form-group')
+                    label(for='password') Password: 
+                    input(type='password', id='password', name='password')
+                div(class='form-group')
+                    input(type='submit', class='submit login', value='Login')
+            div(class='other-login')
+                p Log in with
+                a(href='/auth/facebook', class='other-login-button') Facebook 
+                a(href='/auth/google', class='other-login-button') Google 
+                a(href='/auth/github', class='other-login-button') GitHub 
+                a(href='/auth/linkedin', class='other-login-button') LinkedIn 
+            p Need an account? 
+                a(class='signup', href='/signup') Sign Up
+            p Or return to the 
+                a(class='home', href='/') Home Page
+        include scripts

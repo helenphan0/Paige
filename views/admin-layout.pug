@@ -1,0 +1,36 @@
+doctype html
+html(lang='en')
+    head
+        title Admin Page
+        meta(charset='utf-8') 
+        include style
+    body
+        section(class='account-header')
+            h4 Welcome! This is the dashboard
+            p
+                a(href='/logout') Log out
+            p(class='user-name') 
+                if user.local.name 
+                    | #{user.local.name}
+                    br
+                    | #{user.local.email}
+                if user.facebook.name 
+                    | #{user.facebook.name}
+                    br
+                    | #{user.facebook.email}
+                if user.google.name 
+                    | #{user.google.name}
+                    br
+                    | #{user.google.email}
+                if user.github.name 
+                    | #{user.github.name}
+                    br
+                    | #{user.github.email}
+                if user.linkedin.name 
+                    | #{user.linkedin.name}
+                    br
+                    | #{user.linkedin.email}
+        div(id='container')
+        include scripts
+        include components
+        include admin-routes

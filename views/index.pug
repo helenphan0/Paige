@@ -1,0 +1,17 @@
+doctype html
+html(lang='en')
+    head
+        title Index Page
+        meta(charset='utf-8')
+        include style
+    
+    body
+        h1 This is the welcome page
+        section
+            h3 This page is produced by Jade engine
+            p Have an account? 
+                a(class='login', href='/login') Log in here
+        section
+            p Create your account 
+                a(class='signup', href='/signup') Sign up here
+        include scripts

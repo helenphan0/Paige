@@ -1,0 +1,362 @@
+const User = require('../app/models/user');
+const Page = require('../app/models/page');
+const Project = require('../app/models/project');
+const Skill = require('..app/models/skill');
+
+module.exports = function(app, passport) { 
+    
+    // =====================================
+    // HOME PAGE (with login links) ========
+    // =====================================
+    app.get('/', function(req, res) {
+
+       res.render('index.pug', { message: req.flash('signupMessage') } ); 
+    });
+
+    // =====================================
+    // LOGIN ===============================
+    // =====================================
+    app.get('/login', function(req, res) {
+
+        res.render('login.pug', { message: req.flash('loginMessage') }); 
+    });
+
+    app.post('/login', passport.authenticate('local-login', {
+        successRedirect : '/cms', // redirect to the secure profile section
+        failureRedirect : '/login', // redirect back to the signup page if there is an error
+        failureFlash : true // allow flash messages
+    }));
+
+    // =====================================
+    // SIGNUP ==============================
+    // =====================================
+    app.get('/signup', function(req, res) {
+
+        res.render('signup.pug', { message: req.flash('signupMessage') });
+    });
+
+    app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect : '/cms', 
+        failureRedirect : '/signup', 
+        failureFlash : true 
+    }));
+
+    // ==============
+    // DEFAULT THEMES 
+    // ==============
+
+    app.get('/default/:friendlyUrl', function(req, res) {
+
+        Page.findOne({ friendlyUrl: req.params.friendlyUrl}, function(err, page) {
+
+            if (err) {
+                return res.status(500);
+            }
+
+            if (!page) {
+                console.log('page not found from parameter: ' + req.params.friendlyUrl);
+                return res.status(404).json(null);
+            }
+
+            if (page) {
+                
+                res.render('../themes/default/home.pug', {
+                    title : page.title,
+                    friendlyUrl : page.friendlyUrl,
+                    content: page.content
+                }); 
+            }
+        })  
+    })  
+    
+
+
+
+
+    // =====================================
+    // ADMIN SECTION =======================
+    // =====================================
+
+    app.get('/cms', isLoggedIn, function(req, res) {
+        console.log('logged in as: ' + req.user.local.name);
+        let data = {};
+        data.user = req.user;
+        data.view = 'home';
+        res.render('admin-layout.pug', {
+            user : data.user,
+            view : data.view 
+        });
+
+    // ---------------------- Admin endpoint seperator
+    // ----------------------
+
+        app.get('/cms/pages/get-pages', function(req, res) {
+            Page.find(function(err, pages) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Internal Server Error'
+                    });
+                }
+                res.status(200).json(pages).end();
+            })
+        })
+
+        app.get('/cms/projects/get-projects', function(req, res) {
+            Project.find(function(err, projects) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Internal Server Error'
+                    });
+                }
+                res.status(200).json(projects).end();
+            })
+        })
+
+    // ---------------------- Admin endpoint seperator
+    // ----------------------
+
+        app.post('/cms/pages/new-page', function(req, res) {
+            
+            Page.findOne({ title: req.body.title}, function(err, page) {
+
+                if (err) {
+                    return res.status(500);
+                }
+
+                if (req.body.title == '') {
+                    return false;
+                }
+
+                if (page) {
+                    console.log(page.title + ' already exists');
+                    return res.status(200).json(null);
+                }
+
+                else {
+                    var page = new Page();
+                    page.title = req.body.title;
+                    page.friendlyUrl = req.body.friendlyUrl;
+                    page.content = req.body.content;
+                }
+    
+                page.save(function(err) {
+                    if (err) {
+                        res.status(500);
+                    }
+                    console.log('saved new page: ' + page.title);
+                    res.redirect('/cms/pages/get-pages');
+                });
+            })      
+        }) 
+    // ---------------------- Admin endpoint seperator
+    // ----------------------
+
+        app.delete('/cms/pages/delete/:id', function(req, res) {
+            let id = req.body.id;
+            Page.findByIdAndRemove(id, function(err, page) {
+                if (err) {
+                    return res.status(500);
+                }
+                if (page) {
+                    console.log(page.title + ' deleted');
+                    res.redirect('/cms/pages/get-pages');
+                }
+            })
+        })
+
+    // ---------------------- Admin endpoint seperator
+    // ----------------------
+        app.post('/cms/pages/edit-page/:id', function(req, res) {
+
+            let id = req.body._id;
+            let updateObj = req.body;
+
+            Page.findByIdAndUpdate( id, updateObj, {new: true}, function(err, page) {
+
+                if (err) {
+                    return res.status(500);
+                }
+
+                if (id == '' || !id) {
+                    return false;
+                }
+
+                if (page) {
+                    console.log(page.title + ' found');  
+                    console.log('changes made ', page);
+                }
+    
+                page.save(function(err) {
+                    if (err) {
+                        res.status(500);
+                    }
+                    console.log('saved page: ' + page.title);
+                    res.redirect('/cms/pages/get-pages');
+                });
+            
+            })      
+        })
+    // ---------------------- Admin endpoint seperator
+    // ----------------------
+
+        app.post('/cms/projects/new-project', function(req, res) {
+            
+            Project.findOne({ name: req.body.name}, function(err, project) {
+
+                if (err) {
+                    return res.status(500);
+                }
+
+                if (req.body.name == '') {
+                    return false;
+                }
+
+                if (project) {
+                    console.log(project.name + ' already exists');
+                    return res.status(200).json(null);
+                }
+
+                else {
+                    var project = new Project();
+                    project.name = req.body.name;
+                    project.friendlyUrl = req.body.friendlyUrl;
+                    project.image = req.body.image;
+                    project.livelink = req.body.livelink;
+                    project.codeUrl = req.body.codeUrl;
+                    project.description = req.body.description;
+                }
+    
+                project.save(function(err) {
+                    if (err) {
+                        res.status(500);
+                    }
+                    console.log('saved project: ' + project.name);
+                    res.redirect('/cms/projects/get-projects');
+                });
+            })      
+        }) 
+    // ---------------------- Admin endpoint seperator
+    // ----------------------
+
+        app.delete('/cms/projects/delete/:id', function(req, res) {
+            let id = req.body.id;
+            Project.findByIdAndRemove(id, function(err, project) {
+                if (err) {
+                    return res.status(500);
+                }
+                if (project) {
+                    console.log(project.title + ' deleted');
+                    res.redirect('/cms/projects/get-projects');
+                }
+            })
+        })
+
+    // ---------------------- Admin endpoint seperator
+    // ----------------------
+        app.post('/cms/projects/edit-project/:id', function(req, res) {
+            
+            let id = req.body._id;
+            let updateObj = req.body;
+
+            Project.findByIdAndUpdate( id, updateObj, {new: true}, function(err, project) {
+
+                if (err) {
+                    return res.status(500);
+                }
+
+                if (id == '' || !id) {
+                    return false;
+                }
+
+                if (project) {
+                    console.log(project.name + ' found');  
+                    console.log('changes made ', project);
+                }
+    
+                project.save(function(err) {
+                    if (err) {
+                        res.status(500);
+                    }
+                    console.log('saved project: ' + project.name);
+                    res.redirect('/cms/projects/get-projects');
+                });
+            
+            })      
+        })
+
+
+    // ====  Refresh page catch-all endpoint ========
+
+    app.get('/*', function(req, res) {
+        console.log('catch-all endpoint');
+
+        res.redirect('/cms');
+    })
+
+
+// ----------------
+// ---------------- Admin endpoints above this line
+// ----------------
+    });
+
+    // =====================================
+    // FACEBOOK ROUTES =====================
+    // =====================================
+    // 'public_profile' SHOULD be added to the scope, contrary to facebook developer documentation
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope : ['email', 'public_profile'] }));
+
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {
+            successRedirect : '/cms',
+            failureRedirect : '/'
+        }));
+
+    // =====================================
+    // GITHUB ROUTES =======================
+    // =====================================
+    app.get('/auth/github', passport.authenticate('github', { scope : ['user', 'public_repo', 'repo'] }));
+
+    app.get('/auth/github/callback',
+        passport.authenticate('github', {
+            successRedirect : '/cms',
+            failureRedirect : '/'
+        }));
+
+    // =====================================
+    // LINKEDIN ROUTES =====================
+    // =====================================
+    app.get('/auth/linkedin', passport.authenticate('linkedin', { scope : ['r_emailaddress', 'r_basicprofile'] }));
+
+    app.get('/auth/linkedin/callback',
+        passport.authenticate('linkedin', {
+            successRedirect : '/cms',
+            failureRedirect : '/'
+        }));
+
+
+    // =====================================
+    // GOOGLE ROUTES =======================
+    // =====================================
+    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+    app.get('/auth/google/callback',
+            passport.authenticate('google', {
+                    successRedirect : '/cms',
+                    failureRedirect : '/'
+            }));
+
+    // =====================================
+    // LOGOUT ==============================
+    // =====================================
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
+};
+
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    res.redirect('/');
+}

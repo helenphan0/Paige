@@ -1,0 +1,37 @@
+doctype html
+html(lang='en')
+    head
+        title Signup Page
+        meta(charset='utf-8')
+        include style
+    body
+        section
+            h2 This is the signup page
+            p Have an account? 
+                a(class='login', href='/login') Login Here
+        section
+            h4 Create your account
+            if message && message.length
+                p
+                    strong #{message}
+            section
+                form(id='form', action='/signup', method='post')
+                    div(class='form-group')
+                        label(for='name') Name: 
+                        input(type='text', id='name', name='name', placeholder='Bruce Banner')
+                    div(class='form-group')
+                        label(for='email') Email: 
+                        input(type='email', id='email', name='email', placeholder='webdev@forhire.com')
+                    div(class='form-group')
+                        label(for='password') Password: 
+                        input(type='password', id='password', name='password')
+                        input(type='password', class='password2', placeholder='Confirm your password')
+                    div(class='form-group')
+                        input(type='submit', class='submit signup', value='Submit')
+                div(class='other-login')
+                    p Log in or Register with
+                    a(href='/auth/facebook', class='other-login-button') Facebook 
+                    a(href='/auth/google', class='other-login-button') Google 
+                    a(href='/auth/github', class='other-login-button') GitHub 
+                    a(href='/auth/linkedin', class='other-login-button') LinkedIn 
+        include scripts
