@@ -169,8 +169,6 @@ module.exports = function(app, passport) {
                         res.status(500);
                     }
                     console.log('saved new page: ' + page.title);
-
-                    // REWORK THE REDIRECT - NEED TO MANUALLY DO IT
                     res.redirect('/cms/pages/get-pages');
                 });
             })      
@@ -178,7 +176,7 @@ module.exports = function(app, passport) {
     // ---------------------- Admin endpoint seperator
     // ----------------------
 
-        app.delete('/cms/pages/delete/:id', function(req, res) {
+        app.post('/cms/pages/delete/:id', function(req, res) {
             let id = req.body.id;
             Page.findByIdAndRemove(id, function(err, page) {
                 if (err) {
@@ -186,6 +184,8 @@ module.exports = function(app, passport) {
                 }
                 if (page) {
                     console.log(page.title + ' deleted');
+
+                    // REWORK THE REDIRECT??
                     res.redirect('/cms/pages/get-pages');
                 }
             })
@@ -265,7 +265,7 @@ module.exports = function(app, passport) {
     // ---------------------- Admin endpoint seperator
     // ----------------------
 
-        app.delete('/cms/projects/delete/:id', function(req, res) {
+        app.post('/cms/projects/delete/:id', function(req, res) {
             let id = req.body.id;
             Project.findByIdAndRemove(id, function(err, project) {
                 if (err) {
@@ -274,25 +274,7 @@ module.exports = function(app, passport) {
                 if (project) {
                     console.log(project.name + ' deleted');
 
-                    Project.find(function(err, projects) {
-                        if (err) {
-                            return res.status(500).json({
-                                message: 'Internal Server Error'
-                            });
-                        }
-                        let fetchProjects = {
-                            projects: projects
-                        };
-                        Skill.find(function(err, skills) {
-                            if (err) {
-                                return res.status(500).json({
-                                    message: 'Internal Server Error'
-                                });
-                            }
-                            fetchProjects.skills = skills;
-                            res.status(200).json(fetchProjects).end();
-                        });
-                    });
+                    res.redirect('/cms/projects/get-projects');
                 }
             })
         })
@@ -367,7 +349,7 @@ module.exports = function(app, passport) {
     // ---------------------- Admin endpoint seperator
     // ----------------------
 
-        app.delete('/cms/skills/delete/:id', function(req, res) {
+        app.post('/cms/skills/delete/:id', function(req, res) {
             let id = req.body.id;
             Skill.findByIdAndRemove(id, function(err, skill) {
                 if (err) {
@@ -377,22 +359,14 @@ module.exports = function(app, passport) {
                     console.log(skill.skill + ' deleted');
                     
                 }
-                Skill.find(function(err, skills) {
-                    console.log('get skills again after delete');
-                    if (err) {
-                        return res.status(500).json({
-                            message: 'Internal Server Error'
-                        });
-                    }
-                    res.status(200).json(skills).end();
-                });
+                res.redirect('/cms/skills/get-skills');
             })
         })
 
     // ---------------------- Admin endpoint seperator
     // ----------------------
 
-        app.put('/cms/projects/add-skill', function(req, res) {
+        app.post('/cms/projects/add-skill', function(req, res) {
             if (req.body.skill == '') {
                 return false
             }

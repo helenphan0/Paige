@@ -99,7 +99,7 @@ const AdminPagesList = React.createClass({
 		};
 
 		fetch( urlDelete, {
-			method: 'DELETE',
+			method: 'POST',
 			headers: {
 				'Accept' : 'application/json',
 				'Content-Type': 'application/json'

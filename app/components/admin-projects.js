@@ -99,7 +99,7 @@ const AdminProjectsList = React.createClass({
 		};
 
 		fetch( urlDelete, {
-			method: 'DELETE',
+			method: 'POST',
 			headers: {
 				'Accept' : 'application/json',
 				'Content-Type': 'application/json'
@@ -124,7 +124,7 @@ const AdminProjectsList = React.createClass({
 		}
 
 		fetch( '/cms/projects/add-skill', {
-			method: 'PUT',
+			method: 'POST',
 			headers: {
 				'Accept' : 'application/json',
 				'Content-Type': 'application/json'
