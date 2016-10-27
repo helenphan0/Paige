@@ -185,7 +185,6 @@ module.exports = function(app, passport) {
                 if (page) {
                     console.log(page.title + ' deleted');
 
-                    // REWORK THE REDIRECT??
                     res.redirect('/cms/pages/get-pages');
                 }
             })
@@ -251,6 +250,7 @@ module.exports = function(app, passport) {
                     project.livelink = req.body.livelink;
                     project.codeUrl = req.body.codeUrl;
                     project.description = req.body.description;
+                    project.skills = req.body.skills;
                 }
     
                 project.save(function(err) {
@@ -286,6 +286,7 @@ module.exports = function(app, passport) {
             
             let id = req.body._id;
             let updateObj = req.body;
+            console.log(updateObj);
 
             Project.findByIdAndUpdate( id, updateObj, {new: true}, function(err, project) {
 

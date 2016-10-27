@@ -119,6 +119,10 @@ p.user-name {
 	border: 1px solid lightgrey;
 }
 
+#skill-area {
+	min-height: 28px;
+}
+
 .skill-delete {
 	margin-left: 5px;
 }

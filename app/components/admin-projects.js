@@ -86,6 +86,7 @@ const AdminProjectsList = React.createClass({
 		objEdit.livelink = event.target.getAttribute('data-livelink');
 		objEdit.codeUrl = event.target.getAttribute('data-codeUrl');
 		objEdit.description = event.target.getAttribute('data-description');
+		objEdit.skills = event.target.getAttribute('data-skills');
 		this.props.editProjectInp(objEdit);
 	},
 	projectDelete: function(event){
@@ -131,21 +132,21 @@ const AdminProjectsList = React.createClass({
 							<p className='description'>Description: {project.description}</p>
 							<p>Skills</p>
 								{ project.skills.map((skill,i) =>
-									<div key={skill._id + '-project'} className='skillbox'>
-										<div className='skill-text'>{skill.skill}</div>
-										<div className='skill-delete'>x</div>
+									<div key={i + '-skill'} className='skillbox'>
+										<span className='skill-text'>{skill}</span>
 									</div>
 								)}
 							<div className='project-buttons'>
 								<button onClick={this.projectView} data-id={project._id} type='button'>View</button>
 								<button onClick={this.projectEdit} 
-									data-id={project._id}
+									data-id={project._id} 
 									data-name={project.name} 
 									data-url={project.friendlyUrl} 
 									data-image={project.image} 
 									data-livelink={project.livelink} 
 									data-codeUrl={project.codeUrl} 
 									data-description={project.description} 
+									data-skills={project.skills} 
 									type='button'
 									>Edit
 								</button>
@@ -165,7 +166,11 @@ AdminProjectsList.contextTypes = {
 }
 
 const CreateProject = React.createClass({
-	
+	getInitialState: function(){
+		return {
+			tempSkills: [],
+		}
+	},
 	createProject: function(event) {
 
 		let actionUrl = event.target.getAttribute('data-url');
@@ -208,7 +213,7 @@ const CreateProject = React.createClass({
 		newProject.description = (this.refs.newprojectDescription.value || this.refs.newprojectDescription.defaultValue);
 
 		if (this.refs.projectID.value != 0) {
-			newProject._id = this.refs.projectID.value
+			newProject._id = this.refs.projectID.value;
 		}
 
 		return newProject
@@ -220,8 +225,14 @@ const CreateProject = React.createClass({
 
 	},
 	addSkill: function(skillArg) {
+
+		if (this.refs.projectID.value != 0) {
+			newProject._id = this.refs.projectID.value;
+		}
+
 		newProject.skills.push(skillArg);
 		console.log(newProject.skills);
+		this.setState({ tempSkills: newProject.skills});
 
 	},
 	skillInput: function(){
@@ -230,12 +241,13 @@ const CreateProject = React.createClass({
 
 	},
 	deleteSkill: function(event) {
-		console.log(event.target.getAttribute('data-id'));
-
+		var position = event.target.getAttribute('data-id');
+		newProject.skills.splice(position, 1);
+		this.setState( {tempSkills: newProject.skills});
 	},
 	render: function() {
 		let skillsMap = listProjects.skills || [];
-		let skillsAppend = (newProject.skills != [] ? newProject.skills : []);
+		let skillsAppend = ( this.state.tempSkills = [] ? newProject.skills : this.state.tempSkills);
 		return (
 			<div>
 				<div onClick={this.clearForm} className={this.props.newProjectInput == true || this.props.editProjectInput == true ? 'grey-out' : 'hidden'}>
@@ -252,7 +264,7 @@ const CreateProject = React.createClass({
 									ref='newprojectName' 
 									defaultValue={this.props.editProjectInput == true ? pageEdits.name : '' } 
 									placeholder={this.props.editProjectInput == true ? pageEdits.name : 'QuizApp' } 
-									onChange={this.updateValues}  
+									onChange={this.updateValues} 
 									/>
 						</div>
 						<div className='form-section'>
@@ -311,7 +323,7 @@ const CreateProject = React.createClass({
 								</textarea>
 						</div>
 						<div id='skill-area'>
-							{skillsAppend.map((skill, i) =>
+							{ skillsAppend.map((skill, i) =>
 								<div key={i} className='skillbox'>
 									<span className='skill-text'>{skill} </span>
 									<span className='skill-delete' data-id={i} onClick={this.deleteSkill}>| x</span>
