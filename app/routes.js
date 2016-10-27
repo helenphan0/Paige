@@ -374,7 +374,51 @@ module.exports = function(app, passport) {
             let putSkill = req.body.skill;
             let projectId = req.body.id;
 
-            Skill.findOneAndUpdate({ skill: putSkill}, 
+            Project.findById(projectId, function(err, project) {
+                if (err) {
+                    return res.status(500);
+                }
+                
+                Skill.findOneAndUpdate({ skill: putSkill}, 
+                { $set: {skill: putSkill}}, { upsert: true, returnNewDocument: true}, function(err, skill) {
+                    if (err) {
+                        return res.status(500);
+                    }
+                    if (skill) {
+                        console.log(skill.skill + ' found');
+                        project.skills.push(skill);
+                        project.markedModified('skills');
+                        console.log(project);
+                        project.save(function(err) {
+                            if (err) {
+                                res.status(500);
+                            }
+                        });
+                    }
+
+                    if (!skill) {
+                        let newSkill = new Skill();
+                        newSkill.skill = putSkill;
+                        project.skills.push(newSkill);
+                        project.markedModified('skills');
+
+                        newSkill.save(function (err) {
+                            if (err) {
+                                res.status(500);
+                            }
+                            project.save(function(err) {
+                                if (err) {
+                                    res.status(500);
+                                }
+                            })
+                        })
+                    }
+                    res.redirect('/cms/projects/get-projects');
+                })
+            });
+
+
+        /*    Skill.findOneAndUpdate({ skill: putSkill}, 
                 { $set: {skill: putSkill}}, { upsert: true, returnNewDocument: true}, function(err, skill) {
                 if (err) {
                     return res.status(500);
@@ -423,9 +467,10 @@ module.exports = function(app, passport) {
                     if (err) {
                         res.status(500);
                     }
-                    res.redirect('/cms/projects/get-projects');
+                    
                 })
-            })
+            }) */
+            
         })
 
 

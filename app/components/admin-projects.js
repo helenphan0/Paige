@@ -1,11 +1,10 @@
 const Link = ReactRouter.Link;
 const BrowserRouter = ReactRouter.BrowserRouter
 
-let projects;
-let skills;
-
-let edits = {};
-let newProject = {};
+let listProjects = {};
+let pageEdits = {};
+let newProject = {skills: []};
+let skillArg;
 
 const AdminProjectsMain = React.createClass({
 	getInitialState: function() {
@@ -20,30 +19,29 @@ const AdminProjectsMain = React.createClass({
     fetch('/cms/projects/get-projects')
         .then((response) => response.json())
         .then((responseJson) => {
-            projects = responseJson.projects;
-            skills = responseJson.skills;
+            listProjects.projects = responseJson.projects;
+            listProjects.skills = responseJson.skills;
+            console.log(listProjects);
             console.log('fetched projects');
 
             // reset temp variables
-            edits = {};
+            pageEdits = {};
+            skillArg = '';
 
-            this.setState({ new: false, edit: false, projects: projects });
-            return projects
+            this.setState({ new: false, edit: false, projects: listProjects.projects });
+            return listProjects
         })
         .catch((error) => {
             console.error(error);
         });
-
     },
     newProjectInp: function() {
     	this.setState({new: true});
-
     },
     editProjectInp: function(data) {
-    	edits = data;
-    	console.log(edits);
+    	pageEdits = data;
+    	console.log(pageEdits);
     	this.setState({edit: true});
-
     },
     cancel: function() {
     	this.getProjects();
@@ -53,13 +51,13 @@ const AdminProjectsMain = React.createClass({
         this.getProjects();
     },
     componentDidUpdate: function(){
-    	if (this.state.projects != projects) {
+    	if (this.state.projects != listProjects.projects) {
     		console.log('componentDidUpdate executed');
-    		this.setState({ new: false, edit: false, projects: projects })
+    		this.setState({ new: false, edit: false, projects: listProjects.projects })
     	}
     },
 	render: function() {
-		let projectsState = ( this.state.projects == [] ? projects : this.state.projects);
+		let projectsState = ( this.state.projects == [] ? listProjects.projects : this.state.projects);
 		return (
 			<div className='projects-view'>
 				<h3>This is the projects admin</h3>
@@ -67,7 +65,7 @@ const AdminProjectsMain = React.createClass({
 					<button onClick={this.newProjectInp} type='button'>Add New Project</button>
 					<CreateProject cancel={this.cancel} newProjectInput={this.state.new} editProjectInput={this.state.edit} />
 				</div>
-				<AdminProjectsList editProjectInp={this.editProjectInp} projects={projectsState}/>
+				<AdminProjectsList editProjectInp={this.editProjectInp} editSkillInput={this.state.edit} projects={projectsState}/>
 			</div>
 		)
 	}
@@ -81,15 +79,14 @@ const AdminProjectsList = React.createClass({
 	},
 	projectEdit: function(event) {
 		let objEdit = {};
-		objEdit.idEdit = event.target.getAttribute('data-id');
-		objEdit.nameEdit = event.target.getAttribute('data-name');
-		objEdit.friendlyUrlEdit = event.target.getAttribute('data-url');
-		objEdit.imageEdit = event.target.getAttribute('data-image');
-		objEdit.livelinkEdit = event.target.getAttribute('data-livelink');
-		objEdit.codeUrlEdit = event.target.getAttribute('data-codeUrl');
-		objEdit.descriptionEdit = event.target.getAttribute('data-description');
+		objEdit._id = event.target.getAttribute('data-id');
+		objEdit.name = event.target.getAttribute('data-name');
+		objEdit.friendlyUrl = event.target.getAttribute('data-url');
+		objEdit.image = event.target.getAttribute('data-image');
+		objEdit.livelink = event.target.getAttribute('data-livelink');
+		objEdit.codeUrl = event.target.getAttribute('data-codeUrl');
+		objEdit.description = event.target.getAttribute('data-description');
 		this.props.editProjectInp(objEdit);
-
 	},
 	projectDelete: function(event){
 		let idDelete = event.target.getAttribute('data-id');
@@ -108,40 +105,13 @@ const AdminProjectsList = React.createClass({
 		})
 		.then((response) => response.json())
 		.then((responseJson) => {
-			projects = responseJson.projects;
+			listProjects.projects = responseJson.projects;
 			this.context.router.transitionTo('/cms/projects');
-			return projects; 
+			return listProjects; 
 		})
 		.catch((error) => {
 			console.error(error);
 		});
-
-	},
-	addSkill: function(event) {
-		let skillObj = {
-			skill: this.refs.newprojectNewSkill.value,
-			id: event.target.getAttribute('data-project')
-		}
-
-		fetch( '/cms/projects/add-skill', {
-			method: 'POST',
-			headers: {
-				'Accept' : 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(skillObj)
-		})
-		.then((response) => response.json())
-		.then((responseJson) => {
-			projects = responseJson.projects;
-			skills = responseJson.skills;
-			this.context.router.transitionTo('/cms/projects');
-			return projects; 
-		})
-		.catch((error) => {
-			console.error(error);
-		});
-
 
 	},
 	render: function() {
@@ -166,22 +136,6 @@ const AdminProjectsList = React.createClass({
 										<div className='skill-delete'>x</div>
 									</div>
 								)}
-							<div className='form-section'>
-							<label htmlFor='skills'></label>
-								<input form='newproject-form' 
-									type='text' 
-									ref='newprojectNewSkill' 
-									id='skills' 
-									placeholder='Add skill'  
-									list='skillList' 
-									/>
-								<button data-project={project._id} onClick={this.addSkill}>Add</button>
-							</div>
-							<datalist id='skillList'>
-								{skills.map((skill, i) =>
-									<option key={skill._id}>{skill.skill}</option>
-								)}
-							</datalist>
 							<div className='project-buttons'>
 								<button onClick={this.projectView} data-id={project._id} type='button'>View</button>
 								<button onClick={this.projectEdit} 
@@ -230,14 +184,14 @@ const CreateProject = React.createClass({
 		})
 		.then((response) => response.json())
 		.then((responseJson) => {
-			projects = responseJson.projects;
+			listProjects.projects = responseJson.projects;
 			this.refs.projectForm.reset();
 
 			// reset temp variable
-			newProject = {};
+			newProject = {skills: []};
 
 			this.context.router.transitionTo('/cms/projects');
-			return projects;
+			return listProjects;
 		})
 		.catch((error) => {
 			console.error(error);
@@ -260,11 +214,28 @@ const CreateProject = React.createClass({
 		return newProject
 	},
 	clearForm: function(){
+		newProject.skills = [];
 		this.refs.projectForm.reset();
 		this.props.cancel();
 
 	},
+	addSkill: function(skillArg) {
+		newProject.skills.push(skillArg);
+		console.log(newProject.skills);
+
+	},
+	skillInput: function(){
+		skillArg = this.refs.newSkill.value;
+		this.addSkill(skillArg);
+
+	},
+	deleteSkill: function(event) {
+		console.log(event.target.getAttribute('data-id'));
+
+	},
 	render: function() {
+		let skillsMap = listProjects.skills || [];
+		let skillsAppend = (newProject.skills != [] ? newProject.skills : []);
 		return (
 			<div>
 				<div onClick={this.clearForm} className={this.props.newProjectInput == true || this.props.editProjectInput == true ? 'grey-out' : 'hidden'}>
@@ -273,14 +244,14 @@ const CreateProject = React.createClass({
 					<h3>{this.props.editProjectInput == true ? 'Edit Project' : 'Create a New Project' }</h3>
 					<form ref='projectForm' id='newproject-form'>
 						<div className='form-section'>
-							<input ref='projectID' value={this.props.editProjectInput == true ? edits._id : 0 } className='hidden' />
+							<input ref='projectID' value={this.props.editProjectInput == true ? pageEdits._id : 0 } className='hidden' />
 							<label htmlFor='name'>Name: </label>
 								<input form='newproject-form'  
 									type='text' 
 									id='name' 
 									ref='newprojectName' 
-									defaultValue={this.props.editProjectInput == true ? edits.name : '' } 
-									placeholder={this.props.editProjectInput == true ? edits.name : 'QuizApp' } 
+									defaultValue={this.props.editProjectInput == true ? pageEdits.name : '' } 
+									placeholder={this.props.editProjectInput == true ? pageEdits.name : 'QuizApp' } 
 									onChange={this.updateValues}  
 									/>
 						</div>
@@ -290,8 +261,8 @@ const CreateProject = React.createClass({
 									type='text' 
 									id='url' 
 									ref='newprojectUrl' 
-									defaultValue={this.props.editProjectInput == true ? edits.friendlyUrl : '' } 
-									placeholder={this.props.editProjectInput == true ? edits.friendlyUrl : 'www.company.com/about' }  
+									defaultValue={this.props.editProjectInput == true ? pageEdits.friendlyUrl : '' } 
+									placeholder={this.props.editProjectInput == true ? pageEdits.friendlyUrl : 'www.company.com/about' }  
 									onChange={this.updateValues} 
 									/>
 						</div>
@@ -301,8 +272,8 @@ const CreateProject = React.createClass({
 									type='text' 
 									ref='newprojectImage' 
 									id='image' 
-									defaultValue={this.props.editProjectInput == true ? edits.image : '' } 
-									placeholder={this.props.editProjectInput == true ? edits.image : 'image link' } 
+									defaultValue={this.props.editProjectInput == true ? pageEdits.image : '' } 
+									placeholder={this.props.editProjectInput == true ? pageEdits.image : 'image link' } 
 									onChange={this.updateValues} 
 									/>
 						</div>
@@ -312,8 +283,8 @@ const CreateProject = React.createClass({
 									type='text' 
 									ref='newprojectlivelink' 
 									id='livelink' 
-									defaultValue={this.props.editProjectInput == true ? edits.livelink : '' } 
-									placeholder={this.props.editProjectInput == true ? edits.livelink : 'live site' } 
+									defaultValue={this.props.editProjectInput == true ? pageEdits.livelink : '' } 
+									placeholder={this.props.editProjectInput == true ? pageEdits.livelink : 'live site' } 
 									onChange={this.updateValues} 
 									/>
 						</div>
@@ -323,8 +294,8 @@ const CreateProject = React.createClass({
 									type='text' 
 									ref='newprojectcodeUrl' 
 									id='codeUrl' 
-									defaultValue={this.props.editProjectInput == true ? edits.codeUrl : '' } 
-									placeholder={this.props.editProjectInput == true ? edits.codeUrl : 'url to code' } 
+									defaultValue={this.props.editProjectInput == true ? pageEdits.codeUrl : '' } 
+									placeholder={this.props.editProjectInput == true ? pageEdits.codeUrl : 'url to code' } 
 									onChange={this.updateValues} 
 									/>
 						</div>
@@ -334,10 +305,30 @@ const CreateProject = React.createClass({
 									type='text' 
 									ref='newprojectDescription' 
 									id='description' 
-									defaultValue={this.props.editProjectInput == true ? edits.description : '' } 
-									placeholder={this.props.editProjectInput == true ? edits.description : 'description' } 
+									defaultValue={this.props.editProjectInput == true ? pageEdits.description : '' } 
+									placeholder={this.props.editProjectInput == true ? pageEdits.description : 'description' } 
 									onChange={this.updateValues} >
 								</textarea>
+						</div>
+						<div id='skill-area'>
+							{skillsAppend.map((skill, i) =>
+								<div key={i} className='skillbox'>
+									<span className='skill-text'>{skill} </span>
+									<span className='skill-delete' data-id={i} onClick={this.deleteSkill}>| x</span>
+								</div>
+							)} 
+						</div>
+						<div className='form-section' data-project={pageEdits._id} >
+							<select 
+								className='skills-selector' 
+								ref='newSkill' 
+								onChange={this.skillInput} >
+									<option value=''>Skills..</option>
+									{ skillsMap.map((skill, i) =>
+									<option key={skill._id} value={skill.skill} >{skill.skill}</option>
+									)}
+							</select>
+							
 						</div>
 						<button className={this.props.newProjectInput == true ? '' : 'hidden'} 
 							onClick={this.createProject} data-url='/cms/projects/new-project' 
@@ -345,7 +336,7 @@ const CreateProject = React.createClass({
 							>Create Project
 						</button>
 						<button className={this.props.editProjectInput == true ? '' : 'hidden'} 
-							onClick={this.createProject} data-url={'/cms/projects/edit-project/' + edits._id} 
+							onClick={this.createProject} data-url={'/cms/projects/edit-project/' + pageEdits._id} 
 							type='button'
 							>Edit Project
 						</button>
@@ -364,3 +355,43 @@ const CreateProject = React.createClass({
 CreateProject.contextTypes = {
 	router: React.PropTypes.object
 }
+
+
+/*
+<div className='form-section'>
+		<label htmlFor='skills'></label>
+			<input form='newproject-form' 
+				type='text' 
+				ref='newprojectNewSkill' 
+				id='skills' 
+				placeholder='New skill' 
+				list='skillList' 
+				/>
+			<button data-project={project._id} onClick={this.addSkill} type='button'>Add</button>
+		</div>
+		<datalist id='skillList'>
+			{skills.map((skill, i) =>
+				<option key={skill._id}>{skill.skill}</option>
+			)}
+		</datalist>
+
+		*/
+
+	/*	fetch( '/cms/projects/add-skill', {
+			method: 'POST',
+			headers: {
+				'Accept' : 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(skillObj)
+		})
+		.then((response) => response.json())
+		.then((responseJson) => {
+			listProjects.projects = responseJson.projects;
+			listProjects.skills = responseJson.skills;
+			this.context.router.transitionTo('/cms/projects');
+			return listProjects; 
+		})
+		.catch((error) => {
+			console.error(error);
+		});  */

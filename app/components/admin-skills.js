@@ -80,11 +80,11 @@ const AdminSkillsList = React.createClass({
 		const { skill, i} = this.props;
 		return (
 			<div className='skillsList'>
-				<h4>Skills Employed</h4>
+				<h4>Skills</h4>
 					{this.props.skills.map((skill, i) =>
 						<div key={skill._id} className='skillbox'>
-							<div className='skill-text'>{skill.skill}</div>
-							<div className='skill-delete' data-id={skill._id} onClick={this.deleteSkill}>x</div>
+							<span className='skill-text'>{skill.skill} </span>
+							<span className='skill-delete' data-id={skill._id} onClick={this.deleteSkill}>| x</span>
 						</div>
 					)} 
 			</div>
