@@ -180,6 +180,7 @@ const CreateProject = React.createClass({
 		if (this.refs.projectID.value != 0) {
 			newProject._id = this.refs.projectID.value;
 		}
+		newProject.skills = pageEdits.skills || this.state.tempSkills;
 
 		let actionUrl = event.target.getAttribute('data-url');
 		console.log(actionUrl);
@@ -224,6 +225,7 @@ const CreateProject = React.createClass({
 			newProject._id = this.refs.projectID.value;
 		}
 		newProject.skills = this.state.tempSkills;
+
 		return newProject
 	},
 	clearForm: function(){
@@ -240,6 +242,10 @@ const CreateProject = React.createClass({
 		newProject.skills = pageEdits.skills || this.state.tempSkills;
 		newProject.skills.push(skillArg);
 		console.log(newProject.skills);
+
+		// 
+		this.refs.newSkill.value = 'top';
+
 		this.setState({ tempSkills: newProject.skills});
 
 	},
@@ -278,6 +284,8 @@ const CreateProject = React.createClass({
 		if (skillsAppend == "") {
 			skillsAppend = [];
 		}
+
+		skillsMap = skillsMap.filter(x => skillsAppend.indexOf(x) < 0);
 
 		return (
 			<div>
@@ -366,9 +374,9 @@ const CreateProject = React.createClass({
 								className='skills-selector' 
 								ref='newSkill' 
 								onChange={this.skillInput} >
-									<option value=''>Skills..</option>
+									<option value='top'>Skills..</option>
 									{ skillsMap.map((skill, i) =>
-									<option key={skill._id} value={skill.skill} >{skill.skill}</option>
+									<option key={i + '-selector'} data-id={i} value={skill} >{skill}</option>
 									)}
 							</select>
 							

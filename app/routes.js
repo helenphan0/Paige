@@ -118,7 +118,13 @@ module.exports = function(app, passport) {
                             message: 'Internal Server Error'
                         });
                     }
-                    fetchProjects.skills = skills;
+
+                    let skillsArr = [];
+                    for ( let i = 0; i < skills.length; i++ ) {
+                        skillsArr.push(skills[i].skill);
+                    }
+                    fetchProjects.skills = skillsArr;
+
                     res.status(200).json(fetchProjects).end();
                 });
             });
