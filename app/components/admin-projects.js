@@ -65,7 +65,10 @@ const AdminProjectsMain = React.createClass({
 					<button onClick={this.newProjectInp} type='button'>Add New Project</button>
 					<CreateProject cancel={this.cancel} newProjectInput={this.state.new} editProjectInput={this.state.edit} />
 				</div>
-				<AdminProjectsList editProjectInp={this.editProjectInp} editSkillInput={this.state.edit} projects={projectsState}/>
+				<AdminProjectsList editProjectInp={this.editProjectInp} 
+					editSkillInput={this.state.edit} 
+					projects={projectsState} 
+					listItems={listProjects.skills || []}/>
 			</div>
 		)
 	}
@@ -87,6 +90,7 @@ const AdminProjectsList = React.createClass({
 		objEdit.codeUrl = event.target.getAttribute('data-codeUrl');
 		objEdit.description = event.target.getAttribute('data-description');
 		objEdit.skills = event.target.getAttribute('data-skills').split(',');
+		objEdit.skills = (objEdit.skills == "" ? [] : objEdit.skills);
 		this.props.editProjectInp(objEdit);
 	},
 	projectDelete: function(event){
@@ -173,6 +177,10 @@ const CreateProject = React.createClass({
 	},
 	createProject: function(event) {
 
+		if (this.refs.projectID.value != 0) {
+			newProject._id = this.refs.projectID.value;
+		}
+
 		let actionUrl = event.target.getAttribute('data-url');
 		console.log(actionUrl);
 		this.refs.projectForm.reset();
@@ -215,7 +223,7 @@ const CreateProject = React.createClass({
 		if (this.refs.projectID.value != 0) {
 			newProject._id = this.refs.projectID.value;
 		}
-
+		newProject.skills = this.state.tempSkills;
 		return newProject
 	},
 	clearForm: function(){
@@ -244,6 +252,11 @@ const CreateProject = React.createClass({
 
 	},
 	deleteSkill: function(event) {
+
+		if (this.refs.projectID.value != 0) {
+			newProject._id = this.refs.projectID.value;
+		}
+
 		var position = event.target.getAttribute('data-id');
 		console.log(position);
 		
@@ -262,6 +275,9 @@ const CreateProject = React.createClass({
 	render: function() {
 		let skillsMap = listProjects.skills || [];
 		let skillsAppend = pageEdits.skills || this.state.tempSkills;
+		if (skillsAppend == "") {
+			skillsAppend = [];
+		}
 
 		return (
 			<div>
@@ -345,7 +361,7 @@ const CreateProject = React.createClass({
 								</div>
 							)} 
 						</div>
-						<div className='form-section' data-project={pageEdits._id} >
+						<div className='form-section' >
 							<select 
 								className='skills-selector' 
 								ref='newSkill' 
@@ -383,23 +399,3 @@ CreateProject.contextTypes = {
 	router: React.PropTypes.object
 }
 
-
-/*
-<div className='form-section'>
-		<label htmlFor='skills'></label>
-			<input form='newproject-form' 
-				type='text' 
-				ref='newprojectNewSkill' 
-				id='skills' 
-				placeholder='New skill' 
-				list='skillList' 
-				/>
-			<button data-project={project._id} onClick={this.addSkill} type='button'>Add</button>
-		</div>
-		<datalist id='skillList'>
-			{skills.map((skill, i) =>
-				<option key={skill._id}>{skill.skill}</option>
-			)}
-		</datalist>
-
-		*/

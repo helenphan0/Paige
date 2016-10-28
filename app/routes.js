@@ -361,60 +361,6 @@ module.exports = function(app, passport) {
             })
         })
 
-    // ---------------------- Admin endpoint seperator
-    // ----------------------
-
-        app.post('/cms/projects/add-skill', function(req, res) {
-            if (req.body.skill == '') {
-                return false
-            }
-
-            let putSkill = req.body.skill;
-            let projectId = req.body.id;
-
-            Project.findById(projectId, function(err, project) {
-                if (err) {
-                    return res.status(500);
-                }
-                
-                Skill.findOneAndUpdate({ skill: putSkill}, 
-                { $set: {skill: putSkill}}, { upsert: true, returnNewDocument: true}, function(err, skill) {
-                    if (err) {
-                        return res.status(500);
-                    }
-                    if (skill) {
-                        console.log(skill.skill + ' found');
-                        project.skills.push(skill);
-                        project.markedModified('skills');
-                        console.log(project);
-                        project.save(function(err) {
-                            if (err) {
-                                res.status(500);
-                            }
-                        });
-                    }
-
-                    if (!skill) {
-                        let newSkill = new Skill();
-                        newSkill.skill = putSkill;
-                        project.skills.push(newSkill);
-                        project.markedModified('skills');
-
-                        newSkill.save(function (err) {
-                            if (err) {
-                                res.status(500);
-                            }
-                            project.save(function(err) {
-                                if (err) {
-                                    res.status(500);
-                                }
-                            })
-                        })
-                    }
-                    res.redirect('/cms/projects/get-projects');
-                })
-            });  
-        })
 
 
     // ====  Refresh page catch-all endpoint ========
