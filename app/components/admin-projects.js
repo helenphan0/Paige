@@ -86,7 +86,7 @@ const AdminProjectsList = React.createClass({
 		objEdit.livelink = event.target.getAttribute('data-livelink');
 		objEdit.codeUrl = event.target.getAttribute('data-codeUrl');
 		objEdit.description = event.target.getAttribute('data-description');
-		objEdit.skills = event.target.getAttribute('data-skills');
+		objEdit.skills = event.target.getAttribute('data-skills').split(',');
 		this.props.editProjectInp(objEdit);
 	},
 	projectDelete: function(event){
@@ -168,7 +168,7 @@ AdminProjectsList.contextTypes = {
 const CreateProject = React.createClass({
 	getInitialState: function(){
 		return {
-			tempSkills: [],
+			tempSkills: []
 		}
 	},
 	createProject: function(event) {
@@ -229,25 +229,40 @@ const CreateProject = React.createClass({
 		if (this.refs.projectID.value != 0) {
 			newProject._id = this.refs.projectID.value;
 		}
-
+		newProject.skills = pageEdits.skills || this.state.tempSkills;
 		newProject.skills.push(skillArg);
 		console.log(newProject.skills);
 		this.setState({ tempSkills: newProject.skills});
 
 	},
 	skillInput: function(){
+		if (this.refs.newSkill.value == '') {
+			return false
+		}
 		skillArg = this.refs.newSkill.value;
 		this.addSkill(skillArg);
 
 	},
 	deleteSkill: function(event) {
 		var position = event.target.getAttribute('data-id');
+		console.log(position);
+		
+		newProject.skills = pageEdits.skills || this.state.tempSkills;
+
 		newProject.skills.splice(position, 1);
 		this.setState( {tempSkills: newProject.skills});
 	},
+	componentDidUpdate: function(){
+    	if (this.state.tempSkills !== newProject.skills) {
+    		console.log('skills componentDidUpdate');
+    		this.setState({ tempSkills: newProject.skills })
+    	}
+
+    },
 	render: function() {
 		let skillsMap = listProjects.skills || [];
-		let skillsAppend = ( this.state.tempSkills = [] ? newProject.skills : this.state.tempSkills);
+		let skillsAppend = pageEdits.skills || this.state.tempSkills;
+
 		return (
 			<div>
 				<div onClick={this.clearForm} className={this.props.newProjectInput == true || this.props.editProjectInput == true ? 'grey-out' : 'hidden'}>
@@ -388,22 +403,3 @@ CreateProject.contextTypes = {
 		</datalist>
 
 		*/
-
-	/*	fetch( '/cms/projects/add-skill', {
-			method: 'POST',
-			headers: {
-				'Accept' : 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(skillObj)
-		})
-		.then((response) => response.json())
-		.then((responseJson) => {
-			listProjects.projects = responseJson.projects;
-			listProjects.skills = responseJson.skills;
-			this.context.router.transitionTo('/cms/projects');
-			return listProjects; 
-		})
-		.catch((error) => {
-			console.error(error);
-		});  */

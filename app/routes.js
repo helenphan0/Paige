@@ -104,7 +104,6 @@ module.exports = function(app, passport) {
 
         app.get('/cms/projects/get-projects', function(req, res) {
             Project.find(function(err, projects) {
-                console.log('project find endpoint trigger');
                 if (err) {
                     return res.status(500).json({
                         message: 'Internal Server Error'
@@ -127,7 +126,6 @@ module.exports = function(app, passport) {
 
         app.get('/cms/skills/get-skills', function(req, res) {
             Skill.find(function(err, skills) {
-                console.log('skill find endpoint triggered');
                 if (err) {
                     return res.status(500).json({
                         message: 'Internal Server Error'
@@ -286,7 +284,6 @@ module.exports = function(app, passport) {
             
             let id = req.body._id;
             let updateObj = req.body;
-            console.log(updateObj);
 
             Project.findByIdAndUpdate( id, updateObj, {new: true}, function(err, project) {
 
@@ -416,62 +413,7 @@ module.exports = function(app, passport) {
                     }
                     res.redirect('/cms/projects/get-projects');
                 })
-            });
-
-
-        /*    Skill.findOneAndUpdate({ skill: putSkill}, 
-                { $set: {skill: putSkill}}, { upsert: true, returnNewDocument: true}, function(err, skill) {
-                if (err) {
-                    return res.status(500);
-                }
-
-                if (skill) {
-                    console.log(skill.skill + ' found');
-                    Project.findById(projectId, function(err, project) {
-                        if (err) {
-                            return res.status(500);
-                        }
-                        project.skills.push(skill);
-                        console.log(project);
-                        project.markedModified('skills');
-
-                        project.save(function(err) {
-                            if (err) {
-                                res.status(500);
-                            }
-                        })
-                    });
-                }
-
-                if (!skill) {
-                    let newSkill = new Skill();
-                    newSkill.skill = putSkill;
-                    Project.findById(projectId, function(err, project) {
-                        if (err) {
-                            return res.status(500);
-                        }
-                        project.skills.push(newSkill);
-                        console.log(project);
-                        project.markedModified('skills');
-
-                        project.save(function(err) {
-                            if (err) {
-                                res.status(500);
-                            }
-                        })
-                    });
-                }
-
-                let addSkill = skill || newSkill;
-                console.log(addSkill);
-                addSkill.save(function(err) {
-                    if (err) {
-                        res.status(500);
-                    }
-                    
-                })
-            }) */
-            
+            });  
         })
 
 
