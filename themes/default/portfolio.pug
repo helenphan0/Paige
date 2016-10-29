@@ -1,0 +1,21 @@
+extends home
+block content
+    h4 Projects
+    each project in projects
+        div(class='project-item')
+            p Name: 
+                span= project.name
+            p Url: 
+                span= project.friendlyUrl
+            p Image link: 
+                span= project.image
+            p Live link: 
+                span= project.livelink
+            p Code Url: 
+                span= project.codeUrl
+            p Description: 
+                span= project.description
+            ul
+                each skill in project.skills
+                    li= skill 
+

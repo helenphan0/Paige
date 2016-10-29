@@ -2,6 +2,7 @@ const User = require('../app/models/user');
 const Page = require('../app/models/page');
 const Project = require('../app/models/project');
 const Skill = require('../app/models/skill');
+const Theme = require('../app/models/theme');
 
 module.exports = function(app, passport) { 
     
@@ -41,11 +42,11 @@ module.exports = function(app, passport) {
         failureFlash : true 
     }));
 
-    // ==============
-    // DEFAULT THEMES 
-    // ==============
+    // =============
+    // DEFAULT THEME 
+    // =============
 
-    app.get('/default/:friendlyUrl', function(req, res) {
+    app.get('/default/home/:friendlyUrl', function(req, res) {
 
         Page.findOne({ friendlyUrl: req.params.friendlyUrl}, function(err, page) {
 
@@ -59,12 +60,22 @@ module.exports = function(app, passport) {
             }
 
             if (page) {
-                
-                res.render('../themes/default/home.pug', {
-                    title : page.title,
-                    friendlyUrl : page.friendlyUrl,
-                    content: page.content
-                }); 
+
+                // Fetch all projects
+                Project.find(function(err, projects) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Internal Server Error'
+                        });
+                    }
+                    
+                    res.render('../themes/default/home.pug', {
+                        title : page.title,
+                        friendlyUrl : page.friendlyUrl,
+                        content: page.content,
+                        projects: projects
+                    }); 
+                })
             }
         })  
     })  
@@ -97,7 +108,7 @@ module.exports = function(app, passport) {
                         message: 'Internal Server Error'
                     });
                 }
-                // WILL NEED TO PULL ALL PROJECTS HERE
+
                 res.status(200).json(pages).end();
             })
         })
@@ -152,19 +163,19 @@ module.exports = function(app, passport) {
                     return res.status(500);
                 }
 
-                if (req.body.title == '') {
+                if (req.body.title == '' || req.body.title == undefined) {
                     return false;
                 }
 
                 if (page) {
                     console.log(page.title + ' already exists');
-                    return res.status(200).json(null);
+                    return res.status(200).redirect('/cms/pages/get-pages');
                 }
 
                 else {
                     var page = new Page();
                     page.title = req.body.title;
-                    page.friendlyUrl = req.body.friendlyUrl;
+                    page.friendlyUrl = req.body.friendlyUrl.trim().replace(/ /g, "_");
                     page.content = req.body.content;
                 }
     
@@ -223,7 +234,6 @@ module.exports = function(app, passport) {
                     console.log('saved page: ' + page.title);
                     res.redirect('/cms/pages/get-pages');
                 });
-            
             })      
         })
     // Admin endpoint seperator ---------------
@@ -237,19 +247,19 @@ module.exports = function(app, passport) {
                     return res.status(500);
                 }
 
-                if (req.body.name == '') {
+                if (req.body.name === '' || req.body.name == undefined) {
                     return false;
                 }
 
                 if (project) {
                     console.log(project.name + ' already exists');
-                    return res.status(200).json(null);
+                    return res.status(200).redirect('/cms/projects/get-projects');
                 }
 
                 else {
                     var project = new Project();
                     project.name = req.body.name;
-                    project.friendlyUrl = req.body.friendlyUrl;
+                    project.friendlyUrl = req.body.friendlyUrl.trim().replace(/ /g, "_");
                     project.image = req.body.image;
                     project.livelink = req.body.livelink;
                     project.codeUrl = req.body.codeUrl;
@@ -334,7 +344,7 @@ module.exports = function(app, passport) {
 
                 if (skill) {
                     console.log(skill.skill + ' already exists');
-                    return res.status(200).json(null);
+                    return res.status(200).redirect('/cms/skills/get-skills');
                 }
 
                 let newskill = new Skill();

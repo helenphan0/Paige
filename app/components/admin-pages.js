@@ -47,12 +47,12 @@ const AdminPagesMain = React.createClass({
     	this.getPages();
     },
     componentWillMount: function() {
-    	console.log('componentWillMount called');
+    	console.log('pages componentWillMount');
         this.getPages();
     },
     componentDidUpdate: function(){
     	if (this.state.pages != pages) {
-    		console.log('componentDidUpdate executed');
+    		console.log('pages componentDidUpdate');
     		this.setState({ new: false, edit: false, pages: pages })
     	}
     },
@@ -161,6 +161,11 @@ const CreatePage = React.createClass({
 		let actionUrl = event.target.getAttribute('data-url');
 		console.log(actionUrl);
 		this.refs.pageForm.reset();
+
+		if (newPage.friendlyUrl) {
+			// remove whitespace, change space to underscore
+			newPage.friendlyUrl = newPage.friendlyUrl.trim().replace(/ /g, "_");
+		}
 
 		console.log('this is the edited page: ', newPage);
 

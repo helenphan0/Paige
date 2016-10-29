@@ -52,7 +52,7 @@ const AdminProjectsMain = React.createClass({
     },
     componentDidUpdate: function(){
     	if (this.state.projects != listProjects.projects) {
-    		console.log('componentDidUpdate executed');
+    		console.log('main componentDidUpdate');
     		this.setState({ new: false, edit: false, projects: listProjects.projects })
     	}
     },
@@ -186,6 +186,11 @@ const CreateProject = React.createClass({
 		console.log(actionUrl);
 		this.refs.projectForm.reset();
 
+		if (newProject.friendlyUrl) {
+			// remove whitespace, change space to underscore
+			newProject.friendlyUrl = newProject.friendlyUrl.trim().replace(/ /g, "_")
+		}
+
 		console.log('this is the edited page: ', newProject);
 
 		fetch(actionUrl, {
@@ -203,6 +208,7 @@ const CreateProject = React.createClass({
 
 			// reset temp variable
 			newProject = {skills: []};
+			pageEdits = {};
 
 			this.context.router.transitionTo('/cms/projects');
 			return listProjects;
@@ -243,8 +249,7 @@ const CreateProject = React.createClass({
 		newProject.skills.push(skillArg);
 		console.log(newProject.skills);
 
-		// 
-		this.refs.newSkill.value = 'top';
+		this.refs.newSkill.value = '';
 
 		this.setState({ tempSkills: newProject.skills});
 
@@ -284,7 +289,6 @@ const CreateProject = React.createClass({
 		if (skillsAppend == "") {
 			skillsAppend = [];
 		}
-
 		skillsMap = skillsMap.filter(x => skillsAppend.indexOf(x) < 0);
 
 		return (
@@ -373,8 +377,9 @@ const CreateProject = React.createClass({
 							<select 
 								className='skills-selector' 
 								ref='newSkill' 
+								defaultValue='' 
 								onChange={this.skillInput} >
-									<option value='top'>Skills..</option>
+									<option value=''>Skills..</option>
 									{ skillsMap.map((skill, i) =>
 									<option key={i + '-selector'} data-id={i} value={skill} >{skill}</option>
 									)}
