@@ -6,8 +6,8 @@ html(lang='en')
         include style
     body
         section(class='account-header')
-            h4 Welcome! This is the dashboard
-            p
+            h4 Welcome! 
+            p(class='logout')
                 a(href='/logout') Log out
             p(class='user-name') 
                 if user.local.name 

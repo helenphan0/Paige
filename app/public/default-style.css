@@ -1,0 +1,77 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	width: 100%;
+	min-height: ;
+	font-family: Tahoma, sans-serif;
+	background-image: url('work2.jpeg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+    background-position: top left;
+    color: #2D2A32;
+}
+
+section {
+	background-color: ;
+}
+
+#default-box {
+	position: absolute;
+	min-height: 300px;
+	width: 94%;
+	top: 15%;
+	left: 2%;
+	padding: 5px 15px;
+	background-color: rgba(255,255,255,0.6);
+}
+
+#nav {
+	text-align: right;
+}
+
+a.nav-link, .project-item, .skill {
+	display: inline-block;
+}
+
+a.nav-link {
+	height: 30px;
+	padding: 5px 15px;
+	margin: 1px 1px;
+	background-color: #B3EE3A;
+	text-decoration: none;
+	color: black;
+	border-radius: 4px;
+}
+
+a.nav-link:hover {
+	color: white;
+	background-color: #C0FF3E;
+}
+
+div.project-item {
+	border: 1px solid lightgrey;
+	width: 30%;
+	min-height: 85px;
+	vertical-align: top;
+	padding: 9px;
+	margin: 1px 6px;
+}
+
+div.project-item p {
+	margin: 1px;
+}
+
+.skill {
+	padding: 2px 8px;
+	margin: 1px 2px;
+	color: black;
+	background-color: #B3EE3A;
+}
+
+div.project-item:hover {
+	background-color: #778899;
+	color: white;
+}

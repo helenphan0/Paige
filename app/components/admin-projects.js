@@ -60,7 +60,7 @@ const AdminProjectsMain = React.createClass({
 		let projectsState = ( this.state.projects == [] ? listProjects.projects : this.state.projects);
 		return (
 			<div className='projects-view'>
-				<h3>This is the projects admin</h3>
+				<h3>Manage Your Projects</h3>
 				<div>
 					<button onClick={this.newProjectInp} type='button'>Add New Project</button>
 					<CreateProject cancel={this.cancel} newProjectInput={this.state.new} editProjectInput={this.state.edit} />
@@ -123,12 +123,12 @@ const AdminProjectsList = React.createClass({
 		const { project, i} = this.props;
 		return (
 			<div className='projectslist-view'>
-				<h4>List of projects</h4>
+				<h4>Your Projects</h4>
 				<div className='projects-list'>
 
 					{this.props.projects.map((project, i) =>
 						<div key={project._id} className='project'>
-							<h5>Name: {project.name}</h5>
+							<h4>Name: {project.name}</h4>
 							<p className='url'>Friendly URL: {project.friendlyUrl}</p>
 							<p className='image'>Image: {project.image}</p>
 							<p className='livelink'>Live Link: {project.livelink}</p>

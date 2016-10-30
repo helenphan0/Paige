@@ -5,16 +5,16 @@
 body {
 	width: 100%;
 	height: 100%;
-	font-family: "Lucida Console", serif;
+	font-family: Arial, sans-serif;
 }
 
-section, #left-menu, #right-view, .page, .project {
+section, .page, .project {
 	border: 1px solid lightgrey;
 }
 
 .other-login-button, .account-header, .account-header>p, 
 .account-header>h4, #left-menu, #right-view, .page, .project,
-.skillbox, .skill-text, .skill-delete {
+.skillbox, .skill-text, .skill-delete, label {
 	display: inline-block;
 }
 
@@ -33,8 +33,30 @@ section, #left-menu, #right-view, .page, .project {
 
 .account-header {
 	height: 55px;
-	width: 96%;
-	padding: 5px 10px;
+	width: 95%;
+	padding: 7px 15px;
+}
+
+ul {
+	list-style: none;
+	padding-left: 13px;
+}
+
+li {
+	color: black;
+	width: 75%;
+	margin: 6px 0px;
+	padding: 7px 10px;
+}
+
+li, button {
+	border: 0px;
+	border-radius: 3px;
+	background-color: #FF1493;
+}
+
+.admin-menu-link {
+	text-decoration: none;
 }
 
 #container, #container>div:first-child {
@@ -45,7 +67,7 @@ section, #left-menu, #right-view, .page, .project {
 	margin: 0px;
 }
 
-.page>h5, .project>h5 {
+.page>h4, .project>h4 {
 	margin: 2px;
 }
 
@@ -54,12 +76,28 @@ section, #left-menu, #right-view, .page, .project {
 	margin-bottom: 15px;
 }
 
+.admin-home-box, .pages-view, .projects-view, .skills-view {
+	text-align: center;
+}
+
+.admin-home-text, .createpage-view, .createproject-view, .project, .page {
+	text-align: left;
+}
+
 .account-header>h4 {
 	width: 75%;
 }
 
 .account-header>p {
 	width: 35%;
+}
+
+p.logout>a {
+	text-decoration: none;
+}
+
+p.logout>a:hover {
+	color: #FF1493;
 }
 
 p.user-name {
@@ -74,20 +112,67 @@ p.user-name {
 }
 
 #left-menu {
-	width: 16%;
+	min-width: 115px;  
+	width: 10%;
 	vertical-align: top;
 }
 
 #right-view {
-	width: 80%;
-	padding: 10px;
+	min-width: 300px;
+	width: 78%;
+	padding: 5px;
+}
+
+.form-section {
+	margin: 4px 0px;
+}
+
+label {
+	width: 109px;
+	vertical-align: top;
+	margin-top: 5px;
+}
+
+.skill-form-section>label {
+	width: 0px;
+	padding: 2px;
+}
+
+textarea, input {
+	width: 225px;
+}
+
+input {
+	height: 30px;
+	padding: 2px 5px;
+	font-size: 15px;
+}
+
+button {
+	font-size: 13px;
+	height: 29px;
+	vertical-align: top;
+	margin: 1px 3px;
+	padding: 3px 9px;
+}
+
+li:hover, button:hover {
+	background-color: #8B0A50;
+	color: white;
+
 }
 
 .page, .project {
-	width: 43%;
+	width: 47%;
 	vertical-align: top;
 	padding: 5px;
-	margin: 1px 6px;
+	margin: 4px 6px;
+}
+
+.page:hover, .project:hover {
+	-webkit-box-shadow: 2px 2px 10px 0px rgba(50, 50, 50, 0.74);
+	-moz-box-shadow:    2px 2px 10px 0px rgba(50, 50, 50, 0.74);
+	box-shadow:         2px 2px 10px 0px rgba(50, 50, 50, 0.74);
 }
 
 .page>p, .project>p {
@@ -104,29 +189,72 @@ p.user-name {
 }
 
 .box {
+	background: white;
+	border-radius: 6px;
 	position: fixed;
 	width: 60%;
 	top: 15%;
 	left: 20%;
-	background: white;
 	padding: 15px;
 	z-index: 999;
 }
 
+select {
+	display: block;
+	font-size: 15px;
+	margin: 12px auto;
+}
+
 .skillbox {
-	padding: 3px 6px;
-	margin-left: 3px;
-	border: 1px solid lightgrey;
+	background-color: #838B8B;
+	border-radius: 4px;
+	font-size: 13px;
+	color: white;
+	padding: 4px 9px;
+	margin: 3px;
 }
 
 #skill-area {
 	min-height: 28px;
 }
 
+.skillsList {
+	padding: 0px 20px;
+}
+
+.skillsList>.skillbox:hover, #skill-area>.skillbox:hover {
+	background-color: #333333;
+}
+
 .skill-delete {
 	margin-left: 5px;
 }
 
-datalist { 
-    display: none;
+button:hover, .skill-delete:hover {
+	cursor: pointer;
+}
+
+
+@media only screen and (max-width: 584px) {
+    
+    #left-menu {
+        width: 100%;
+        min-height: 55px
+    }
+
+    li {
+    	display: inline-block;
+    	text-align: center;
+    	font-size: 13px;
+    	width: 13%;
+    	margin: 0px 5px;
+    }
+
+    #right-view {
+    	width: 100%;
+    }
+
+    .page, .project {
+    	width: 90%;
+    }
 }

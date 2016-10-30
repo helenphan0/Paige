@@ -2,24 +2,24 @@ doctype html
 html(lang='en')
     head
         title Home Page
-        meta(charset='utf-8') 
-
+        meta(charset='utf-8')
+        link(rel='stylesheet', type='text/css', href='/public/default-style.css') 
     body
-        section(class='page-header')
-            h2 Welcome! This is the default home page
-            h4 Title: #{title}
-            p Url: #{friendlyUrl}
-            p Content: #{content}
+        section(id='default-box')
+            section(id='nav')
+                - var homeUrl = 'http://localhost:8080/default/home/' + friendlyUrl;
+                a(class='nav-link', href= homeUrl )
+                    span Home
+                a(class='nav-link', href='http://localhost:8080/default/about/about')
+                    span About
+                a(class='nav-link', href='http://localhost:8080/default/portfolio/portfolio')
+                    span Portfolio
+                a(class='nav-link')
+                    span Contact
+            section(class='page-header')
 
-        section(id='nav')
-            - var homeUrl = 'http://localhost:8080/default/home/' + friendlyUrl;
-            a(class='nav-link', href= homeUrl )
-                span Home
-            a(class='nav-link', href='http://localhost:8080/default/about/about')
-                span About
-            a(class='nav-link', href='http://localhost:8080/default/portfolio/portfolio')
-                span Portfolio
-            a(class='nav-link')
-                span Contact
-        section(id='section-content')
-        block content
+            section(id='section-content')
+            block content
+                h4 #{title}
+                p #{content}
+

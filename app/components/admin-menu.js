@@ -5,24 +5,24 @@ const AdminMenu = React.createClass({
 	render: function() {
 		return (
 			<ul>
-				<li>
-					<Link to='/cms/home'>Home</Link>
-				</li>
-				<li>
-					<Link to='/cms/pages'>Pages</Link>
-				</li>
-				<li>
-					<Link to='/cms/projects'>Projects</Link>
-				</li>
-				<li>
-					<Link to='/cms/skills'>Skills</Link>
-				</li>
-				<li>
-					<Link to='/cms/users'>Users</Link>
-				</li>
-				<li>
-					<Link to='/cms/themes'>Themes</Link>
-				</li>
+				<Link className='admin-menu-link' to='/cms/home'>
+					<li>Home</li>
+				</Link>
+				<Link className='admin-menu-link' to='/cms/pages'>
+					<li>Pages</li>
+				</Link>
+				<Link className='admin-menu-link' to='/cms/projects'>
+					<li>Projects</li>
+				</Link>
+				<Link className='admin-menu-link' to='/cms/skills'>
+					<li>Skills</li>
+				</Link>
+				<Link className='admin-menu-link' to='/cms/users'>
+					<li>Users</li>
+				</Link>
+				<Link className='admin-menu-link' to='/cms/themes'>
+					<li>Themes</li>
+				</Link>
 			</ul>
 		)
 	}

@@ -60,7 +60,7 @@ const AdminPagesMain = React.createClass({
 		let pagesState = ( this.state.pages == [] ? pages : this.state.pages);
 		return (
 			<div className='pages-view'>
-				<h3>This is the pages admin</h3>
+				<h3>Manage Your Pages</h3>
 				<div>
 					<button onClick={this.newPageInp} >Add New Page</button>
 					<CreatePage cancel={this.cancel} newPageInput={this.state.new} editPageInput={this.state.edit} />
@@ -121,12 +121,12 @@ const AdminPagesList = React.createClass({
 		const { page, i} = this.props;
 		return (
 			<div className='pageslist-view'>
-				<h4>List of pages</h4>
+				<h4>Your Pages</h4>
 				<div className='pages-list'>
 
 					{this.props.pages.map((page, i) =>
 						<div key={page._id} className='page'>
-							<h5>Title: {page.title}</h5>
+							<h4>Title: {page.title}</h4>
 							<p className='url'>Friendly URL: {page.friendlyUrl}</p>
 							<p className='content'>Content: {page.content}</p>
 							<div className='page-buttons'>

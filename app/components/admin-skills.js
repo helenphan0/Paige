@@ -39,8 +39,8 @@ const AdminSkillsMain = React.createClass({
 		let skillState = ( this.state.skills == [] ? skills : this.state.skills);
 		console.log(skillState);
 		return (
-			<div>
-				<h3>This is the skills page</h3>
+			<div className='skills-view'>
+				<h3>Manage Your Skills</h3>
 				<AddSkills />
 				<AdminSkillsList skills={skillState} />
 			</div>
@@ -80,7 +80,7 @@ const AdminSkillsList = React.createClass({
 		const { skill, i} = this.props;
 		return (
 			<div className='skillsList'>
-				<h4>Skills</h4>
+				<h4>Your Skills</h4>
 					{this.props.skills.map((skill, i) =>
 						<div key={skill._id} className='skillbox'>
 							<span className='skill-text'>{skill.skill} </span>
@@ -99,6 +99,7 @@ AdminSkillsList.contextTypes = {
 const AddSkills = React.createClass({
 	addSkill: function(event) {
 
+		event.preventDefault();
 		let addSkill = this.refs.newskillInput.value;
 		let skillobj = {
 			skill: addSkill
@@ -129,12 +130,12 @@ const AddSkills = React.createClass({
 	render: function() {
 		return (
 			<div>
-				<form ref='skillForm' id='newskill-form'>
-					<div className='form-section'>
+				<form ref='skillForm' onSubmit={this.addSkill} id='newskill-form'>
+					<div className='skill-form-section'>
 						<label htmlFor='skill'></label>
 						<input type='text' ref='newskillInput' placeholder='HTML5' />
+						<button onSubmit={this.addSkill} type='submit'>Add Skill</button> 
 					</div>
-					<button onClick={this.addSkill} type='button'>Add Skill</button>  
 				</form>
 			</div>
 		)
