@@ -2,12 +2,28 @@ extends home.pug
 block content
     div
         h3 #{portfolioTitle}
-        p #{portfolioContent}
-    each project in projects
-        div(class='project-item')
-            p Name: 
-                span= project.name
-            div(class='skill-box')
-                each skill in project.skills
-                    span(class='skill')= skill 
-
+        div(id='project-container')
+            p #{portfolioContent}
+            each project in projects
+                div(class='project-item', data-name= project.name, data-url= project.friendlyUrl, data-img= project.image, data-livelink= project.livelink, data-codeurl= project.codeUrl, data-desc= project.description, data-skills = project.skills)
+                    p Name: 
+                        span= project.name
+                    div(class='skill-box')
+                        each skill in project.skills
+                            span(class='skill')= skill 
+        div(class='grey-out hidden')
+            div(id='single-project', class='hidden')
+                p(id='proj-name') Project Name: 
+                    span
+                p(id='proj-url') Project Friendly Url: 
+                    span
+                p(id='proj-img') Image Link: 
+                    span
+                p(id='proj-livelink') Live Link: 
+                    span
+                p(id='proj-codeurl') Code Url: 
+                    span
+                p(id='proj-desc') Description: 
+                    span
+                div(id='proj-skill-box')
+                button(type='button', id='project-close') Close

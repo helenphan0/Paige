@@ -5,8 +5,7 @@ html(lang='en')
         meta(charset='utf-8')
         include style
     body
-        h3 This page is produced by Jade engine
-        section
+        section.index
             h4 Login to your account
             if message && message.length
                 p
@@ -22,10 +21,10 @@ html(lang='en')
                     input(type='submit', class='submit login', value='Login')
             div(class='other-login')
                 p Log in with
-                a(href='/auth/facebook', class='other-login-button') Facebook 
-                a(href='/auth/google', class='other-login-button') Google 
-                a(href='/auth/github', class='other-login-button') GitHub 
-                a(href='/auth/linkedin', class='other-login-button') LinkedIn 
+                a(href='/auth/facebook', class='other-login-button') Facebook <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                a(href='/auth/google', class='other-login-button') Google <i class="fa fa-google" aria-hidden="true"></i>
+                a(href='/auth/github', class='other-login-button') GitHub <i class="fa fa-github" aria-hidden="true"></i>
+                a(href='/auth/linkedin', class='other-login-button') LinkedIn <i class="fa fa-linkedin-square" aria-hidden="true"></i>
             p Need an account? 
                 a(class='signup', href='/signup') Sign Up
             p Or return to the 

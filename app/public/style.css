@@ -22,13 +22,51 @@ section, .page, .project {
 	display: none;
 }
 
-.other-login-button {
-	border: 1px solid lightgrey;
-	height: 30px;
-	width: 77px;
-	padding: 5px;
+.index {
+	width: 60%;
+	margin: auto;
+	margin-top: 5%;
+	padding: 20px;
 	text-align: center;
+	-webkit-box-shadow: 2px 2px 5px 0px rgba(50, 50, 50, 0.4);
+	-moz-box-shadow:    2px 2px 5px 0px rgba(50, 50, 50, 0.4);
+	box-shadow:         2px 2px 5px 0px rgba(50, 50, 50, 0.4);
+}
+
+
+
+#form, #login-form {
+	padding: 0px 10px;
+	text-align: left;
+}
+
+.form-group input, .form-group input {
+ 	width: 67%;
+ }
+
+ .form-group {
+ 	margin: 4px 9px;
+ }
+
+.other-login-button {
+	color: black;
+	height: 30px;
+	padding: 5px;
 	margin: 0px 4px;
+	text-align: center;
+	text-decoration: none;
+}
+
+.password2 {
+	margin-left: 109px;
+	margin-top: 3px;
+}
+
+input.submit.login, input.submit.signup {
+	display: block;
+	width: 125px;
+	margin: 8px auto;
+	font-size: 30px;
 }
 
 .account-header {
@@ -39,14 +77,14 @@ section, .page, .project {
 
 ul {
 	list-style: none;
-	padding-left: 13px;
+	padding-left: 7px;
 }
 
 li {
 	color: black;
-	width: 75%;
+	width: 77%;
 	margin: 6px 0px;
-	padding: 7px 10px;
+	padding: 7px;
 }
 
 li, button {
@@ -92,11 +130,11 @@ li, button {
 	width: 35%;
 }
 
-p.logout>a {
-	text-decoration: none;
+p.logout>a, a.login, a.signup, a.home {
+	color: black;
 }
 
-p.logout>a:hover {
+p.logout>a:hover, a.login:hover, a.signup:hover, a.home:hover, .other-login-button:hover {
 	color: #FF1493;
 }
 
@@ -112,7 +150,7 @@ p.user-name {
 }
 
 #left-menu {
-	min-width: 115px;  
+	min-width: 105px;  
 	width: 10%;
 	vertical-align: top;
 }

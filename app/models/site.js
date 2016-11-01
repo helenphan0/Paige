@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const themeSchema = new mongoose.Schema({
-	themeName: String,
+const siteSchema = new mongoose.Schema({
+	siteName: String,
 	title: String,
 	backgroundImg: String,
 	profileImg: String,
@@ -15,7 +15,9 @@ const themeSchema = new mongoose.Schema({
 	link3Text: String,
 	link3Url: String,
 	link4Text: String,
-	link4Url: String
+	link4Url: String,
+	link5Text: String,
+	link5Url: String
 });
 
-module.exports = mongoose.model('Theme', themeSchema);
+module.exports = mongoose.model('Site', siteSchema);

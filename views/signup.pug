@@ -5,11 +5,7 @@ html(lang='en')
         meta(charset='utf-8')
         include style
     body
-        section
-            h2 This is the signup page
-            p Have an account? 
-                a(class='login', href='/login') Login Here
-        section
+        section.index
             h4 Create your account
             if message && message.length
                 p
@@ -28,10 +24,12 @@ html(lang='en')
                         input(type='password', class='password2', placeholder='Confirm your password')
                     div(class='form-group')
                         input(type='submit', class='submit signup', value='Submit')
-                div(class='other-login')
-                    p Log in or Register with
-                    a(href='/auth/facebook', class='other-login-button') Facebook 
-                    a(href='/auth/google', class='other-login-button') Google 
-                    a(href='/auth/github', class='other-login-button') GitHub 
-                    a(href='/auth/linkedin', class='other-login-button') LinkedIn 
+                p Have an account? 
+                    a(class='login', href='/login') Login Here
+            div(class='other-login')
+                p Log in or Register with
+                a(href='/auth/facebook', class='other-login-button') Facebook <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                a(href='/auth/google', class='other-login-button') Google <i class="fa fa-google" aria-hidden="true"></i>
+                a(href='/auth/github', class='other-login-button') GitHub <i class="fa fa-github" aria-hidden="true"></i>
+                a(href='/auth/linkedin', class='other-login-button') LinkedIn <i class="fa fa-linkedin-square" aria-hidden="true"></i>
         include scripts

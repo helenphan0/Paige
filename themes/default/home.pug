@@ -8,7 +8,7 @@ html(lang='en')
         section(id='default-box')
             section(id='nav')
                 - var homeUrl = 'http://localhost:8080/default/home/' + friendlyUrl;
-                a(class='nav-link', href= homeUrl )
+                a(class='nav-link', href= 'http://localhost:8080/default/home/home' )
                     span Home
                 a(class='nav-link', href='http://localhost:8080/default/about/about')
                     span About
@@ -16,10 +16,10 @@ html(lang='en')
                     span Portfolio
                 a(class='nav-link')
                     span Contact
-            section(class='page-header')
-
             section(id='section-content')
-            block content
-                h4 #{title}
-                p #{content}
+                block content
+                    h4 #{title}
+                    p #{content}
+        script(src='https://code.jquery.com/jquery.min.js')
+        script(type='text/javascript', src='/public/main.js')
 

@@ -2,7 +2,7 @@ const User = require('../app/models/user');
 const Page = require('../app/models/page');
 const Project = require('../app/models/project');
 const Skill = require('../app/models/skill');
-const Theme = require('../app/models/theme');
+// const Site = require('../app/models/site');
 
 module.exports = function(app, passport) { 
     
@@ -48,8 +48,6 @@ module.exports = function(app, passport) {
 
     app.get('/default/home/:friendlyUrl', function(req, res) {
 
-        let defaultHome = {};
-
         Page.findOne({ friendlyUrl: req.params.friendlyUrl}, function(err, page) {
 
             if (err) {
@@ -62,28 +60,12 @@ module.exports = function(app, passport) {
             }
 
             if (page) {
-
-                defaultHome.title = page.title;
-                defaultHome.friendlyUrl = page.friendlyUrl;
-                defaultHome.content = page.content;
-
-                // Fetch all projects
-                Project.find(function(err, projects) {
-                    if (err) {
-                        return res.status(500).json({
-                            message: 'Internal Server Error'
-                        });
-                    }
-
-                    defaultHome.projects = projects;
                     
-                    res.render('../themes/default/home.pug', {
-                        title : defaultHome.title,
-                        friendlyUrl : defaultHome.friendlyUrl,
-                        content: defaultHome.content,
-                        projects: defaultHome.projects
-                    }); 
-                })
+                res.render('../themes/default/home.pug', {
+                    title : page.title,
+                    friendlyUrl : page.friendlyUrl,
+                    content: page.content
+                }); 
             }
         })  
     
@@ -101,11 +83,8 @@ module.exports = function(app, passport) {
                     console.log('page not found from parameter: ' + req.params.friendlyUrl);
                     return res.status(404).json(null);
                 }
-
+                console.log(page);
                 res.render('../themes/default/about.pug', {
-                    title: defaultHome.title,
-                    friendlyUrl: defaultHome.friendlyUrl,
-                    content: defaultHome.content,
                     aboutTitle: page.title,
                     aboutUrl: page.friendlyUrl,
                     aboutContent: page.content
@@ -128,28 +107,35 @@ module.exports = function(app, passport) {
                     return res.status(404).json(null);
                 }
 
-                res.render('../themes/default/portfolio.pug', {
-                    title: defaultHome.title,
-                    friendlyUrl: defaultHome.friendlyUrl,
-                    content: defaultHome.content,
-                    portfolioTitle: page.title,
-                    portfolioUrl: page.friendlyUrl,
-                    portfolioContent: page.content,
-                    projects: defaultHome.projects
-                });
+                // Fetch all projects
+                Project.find(function(err, projects) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Internal Server Error'
+                        });
+                    }
+
+                    res.render('../themes/default/portfolio.pug', {
+                        portfolioTitle: page.title,
+                        portfolioUrl: page.friendlyUrl,
+                        portfolioContent: page.content,
+                        projects: projects
+                    });
+                })
             });
         })
 
 
-        app.get('/default/*', function(req, res) {
+       app.get('/default/*', function(req, res) {
             console.log('default theme catch-all endpoint');
+            defaultHome = {};
 
             res.redirect('/default/home/home');
-        })
+        }) 
 
     // DEFAULT Theme endpoints go above here
     // =====================================
-    })  
+    });  
     
 
     // =====================================
