@@ -83,7 +83,7 @@ module.exports = function(app, passport) {
                     console.log('page not found from parameter: ' + req.params.friendlyUrl);
                     return res.status(404).json(null);
                 }
-                console.log(page);
+
                 res.render('../themes/default/about.pug', {
                     aboutTitle: page.title,
                     aboutUrl: page.friendlyUrl,

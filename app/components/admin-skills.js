@@ -37,7 +37,7 @@ const AdminSkillsMain = React.createClass({
     },
 	render: function(){
 		let skillState = ( this.state.skills == [] ? skills : this.state.skills);
-		console.log(skillState);
+
 		return (
 			<div className='skills-view'>
 				<h3>Manage Your Skills</h3>

@@ -21,8 +21,6 @@ const AdminProjectsMain = React.createClass({
         .then((responseJson) => {
             listProjects.projects = responseJson.projects;
             listProjects.skills = responseJson.skills;
-            console.log(listProjects);
-            console.log('fetched projects');
 
             // reset temp variables
             pageEdits = {};
@@ -47,7 +45,6 @@ const AdminProjectsMain = React.createClass({
     	this.getProjects();
     },
     componentWillMount: function() {
-    	console.log('componentWillMount called');
         this.getProjects();
     },
     componentDidUpdate: function(){

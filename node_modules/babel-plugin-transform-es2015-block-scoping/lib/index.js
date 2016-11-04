@@ -114,7 +114,7 @@ function isBlockScoped(node) {
 }
 
 function convertBlockScopedToVar(path, node, parent, scope) {
-  var moveBindingsToParent = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
+  var moveBindingsToParent = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
   if (!node) {
     node = path.node;
@@ -460,6 +460,8 @@ var BlockScoping = function () {
   };
 
   BlockScoping.prototype.getLetReferences = function getLetReferences() {
+    var _this = this;
+
     var block = this.block;
 
     var declarators = [];
@@ -472,16 +474,23 @@ var BlockScoping = function () {
       }
     }
 
+    var addDeclarationsFromChild = function addDeclarationsFromChild(path, node) {
+      node = node || path.node;
+      if (t.isClassDeclaration(node) || t.isFunctionDeclaration(node) || isBlockScoped(node)) {
+        if (isBlockScoped(node)) {
+          convertBlockScopedToVar(path, node, block, _this.scope);
+        }
+        declarators = declarators.concat(node.declarations || node);
+      }
+      if (t.isLabeledStatement(node)) {
+        addDeclarationsFromChild(path.get("body"), node.body);
+      }
+    };
+
     if (block.body) {
       for (var i = 0; i < block.body.length; i++) {
-        var declar = block.body[i];
-        if (t.isClassDeclaration(declar) || t.isFunctionDeclaration(declar) || isBlockScoped(declar)) {
-          var declarPath = this.blockPath.get("body")[i];
-          if (isBlockScoped(declar)) {
-            convertBlockScopedToVar(declarPath, null, block, this.scope);
-          }
-          declarators = declarators.concat(declar.declarations || declar);
-        }
+        var declarPath = this.blockPath.get("body")[i];
+        addDeclarationsFromChild(declarPath);
       }
     }
 
@@ -490,21 +499,16 @@ var BlockScoping = function () {
         var consequents = block.cases[_i].consequent;
 
         for (var j = 0; j < consequents.length; j++) {
-          var _declar = consequents[j];
-          if (t.isClassDeclaration(_declar) || t.isFunctionDeclaration(_declar) || isBlockScoped(_declar)) {
-            var _declarPath = this.blockPath.get("cases")[_i];
-            if (isBlockScoped(_declar)) {
-              convertBlockScopedToVar(_declarPath, _declar, block, this.scope);
-            }
-            declarators = declarators.concat(_declar.declarations || _declar);
-          }
+          var _declarPath = this.blockPath.get("cases")[_i];
+          var declar = consequents[j];
+          addDeclarationsFromChild(_declarPath, declar);
         }
       }
     }
 
     for (var _i2 = 0; _i2 < declarators.length; _i2++) {
-      var _declar2 = declarators[_i2];
-      var keys = t.getBindingIdentifiers(_declar2);
+      var _declar = declarators[_i2];
+      var keys = t.getBindingIdentifiers(_declar);
       (0, _extend2.default)(this.letReferences, keys);
       this.hasLetReferences = true;
     }

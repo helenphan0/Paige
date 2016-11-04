@@ -3,22 +3,24 @@ html(lang='en')
     head
         title Home Page
         meta(charset='utf-8')
-        link(rel='stylesheet', type='text/css', href='/public/default-style.css') 
+        link(rel='stylesheet', type='text/css', href='/public/default/default-style.css')
+        link(href='https://fonts.googleapis.com/css?family=Merriweather|Ubuntu' rel='stylesheet')
     body
-        section(id='default-box')
-            section(id='nav')
-                - var homeUrl = 'http://localhost:8080/default/home/' + friendlyUrl;
-                a(class='nav-link', href= 'http://localhost:8080/default/home/home' )
-                    span Home
-                a(class='nav-link', href='http://localhost:8080/default/about/about')
-                    span About
-                a(class='nav-link', href='http://localhost:8080/default/portfolio/portfolio')
-                    span Portfolio
-                a(class='nav-link')
-                    span Contact
-            section(id='section-content')
-                block content
+        section(id='nav')
+            - var homeUrl = 'http://localhost:8080/default/home/' + friendlyUrl;
+            a(class='nav-link', href= 'http://localhost:8080/default/home/home' )
+                div(class='nav-link') Home
+            a(class='nav-link', href='http://localhost:8080/default/about/about')
+                div(class='nav-link') About
+            a(class='nav-link', href='http://localhost:8080/default/portfolio/portfolio')
+                div(class='nav-link') Portfolio
+            a(class='nav-link')
+                div(class='nav-link') Contact
+        section(id='section-content')
+            block content
+                div(class='home')
                     h4 #{title}
+                    hr
                     p #{content}
         script(src='https://code.jquery.com/jquery.min.js')
         script(type='text/javascript', src='/public/main.js')

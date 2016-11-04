@@ -22,7 +22,7 @@ $(document).ready(function() {
 	$('div.project-item').click(function() {
 		let project = {};
 		project.name = $(this).closest('div').data('name');
-		project.url = $(this).closest('div').data('url');
+	//	project.url = $(this).closest('div').data('url');
 		project.img = $(this).closest('div').data('img');
 		project.livelink = $(this).closest('div').data('livelink');
 		project.codeurl = $(this).closest('div').data('codeurl');
@@ -31,10 +31,10 @@ $(document).ready(function() {
 		console.log(project);
 
 		$('#proj-name').children('span').append(project.name);
-		$('#proj-url').children('span').append(project.url);
+	//	$('#proj-url').children('span').append(project.url);
 		$('#proj-img').children('span').append(project.img);
-		$('#proj-livelink').children('span').append(project.livelink);
-		$('#proj-codeurl').children('span').append(project.codeurl);
+		$('#proj-livelink').attr('src', project.livelink);
+		$('#proj-codeurl').attr('src', project.codeurl);
 		$('#proj-desc').children('span').append(project.desc);
 
 		let spanHtml = '';
@@ -48,10 +48,10 @@ $(document).ready(function() {
 
 		$('button#project-close, .grey-out').click(function() {
 			$('#proj-name').children('span').empty();
-			$('#proj-url').children('span').empty();
+		//	$('#proj-url').children('span').empty();
 			$('#proj-img').children('span').empty();
-			$('#proj-livelink').children('span').empty();
-			$('#proj-codeurl').children('span').empty();
+			$('#proj-livelink').attr('src', '');
+			$('#proj-codeurl').attr('src', '');
 			$('#proj-desc').children('span').empty();
 			$('#proj-skill-box').empty();
 			project = {};
@@ -62,5 +62,9 @@ $(document).ready(function() {
 		})
 
 	})
+
+
+
+	
 
 })

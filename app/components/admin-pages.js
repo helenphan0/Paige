@@ -20,7 +20,6 @@ const AdminPagesMain = React.createClass({
         .then((response) => response.json())
         .then((responseJson) => {
             pages = responseJson;
-            console.log('fetched pages');
 
             // reset temp variable
             edits = {};
@@ -47,7 +46,6 @@ const AdminPagesMain = React.createClass({
     	this.getPages();
     },
     componentWillMount: function() {
-    	console.log('pages componentWillMount');
         this.getPages();
     },
     componentDidUpdate: function(){
