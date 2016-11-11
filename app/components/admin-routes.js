@@ -13,10 +13,12 @@ const Root = React.createClass({
                     <Match exacly pattern='/cms' component={AdminMenu} />
                 </div>
                 <div id='right-view'>
+                    <Match exactly pattern='/cms' component={AdminHome} />
                     <Match exactly pattern='/cms/home' component={AdminHome} />
                     <Match pattern='/cms/pages' component={AdminPagesMain}/>
                     <Match pattern='/cms/projects' component={AdminProjectsMain} />
                     <Match pattern='/cms/skills' component={AdminSkillsMain} />
+                    <Match pattern='/cms/themes' component={AdminThemesMain} />
                     <Miss component={AdminHome} />
                 </div>
             </BrowserRouter>

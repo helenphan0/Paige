@@ -15,7 +15,6 @@ const AdminSkillsMain = React.createClass({
         .then((response) => response.json())
         .then((responseJson) => {
             skills = responseJson;
-            console.log('fetched skills');
             
             this.setState({ skills: skills });
             return skills
@@ -26,7 +25,6 @@ const AdminSkillsMain = React.createClass({
 
 	},
 	componentWillMount: function() {
-    	console.log('skill component mounted');
         this.getSkills();
     },
     componentDidUpdate: function(){

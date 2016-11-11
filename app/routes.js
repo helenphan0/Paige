@@ -2,7 +2,7 @@ const User = require('../app/models/user');
 const Page = require('../app/models/page');
 const Project = require('../app/models/project');
 const Skill = require('../app/models/skill');
-// const Site = require('../app/models/site');
+
 
 module.exports = function(app, passport) { 
     
@@ -46,7 +46,7 @@ module.exports = function(app, passport) {
     // DEFAULT THEME 
     // =============
 
-    app.get('/default/home/:friendlyUrl', function(req, res) {
+    app.get('/home/:friendlyUrl', function(req, res) {
 
         Page.findOne({ friendlyUrl: req.params.friendlyUrl}, function(err, page) {
 
@@ -71,7 +71,7 @@ module.exports = function(app, passport) {
     
     // =====
     // =====
-        app.get('/default/about/:friendlyUrl', function(req, res) {
+        app.get('/about/:friendlyUrl', function(req, res) {
 
             Page.findOne( {friendlyUrl: req.params.friendlyUrl}, function(err, page) {
 
@@ -94,7 +94,7 @@ module.exports = function(app, passport) {
 
     // =====
     // =====
-        app.get('/default/portfolio/:friendlyUrl', function(req, res) {
+        app.get('/portfolio/:friendlyUrl', function(req, res) {
 
             Page.findOne( {friendlyUrl: req.params.friendlyUrl}, function(err, page) {
 
@@ -130,7 +130,7 @@ module.exports = function(app, passport) {
             console.log('default theme catch-all endpoint');
             defaultHome = {};
 
-            res.redirect('/default/home/home');
+            res.redirect('/home/home');
         }) 
 
     // DEFAULT Theme endpoints go above here
@@ -217,7 +217,7 @@ module.exports = function(app, passport) {
                     return res.status(500);
                 }
 
-                if (req.body.title == '' || req.body.title == undefined) {
+                if (req.body.title === '' || req.body.title == undefined) {
                     return false;
                 }
 
@@ -435,7 +435,7 @@ module.exports = function(app, passport) {
 
     // ====  Refresh page catch-all endpoint ========
 
-        app.get('/*', function(req, res) {
+        app.get('/cms/*', function(req, res) {
             console.log('catch-all endpoint');
 
             res.redirect('/cms');

@@ -154,10 +154,19 @@ AdminPagesList.contextTypes = {
 
 const CreatePage = React.createClass({
 	
+	getInitialState: function() {
+		return {
+			edits: {}
+		}
+	},
+	
 	createPage: function(event) {
 
+		if (this.refs.pageID.value != 0) {
+			newPage._id = this.refs.pageID.value
+		}
+
 		let actionUrl = event.target.getAttribute('data-url');
-		console.log(actionUrl);
 		this.refs.pageForm.reset();
 
 		if (newPage.friendlyUrl) {
@@ -182,6 +191,7 @@ const CreatePage = React.createClass({
 
 			// reset temp variable
 			newPage = {};
+			edits = {};
 
 			this.context.router.transitionTo('/cms/pages');
 			return pages;
@@ -191,40 +201,52 @@ const CreatePage = React.createClass({
 		});  
 
 	},
-	updateValues: function() {
-
-		newPage.title = (this.refs.newpageTitle.value || this.refs.newpageTitle.defaultValue);
-		newPage.friendlyUrl = (this.refs.newpageUrl.value || this.refs.newpageUrl.defaultValue);
-		newPage.content = ( this.refs.newpageContent.value || this.refs.newpageContent.defaultValue );
-
-		if (this.refs.pageID.value != 0) {
-			newPage._id = this.refs.pageID.value
-		}
-
-		return newPage
-	},
 	clearForm: function(){
 		this.refs.pageForm.reset();
 		this.props.cancel();
+		newPage = {};
+		this.setState({edits: {} });
+
+	},
+	changeTitle: function(event) {
+		newPage.title = event.target.value;
+		newPage.friendlyUrl = this.refs.newpageUrl.value;
+		newPage.content = this.refs.newpageContent.value;
+		this.setState({edits: newPage});
+	},
+	changeUrl: function(event) {
+		newPage.friendlyUrl = event.target.value;
+		newPage.title = this.refs.newpageTitle.value;
+		newPage.content = this.refs.newpageContent.value;
+		this.setState({edits: newPage});
+	},
+	changeContent: function(event) {
+		newPage.content = event.target.value;
+		newPage.friendlyUrl = this.refs.newpageUrl.value;
+		newPage.title = this.refs.newpageTitle.value;
+		this.setState({edits: newPage});
+	},
+	componentWillReceiveProps: function(nextProps) {
+		this.setState({ edits: edits });
 
 	},
 	render: function() {
 		return (
 			<div>
-				<div onClick={this.clearForm} className={this.props.newPageInput == true || this.props.editPageInput == true ? 'grey-out' : 'hidden'}>
+				<div onClick={this.clearForm} className={this.props.newPageInput || this.props.editPageInput ? 'grey-out' : 'hidden'}>
 				</div>
-				<div className={this.props.newPageInput == true || this.props.editPageInput == true ? 'createpage-view box' : 'hidden'} >
-					<h3>{this.props.editPageInput == true ? 'Edit Page' : 'Create a New Page' }</h3>
+				<div className={this.props.newPageInput || this.props.editPageInput ? 'createpage-view box' : 'hidden'} >
+					<h3>{this.props.editPageInput ? 'Edit Page' : 'Create a New Page' }</h3>
 					<form ref='pageForm' id='newpage-form'>
 						<div className='form-section'>
-							<input ref='pageID' value={this.props.editPageInput == true ? edits._id : 0 } className='hidden' />
+							<input ref='pageID' value={this.props.editPageInput ? edits._id : 0 } className='hidden' />
 							<label htmlFor='title'>Title: </label>
 								<input type='text' 
 									id='title' 
 									ref='newpageTitle' 
-									defaultValue={this.props.editPageInput == true ? edits.title : '' } 
-									placeholder={this.props.editPageInput == true ? edits.title : 'About Our Company' } 
-									onChange={this.updateValues} 
+									value={this.state.edits.title || ''} 
+									placeholder={this.props.editPageInput ? edits.title : 'About Our Company' }
+									onChange={this.changeTitle} 
 									/>
 						</div>
 						<div className='form-section'>
@@ -232,9 +254,9 @@ const CreatePage = React.createClass({
 								<input type='text' 
 									id='url' 
 									ref='newpageUrl' 
-									defaultValue={this.props.editPageInput == true ? edits.friendlyUrl : '' } 
-									placeholder={this.props.editPageInput == true ? edits.friendlyUrl : 'www.company.com/about' }  
-									onChange={this.updateValues} 
+									value={this.state.edits.friendlyUrl || ''} 
+									placeholder={this.props.editPageInput ? edits.friendlyUrl : 'about_page' }  
+									onChange={this.changeUrl} 
 									/>
 						</div>
 						<div className='form-section'>
@@ -242,22 +264,22 @@ const CreatePage = React.createClass({
 								<textarea form='newpage-form' 
 									ref='newpageContent' 
 									id='content' 
-									defaultValue={this.props.editPageInput == true ? edits.content : '' } 
-									placeholder={this.props.editPageInput == true ? edits.content : 'Content about the company.' } 
-									onChange={this.updateValues}>
+									value={this.state.edits.content || ''} 
+									placeholder={this.props.editPageInput ? edits.content : 'Content about the company.' } 
+									onChange={this.changeContent}>
 								</textarea>
 						</div>
-						<button className={this.props.newPageInput == true ? '' : 'hidden'} 
+						<button className={this.props.newPageInput ? '' : 'hidden'} 
 							onClick={this.createPage} data-url='/cms/pages/new-page' 
 							type='button'
 							>Create Page
 						</button>
-						<button className={this.props.editPageInput == true ? '' : 'hidden'} 
+						<button className={this.props.editPageInput ? '' : 'hidden'} 
 							onClick={this.createPage} data-url={'/cms/pages/edit-page/' + edits._id} 
 							type='button'
 							>Edit Page
 						</button>
-						<button className={this.props.newPageInput == true || this.props.editPageInput == true ? '' : 'hidden' } 
+						<button className={this.props.newPageInput || this.props.editPageInput ? '' : 'hidden' } 
 							onClick={this.clearForm} 
 							type='button'
 							>Cancel

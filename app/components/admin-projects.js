@@ -2,7 +2,15 @@ const Link = ReactRouter.Link;
 const BrowserRouter = ReactRouter.BrowserRouter
 
 let listProjects = {};
-let pageEdits = {};
+let projectEdits = {
+	name: '',
+	friendlyUrl: '',
+	image: '',
+	livelink: '',
+	codeUrl: '',
+	description: '',
+	skills: []
+};
 let newProject = {skills: []};
 let skillArg;
 
@@ -23,7 +31,15 @@ const AdminProjectsMain = React.createClass({
             listProjects.skills = responseJson.skills;
 
             // reset temp variables
-            pageEdits = {};
+            projectEdits = {
+            	name: '',
+				friendlyUrl: '',
+				image: '',
+				livelink: '',
+				codeUrl: '',
+				description: '',
+				skills: []
+            };
             skillArg = '';
 
             this.setState({ new: false, edit: false, projects: listProjects.projects });
@@ -37,14 +53,17 @@ const AdminProjectsMain = React.createClass({
     	this.setState({new: true});
     },
     editProjectInp: function(data) {
-    	pageEdits = data;
-    	console.log(pageEdits);
+    	projectEdits = data;
+    	console.log(projectEdits);
     	this.setState({edit: true});
     },
     cancel: function() {
     	this.getProjects();
     },
     componentWillMount: function() {
+        this.getProjects();
+    },
+    componentDidMount: function() {
         this.getProjects();
     },
     componentDidUpdate: function(){
@@ -155,7 +174,6 @@ const AdminProjectsList = React.createClass({
 							</div>
 						</div>
 					)}
-
 				</div>
 			</div>
 		)
@@ -169,6 +187,7 @@ AdminProjectsList.contextTypes = {
 const CreateProject = React.createClass({
 	getInitialState: function(){
 		return {
+			projectEdits: {},
 			tempSkills: []
 		}
 	},
@@ -177,10 +196,9 @@ const CreateProject = React.createClass({
 		if (this.refs.projectID.value != 0) {
 			newProject._id = this.refs.projectID.value;
 		}
-		newProject.skills = pageEdits.skills || this.state.tempSkills;
+		newProject.skills = projectEdits.skills || this.state.tempSkills;
 
 		let actionUrl = event.target.getAttribute('data-url');
-		console.log(actionUrl);
 		this.refs.projectForm.reset();
 
 		if (newProject.friendlyUrl) {
@@ -205,7 +223,7 @@ const CreateProject = React.createClass({
 
 			// reset temp variable
 			newProject = {skills: []};
-			pageEdits = {};
+			projectEdits = {};
 
 			this.context.router.transitionTo('/cms/projects');
 			return listProjects;
@@ -215,39 +233,97 @@ const CreateProject = React.createClass({
 		});  
 
 	},
-	updateValues: function() {
+	changeName: function(event) {
 
-		newProject.name = (this.refs.newprojectName.value || this.refs.newprojectName.defaultValue);
-		newProject.friendlyUrl = (this.refs.newprojectUrl.value || this.refs.newprojectUrl.defaultValue);
-		newProject.image = (this.refs.newprojectImage.value || this.refs.newprojectImage.defaultValue);
-		newProject.livelink = ( this.refs.newprojectlivelink.value || this.refs.newprojectlivelink.defaultValue );
-		newProject.codeUrl = (this.refs.newprojectcodeUrl.value || this.refs.newprojectcodeUrl.defaultValue);
-		newProject.description = (this.refs.newprojectDescription.value || this.refs.newprojectDescription.defaultValue);
+		newProject.name = event.target.value;
+		newProject.friendlyUrl = this.refs.newprojectUrl.value;
+		newProject.image = this.refs.newprojectImage.value;
+		newProject.livelink = this.refs.newprojectlivelink.value;
+		newProject.codeUrl = this.refs.newprojectcodeUrl.value;
+		newProject.description = this.refs.newprojectDescription.value;
 
-		if (this.refs.projectID.value != 0) {
-			newProject._id = this.refs.projectID.value;
-		}
-		newProject.skills = this.state.tempSkills;
+		this.setState({ projectEdits: newProject });
 
-		return newProject
+	},
+	changeUrl: function(event) {
+
+		newProject.name = this.refs.newprojectName.value;
+		newProject.friendlyUrl = event.target.value;
+		newProject.image = this.refs.newprojectImage.value;
+		newProject.livelink = this.refs.newprojectlivelink.value;
+		newProject.codeUrl = this.refs.newprojectcodeUrl.value;
+		newProject.description = this.refs.newprojectDescription.value;
+
+		this.setState({ projectEdits: newProject });
+
+	},
+	changeImage: function(event) {
+
+		newProject.name = this.refs.newprojectName.value;
+		newProject.friendlyUrl = this.refs.newprojectUrl.value;
+		newProject.image = event.target.value;
+		newProject.livelink = this.refs.newprojectlivelink.value;
+		newProject.codeUrl = this.refs.newprojectcodeUrl.value;
+		newProject.description = this.refs.newprojectDescription.value;
+
+		this.setState({ projectEdits: newProject });
+
+	},
+	changeLiveLink: function(event) {
+
+		newProject.name = this.refs.newprojectName.value;
+		newProject.friendlyUrl = this.refs.newprojectUrl.value;
+		newProject.image = this.refs.newprojectImage.value;
+		newProject.livelink = event.target.value;
+		newProject.codeUrl = this.refs.newprojectcodeUrl.value;
+		newProject.description = this.refs.newprojectDescription.value;
+
+		this.setState({ projectEdits: newProject });
+
+	},
+	changeCodeUrl: function(event) {
+
+		newProject.name = this.refs.newprojectName.value;
+		newProject.friendlyUrl = this.refs.newprojectUrl.value;
+		newProject.image = this.refs.newprojectImage.value;
+		newProject.livelink = this.refs.newprojectlivelink.value;
+		newProject.codeUrl = event.target.value;
+		newProject.description = this.refs.newprojectDescription.value;
+
+		this.setState({ projectEdits: newProject });
+
+	},
+	changeDesc: function(event) {
+
+		newProject.name = this.refs.newprojectName.value;
+		newProject.friendlyUrl = this.refs.newprojectUrl.value;
+		newProject.image = this.refs.newprojectImage.value;
+		newProject.livelink = this.refs.newprojectlivelink.value;
+		newProject.codeUrl = this.refs.newprojectcodeUrl.value;
+		newProject.description = event.target.value;
+
+		this.setState({ projectEdits: newProject });
+
 	},
 	clearForm: function(){
+		newProject = {};
 		newProject.skills = [];
 		this.refs.projectForm.reset();
 		this.props.cancel();
+		this.setState({ 
+			projectEdits: {},
+			tempSkills: newProject.skills
+		});
 
 	},
 	addSkill: function(skillArg) {
-
 		if (this.refs.projectID.value != 0) {
 			newProject._id = this.refs.projectID.value;
 		}
-		newProject.skills = pageEdits.skills || this.state.tempSkills;
+		newProject.skills = projectEdits.skills || this.state.tempSkills;
 		newProject.skills.push(skillArg);
 		console.log(newProject.skills);
-
 		this.refs.newSkill.value = '';
-
 		this.setState({ tempSkills: newProject.skills});
 
 	},
@@ -260,51 +336,51 @@ const CreateProject = React.createClass({
 
 	},
 	deleteSkill: function(event) {
-
 		if (this.refs.projectID.value != 0) {
 			newProject._id = this.refs.projectID.value;
 		}
-
-		var position = event.target.getAttribute('data-id');
+		let position = event.target.getAttribute('data-id');
 		console.log(position);
-		
-		newProject.skills = pageEdits.skills || this.state.tempSkills;
-
+		newProject.skills = projectEdits.skills || this.state.tempSkills;
 		newProject.skills.splice(position, 1);
 		this.setState( {tempSkills: newProject.skills});
 	},
-	componentDidUpdate: function(){
-    	if (this.state.tempSkills !== newProject.skills) {
-    		console.log('skills componentDidUpdate');
-    		this.setState({ tempSkills: newProject.skills })
-    	}
+	componentWillReceiveProps: function(nextProps) {
+		this.setState({ projectEdits: projectEdits });
 
-    },
+	},
 	render: function() {
+		// this is the dropdown
 		let skillsMap = listProjects.skills || [];
-		let skillsAppend = pageEdits.skills || this.state.tempSkills;
+
+		// list the skills currently on the project
+		let skillsAppend = projectEdits.skills || this.state.tempSkills;
+
+		// blank array pulled from data attribute turns to string, make it an array again, else it errors
 		if (skillsAppend == "") {
 			skillsAppend = [];
 		}
+
+		// update the dropdown so it doesn't have what's already on project
 		skillsMap = skillsMap.filter(x => skillsAppend.indexOf(x) < 0);
 
 		return (
 			<div>
-				<div onClick={this.clearForm} className={this.props.newProjectInput == true || this.props.editProjectInput == true ? 'grey-out' : 'hidden'}>
+				<div onClick={this.clearForm} className={this.props.newProjectInput || this.props.editProjectInput ? 'grey-out' : 'hidden'}>
 				</div>
-				<div className={this.props.newProjectInput == true || this.props.editProjectInput == true ? 'createproject-view box' : 'hidden'} >
-					<h3>{this.props.editProjectInput == true ? 'Edit Project' : 'Create a New Project' }</h3>
+				<div className={this.props.newProjectInput || this.props.editProjectInput ? 'createproject-view box' : 'hidden'} >
+					<h3>{this.props.editProjectInput ? 'Edit Project' : 'Create a New Project' }</h3>
 					<form ref='projectForm' id='newproject-form'>
 						<div className='form-section'>
-							<input ref='projectID' value={this.props.editProjectInput == true ? pageEdits._id : 0 } className='hidden' />
+							<input ref='projectID' value={this.props.editProjectInput ? projectEdits._id : 0 } className='hidden' />
 							<label htmlFor='name'>Name: </label>
 								<input form='newproject-form'  
 									type='text' 
 									id='name' 
 									ref='newprojectName' 
-									defaultValue={this.props.editProjectInput == true ? pageEdits.name : '' } 
-									placeholder={this.props.editProjectInput == true ? pageEdits.name : 'QuizApp' } 
-									onChange={this.updateValues} 
+									value={this.state.projectEdits.name || ''} 
+									placeholder={this.props.editProjectInput ? projectEdits.name : 'QuizApp' } 
+									onChange={this.changeName} 
 									/>
 						</div>
 						<div className='form-section'>
@@ -313,9 +389,9 @@ const CreateProject = React.createClass({
 									type='text' 
 									id='url' 
 									ref='newprojectUrl' 
-									defaultValue={this.props.editProjectInput == true ? pageEdits.friendlyUrl : '' } 
-									placeholder={this.props.editProjectInput == true ? pageEdits.friendlyUrl : 'www.company.com/about' }  
-									onChange={this.updateValues} 
+									value={this.state.projectEdits.friendlyUrl || ''} 
+									placeholder={this.props.editProjectInput ? projectEdits.friendlyUrl : 'about_page' }  
+									onChange={this.changeUrl} 
 									/>
 						</div>
 						<div className='form-section'>
@@ -324,9 +400,9 @@ const CreateProject = React.createClass({
 									type='text' 
 									ref='newprojectImage' 
 									id='image' 
-									defaultValue={this.props.editProjectInput == true ? pageEdits.image : '' } 
-									placeholder={this.props.editProjectInput == true ? pageEdits.image : 'image link' } 
-									onChange={this.updateValues} 
+									value={this.state.projectEdits.image || ''} 
+									placeholder={this.props.editProjectInput ? projectEdits.image : 'image link' } 
+									onChange={this.changeImage} 
 									/>
 						</div>
 						<div className='form-section'>
@@ -335,9 +411,9 @@ const CreateProject = React.createClass({
 									type='text' 
 									ref='newprojectlivelink' 
 									id='livelink' 
-									defaultValue={this.props.editProjectInput == true ? pageEdits.livelink : '' } 
-									placeholder={this.props.editProjectInput == true ? pageEdits.livelink : 'live site' } 
-									onChange={this.updateValues} 
+									value={this.state.projectEdits.livelink || ''} 
+									placeholder={this.props.editProjectInput ? projectEdits.livelink : 'live site' } 
+									onChange={this.changeLiveLink} 
 									/>
 						</div>
 						<div className='form-section'>
@@ -346,9 +422,9 @@ const CreateProject = React.createClass({
 									type='text' 
 									ref='newprojectcodeUrl' 
 									id='codeUrl' 
-									defaultValue={this.props.editProjectInput == true ? pageEdits.codeUrl : '' } 
-									placeholder={this.props.editProjectInput == true ? pageEdits.codeUrl : 'url to code' } 
-									onChange={this.updateValues} 
+									value={this.state.projectEdits.codeUrl || ''} 
+									placeholder={this.props.editProjectInput ? projectEdits.codeUrl : 'url to code' } 
+									onChange={this.changeCodeUrl} 
 									/>
 						</div>
 						<div className='form-section'>
@@ -357,9 +433,9 @@ const CreateProject = React.createClass({
 									type='text' 
 									ref='newprojectDescription' 
 									id='description' 
-									defaultValue={this.props.editProjectInput == true ? pageEdits.description : '' } 
-									placeholder={this.props.editProjectInput == true ? pageEdits.description : 'description' } 
-									onChange={this.updateValues} >
+									value={this.state.projectEdits.description || ''} 
+									placeholder={this.props.editProjectInput ? projectEdits.description : 'description' } 
+									onChange={this.changeDesc} >
 								</textarea>
 						</div>
 						<div id='skill-area'>
@@ -383,17 +459,17 @@ const CreateProject = React.createClass({
 							</select>
 							
 						</div>
-						<button className={this.props.newProjectInput == true ? '' : 'hidden'} 
+						<button className={this.props.newProjectInput ? '' : 'hidden'} 
 							onClick={this.createProject} data-url='/cms/projects/new-project' 
 							type='button'
 							>Create Project
 						</button>
-						<button className={this.props.editProjectInput == true ? '' : 'hidden'} 
-							onClick={this.createProject} data-url={'/cms/projects/edit-project/' + pageEdits._id} 
+						<button className={this.props.editProjectInput ? '' : 'hidden'} 
+							onClick={this.createProject} data-url={'/cms/projects/edit-project/' + projectEdits._id} 
 							type='button'
 							>Edit Project
 						</button>
-						<button className={this.props.newProjectInput == true || this.props.editProjectInput == true ? '' : 'hidden' } 
+						<button className={this.props.newProjectInput || this.props.editProjectInput ? '' : 'hidden' } 
 							onClick={this.clearForm} 
 							type='button'
 							>Cancel

@@ -35,6 +35,10 @@ section, .page, .project {
 	box-shadow:         2px 2px 5px 0px rgba(50, 50, 50, 0.4);
 }
 
+.index>section {
+	border: 0px;
+}
+
 #form, #login-form {
 	padding: 0px 10px;
 	text-align: left;
@@ -63,10 +67,23 @@ section, .page, .project {
 }
 
 input.submit.login, input.submit.signup {
+	-webkit-appearance: none;
+	background-color: #FF1493;
+	border: 0px;
+	border-radius: 5px;
+	color: white;
 	display: block;
-	width: 125px;
+	width: 120px;
+	height: 30px;
+	font-size: 15px;
 	margin: 8px auto;
-	font-size: 30px;
+	padding: 2px 0px;
+}
+
+input.submit.login:hover, input.submit.signup:hover {
+	cursor: pointer;
+	background-color: #8B0A50;
+
 }
 
 .account-header {
@@ -83,7 +100,7 @@ ul {
 }
 
 li {
-	color: black;
+	color: white;
 	width: 77%;
 	margin: 6px 0px;
 	padding: 7px;
@@ -116,7 +133,7 @@ li, button {
 	margin-bottom: 15px;
 }
 
-.admin-home-box, .pages-view, .projects-view, .skills-view {
+.admin-home-box, .pages-view, .projects-view, .skills-view, .themes-view {
 	text-align: center;
 }
 
@@ -188,23 +205,24 @@ input {
 }
 
 button {
+	color: white;
 	font-size: 13px;
 	height: 29px;
-	vertical-align: top;
 	margin: 1px 3px;
 	padding: 3px 9px;
+	vertical-align: top;
+
 }
 
 li:hover, button:hover {
 	background-color: #8B0A50;
-	color: white;
 
 }
 
 .page, .project {
 	width: 47%;
 	vertical-align: top;
-	padding: 5px;
+	padding: 15px;
 	margin: 4px 6px;
 }
 
@@ -213,6 +231,10 @@ li:hover, button:hover {
 	-webkit-box-shadow: 2px 2px 10px 0px rgba(50, 50, 50, 0.74);
 	-moz-box-shadow:    2px 2px 10px 0px rgba(50, 50, 50, 0.74);
 	box-shadow:         2px 2px 10px 0px rgba(50, 50, 50, 0.74);
+}
+
+.page-buttons, .project-buttons {
+	margin-top: 8px;
 }
 
 .page>p, .project>p {
@@ -235,8 +257,12 @@ li:hover, button:hover {
 	width: 60%;
 	top: 15%;
 	left: 20%;
-	padding: 15px;
+	padding: 35px;
 	z-index: 999;
+}
+
+.box button {
+	margin-top: 15px;
 }
 
 select {
