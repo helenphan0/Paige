@@ -93,12 +93,13 @@ button#project-close {
 div.nav-link:hover, button#project-close:hover {
 	color: white;
 	background-color: #C0FF3E;
+	cursor: pointer;
 }
 
 div.project-item {
 	background-color: white;
 	width: 30%;
-	min-height: 85px;
+	min-height: 130px;
 	vertical-align: top;
 	padding: 9px;
 	margin: 3px 6px;
@@ -128,7 +129,7 @@ div.project-item:hover {
 #single-project {
 	background-color: white;
 	position: absolute;
-	top: 130px;
+	top: 50px;
 	left: 23%;
 	width: 50%;
 	padding: 15px 20px;
@@ -162,8 +163,26 @@ h3 {
 	margin: 15px;
 }
 
-.skill-box, #proj-skill-box {
+#proj-skill-box {
 	margin: 10px 0;
+}
+
+.project-name {
+	text-align: center;
+	font-size: 18px;
+}
+
+#proj-desc>span {
+	display: inline-block;
+	margin: 4px 9px;
+}
+
+#proj-livelink:hover, #proj-codeurl {
+	font-weight: bolder;
+}
+
+.skill-box {
+	margin: 25px 0;
 }
 
 img {
@@ -177,4 +196,33 @@ a {
 
 a:hover {
 	cursor: pointer;
+}
+
+
+@media only screen and (min-width: 584px) and (max-width: 700px) {
+
+	#single-project {
+		left: 13%;
+		width: 70%;
+	}
+
+	div.project-item {
+		width: 85%;
+		display: block;
+		margin: 7px auto;
+	}
+
+}
+
+@media only screen and (max-width: 584px) {
+
+	#single-project {
+		left: 1%;
+		width: 90%;
+	}
+
+	div.project-item {
+		width: 95%;
+	}
+
 }

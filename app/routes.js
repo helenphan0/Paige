@@ -2,6 +2,7 @@ const User = require('../app/models/user');
 const Page = require('../app/models/page');
 const Project = require('../app/models/project');
 const Skill = require('../app/models/skill');
+const Option = require('../app/models/option');
 
 
 module.exports = function(app, passport) { 
@@ -42,101 +43,6 @@ module.exports = function(app, passport) {
         failureFlash : true 
     }));
 
-    // =============
-    // DEFAULT THEME 
-    // =============
-
-    app.get('/home/:friendlyUrl', function(req, res) {
-
-        Page.findOne({ friendlyUrl: req.params.friendlyUrl}, function(err, page) {
-
-            if (err) {
-                return res.status(500);
-            }
-
-            if (!page) {
-                console.log('page not found from parameter: ' + req.params.friendlyUrl);
-                return res.status(404).json(null);
-            }
-
-            if (page) {
-                    
-                res.render('../themes/default/home.pug', {
-                    title : page.title,
-                    friendlyUrl : page.friendlyUrl,
-                    content: page.content
-                }); 
-            }
-        })  
-    
-    // =====
-    // =====
-        app.get('/about/:friendlyUrl', function(req, res) {
-
-            Page.findOne( {friendlyUrl: req.params.friendlyUrl}, function(err, page) {
-
-                if (err) {
-                    return res.status(500);
-                }
-
-                if (!page) {
-                    console.log('page not found from parameter: ' + req.params.friendlyUrl);
-                    return res.status(404).json(null);
-                }
-
-                res.render('../themes/default/about.pug', {
-                    aboutTitle: page.title,
-                    aboutUrl: page.friendlyUrl,
-                    aboutContent: page.content
-                });
-            });
-        })
-
-    // =====
-    // =====
-        app.get('/portfolio/:friendlyUrl', function(req, res) {
-
-            Page.findOne( {friendlyUrl: req.params.friendlyUrl}, function(err, page) {
-
-                if (err) {
-                    return res.status(500);
-                }
-
-                if (!page) {
-                    console.log('page not found from parameter: ' + req.params.friendlyUrl);
-                    return res.status(404).json(null);
-                }
-
-                // Fetch all projects
-                Project.find(function(err, projects) {
-                    if (err) {
-                        return res.status(500).json({
-                            message: 'Internal Server Error'
-                        });
-                    }
-
-                    res.render('../themes/default/portfolio.pug', {
-                        portfolioTitle: page.title,
-                        portfolioUrl: page.friendlyUrl,
-                        portfolioContent: page.content,
-                        projects: projects
-                    });
-                })
-            });
-        })
-
-
-       app.get('/default/*', function(req, res) {
-            console.log('default theme catch-all endpoint');
-            defaultHome = {};
-
-            res.redirect('/home/home');
-        }) 
-
-    // DEFAULT Theme endpoints go above here
-    // =====================================
-    });  
-    
 
     // =====================================
     // ADMIN SECTION =======================
@@ -144,16 +50,13 @@ module.exports = function(app, passport) {
 
     app.get('/cms', isLoggedIn, function(req, res) {
         console.log('logged in as: ' + req.user.local.name);
-        let data = {};
-        data.user = req.user;
-        data.view = 'home';
+
         res.render('admin-layout.pug', {
-            user : data.user,
-            view : data.view 
+            user : req.user 
         });
 
     // ---------------------- Admin endpoint seperator
-    // Endpoints to fetch all documents in Page, Project, and Skill collections
+    // Endpoints to fetch all documents in Page, Project, Skill, and User collections
 
         app.get('/cms/pages/get-pages', function(req, res) {
             Page.find(function(err, pages) {
@@ -185,6 +88,9 @@ module.exports = function(app, passport) {
                     }
 
                     let skillsArr = [];
+
+                    // skills result is an array of skills objects
+                    // turn the result into an array with skill name values
                     for ( let i = 0; i < skills.length; i++ ) {
                         skillsArr.push(skills[i].skill);
                     }
@@ -203,6 +109,45 @@ module.exports = function(app, passport) {
                     });
                 }
                 res.status(200).json(skills).end();
+            });
+        });
+
+        app.get('/cms/users/get-users', function(req, res) {
+            User.find(function(err, users) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Internal Server Error'
+                    });
+                }
+
+                // use the local login for accounts created from back end
+                for (let i = 0; i < users.length; i++) {
+
+                    if (users[i].google && !users[i].local.name) {
+                        users[i].local.name = users[i].google.name;
+                        users[i].local.email = users[i].google.email;
+                        users[i].local.password = users[i].google.token;
+                    }
+                    if (users[i].facebook && !users[i].local.name) {
+                        users[i].local.name = users[i].facebook.name;
+                        users[i].local.email = users[i].facebook.email;
+                        users[i].local.password = users[i].facebook.token;
+                    }
+                    if (users[i].linkedin && !users[i].local.name) {
+                        users[i].local.name = users[i].linkedin.name;
+                        users[i].local.email = users[i].linkedin.email;
+                        users[i].local.password = users[i].linkedin.token;
+                    }
+
+                    if (users[i].github && !users[i].local.name) {
+                        users[i].local.name = users[i].github.name;
+                        users[i].local.email = users[i].github.email;
+                        users[i].local.password = users[i].github.token;
+                    }
+
+                }
+
+                res.status(200).json(users).end();
             });
         });
 
@@ -227,19 +172,19 @@ module.exports = function(app, passport) {
                 }
 
                 else {
-                    var page = new Page();
+                    let page = new Page();
                     page.title = req.body.title;
                     page.friendlyUrl = req.body.friendlyUrl.trim().replace(/ /g, "_");
                     page.content = req.body.content;
-                }
     
-                page.save(function(err) {
-                    if (err) {
-                        res.status(500);
-                    }
-                    console.log('saved new page: ' + page.title);
-                    res.redirect('/cms/pages/get-pages');
-                });
+                    page.save(function(err) {
+                        if (err) {
+                            res.status(500);
+                        }
+                        console.log('saved new page: ' + page.title);
+                        res.redirect('/cms/pages/get-pages');
+                    });
+                }
             })      
         }) 
     // ---------------------- Admin endpoint seperator
@@ -311,23 +256,43 @@ module.exports = function(app, passport) {
                 }
 
                 else {
-                    var project = new Project();
+                    let project = new Project();
                     project.name = req.body.name;
                     project.friendlyUrl = req.body.friendlyUrl.trim().replace(/ /g, "_");
+
+                    // check for http or https on links
+                    let http = 'http';
                     project.image = req.body.image;
                     project.livelink = req.body.livelink;
                     project.codeUrl = req.body.codeUrl;
+
+                    imageBeg = req.body.image.split('').slice(0,4).join('');
+                    livelinkBeg = req.body.livelink.split('').slice(0,4).join('');
+                    codeUrlBeg = req.body.codeUrl.split('').slice(0,4).join('');
+
+                    if (http != imageBeg) {
+                        project.image = 'http://' + project.image;
+                    }
+
+                    if (http != livelinkBeg) {
+                        project.livelink = 'http://' + project.livelink;
+                    }
+
+                    if (http != codeUrlBeg) {
+                        project.codeUrl = 'http://' + project.codeUrl;
+                    }
+
                     project.description = req.body.description;
                     project.skills = req.body.skills;
-                }
     
-                project.save(function(err) {
-                    if (err) {
-                        res.status(500);
-                    }
-                    console.log('saved project: ' + project.name);
-                    res.redirect('/cms/projects/get-projects');
-                });
+                    project.save(function(err) {
+                        if (err) {
+                            res.status(500);
+                        }
+                        console.log('saved project: ' + project.name);
+                        res.redirect('/cms/projects/get-projects');
+                    });
+                }
             })      
         }) 
     // ---------------------- Admin endpoint seperator
@@ -368,16 +333,15 @@ module.exports = function(app, passport) {
                 if (project) {
                     console.log(project.name + ' found');  
                     console.log('changes made ', project);
+                
+                    project.save(function(err) {
+                        if (err) {
+                            res.status(500);
+                        }
+                        console.log('saved project: ' + project.name);
+                        res.redirect('/cms/projects/get-projects');
+                    });
                 }
-    
-                project.save(function(err) {
-                    if (err) {
-                        res.status(500);
-                    }
-                    console.log('saved project: ' + project.name);
-                    res.redirect('/cms/projects/get-projects');
-                });
-            
             })      
         })
 
@@ -431,16 +395,108 @@ module.exports = function(app, passport) {
             })
         })
 
+    // Admin endpoint seperator -------------------
+    // USER endpoints ----------------------------
+
+        app.post('/cms/users/new-user', function(req, res) {
+                
+            User.findOne({'local.email': req.body.local.email} , function(err, user) {
+
+                if (!req.body.local.email || !req.body.local.name) {
+                    return false;
+                }
+
+                if (user) {
+                    console.log(user.local.email + ' already exists');
+                    return res.status(200).redirect('/cms/users/get-users');
+                }
+
+                if (err) {
+                    return res.status(500);
+                }
+
+                let newuser = new User();
+                newuser.local = {};
+                newuser.local.name = req.body.local.name;
+                newuser.local.email = req.body.local.email;
+                newuser.local.password = newuser.generateHash(req.body.local.password);
+                
+                newuser.save(function(err) {
+                    if (err) {
+                        res.status(500);
+                    }
+                    console.log('saved new user: ' + newuser.local.email);
+                    res.redirect('/cms/users/get-users');
+                });
+            })      
+        })
+
+    // ---------------------- Admin endpoint seperator
+    // ----------------------
+
+        app.post('/cms/users/edit-user/:id', function(req, res) {
+            
+            let id = req.body._id;
+            let updateObj = req.body;
+
+            User.findById(id, function(err, user) {
+
+                if (err) {
+                    return res.status(500);
+                }
+
+                if (updateObj.local.email === '' || !updateObj.local.email) {
+                    return false;
+                }
+
+                if (user) {
+                    console.log(user.local.email + ' found');  
+
+                }
+
+                user.local.email = updateObj.local.email;
+                user.local.name = updateObj.local.name;
+                if (user.local.password != updateObj.local.password) {
+                    user.local.password = updateObj.local.password;
+                    user.local.password = user.generateHash(user.local.password);
+                }
+                console.log('changes', user);
+    
+                user.save(function(err) {
+                    if (err) {
+                        res.status(500);
+                    }
+                    console.log('saved user: ' + user.local.email);
+                    res.redirect('/cms/users/get-users');
+                });  
+            
+            })      
+        })
+
+    // ---------------------- Admin endpoint seperator
+    // ----------------------
+
+        app.post('/cms/users/delete/:id', function(req, res) {
+            let id = req.body.id;
+            User.findByIdAndRemove(id, function(err, user) {
+                if (err) {
+                    return res.status(500);
+                }
+                if (user) {
+                    console.log(user.local.email + ' deleted');
+                    
+                }
+                res.redirect('/cms/users/get-users');
+            })
+        })
 
 
     // ====  Refresh page catch-all endpoint ========
 
         app.get('/cms/*', function(req, res) {
             console.log('catch-all endpoint');
-
             res.redirect('/cms');
         })
-
 
 // ----------------
 // ---------------- Admin endpoints above this line
@@ -481,17 +537,16 @@ module.exports = function(app, passport) {
             failureRedirect : '/'
         }));
 
-
     // =====================================
     // GOOGLE ROUTES =======================
     // =====================================
     app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 
     app.get('/auth/google/callback',
-            passport.authenticate('google', {
-                    successRedirect : '/cms',
-                    failureRedirect : '/'
-            }));
+        passport.authenticate('google', {
+                successRedirect : '/cms',
+                failureRedirect : '/'
+        }));
 
     // =====================================
     // LOGOUT ==============================
@@ -500,6 +555,46 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
+
+    // =============
+    // DEFAULT THEME 
+    // =============
+
+    app.get('/:friendlyUrl', function(req, res) {
+
+        Page.findOne( {friendlyUrl: req.params.friendlyUrl}, function(err, page) {
+
+            if (err) {
+                return res.status(500);
+            }
+
+            if (!page) {
+                console.log('page not found from parameter: ' + req.params.friendlyUrl);
+                return res.status(404).json(null);
+            }
+
+            // Fetch all projects
+            Project.find(function(err, projects) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Internal Server Error'
+                    });
+                }
+
+                // Use option model with theme
+                // file name of template needs to match friendlyUrl
+                res.render('../themes/default/' + req.params.friendlyUrl + '.pug', {
+                    title : page.title,
+                    friendlyUrl : page.friendlyUrl,
+                    content: page.content,
+                    projects: projects
+                });
+            })
+        });
+    })
+
+// ====== End of module exports
+// ======   
 };
 
 // route middleware to make sure a user is logged in

@@ -125,8 +125,8 @@ const AdminPagesList = React.createClass({
 					{this.props.pages.map((page, i) =>
 						<div key={page._id} className='page'>
 							<h4>Title: {page.title}</h4>
-							<p className='url'>Friendly URL: {page.friendlyUrl}</p>
-							<p className='content'>Content: {page.content}</p>
+							<p><span className='text-label'>Friendly URL:</span> {page.friendlyUrl}</p>
+							<p><span className='text-label'>Content:</span> {page.content}</p>
 							<div className='page-buttons'>
 								<button onClick={this.pageView} data-id={page._id} type='button'>View</button>
 								<button onClick={this.pageEdit} 
@@ -264,6 +264,7 @@ const CreatePage = React.createClass({
 								<textarea form='newpage-form' 
 									ref='newpageContent' 
 									id='content' 
+									rows='4' 
 									value={this.state.edits.content || ''} 
 									placeholder={this.props.editPageInput ? edits.content : 'Content about the company.' } 
 									onChange={this.changeContent}>

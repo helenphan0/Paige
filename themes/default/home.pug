@@ -8,11 +8,11 @@ html(lang='en')
     body
         section(id='nav')
             - var homeUrl = 'http://localhost:8080/default/home/' + friendlyUrl;
-            a(class='nav-link', href= 'http://localhost:8080/home/home' )
+            a(class='nav-link', href= 'http://localhost:8080/home' )
                 div(class='nav-link') Home
-            a(class='nav-link', href='http://localhost:8080/about/about')
+            a(class='nav-link', href='http://localhost:8080/about')
                 div(class='nav-link') About
-            a(class='nav-link', href='http://localhost:8080/portfolio/portfolio')
+            a(class='nav-link', href='http://localhost:8080/portfolio')
                 div(class='nav-link') Portfolio
             a(class='nav-link')
                 div(class='nav-link') Contact
@@ -23,5 +23,5 @@ html(lang='en')
                     hr
                     p #{content}
         script(src='https://code.jquery.com/jquery.min.js')
-        script(type='text/javascript', src='/public/main.js')
+        script(type='text/javascript', src='/public/default/default-app.js')
 

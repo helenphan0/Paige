@@ -145,12 +145,12 @@ const AdminProjectsList = React.createClass({
 					{this.props.projects.map((project, i) =>
 						<div key={project._id} className='project'>
 							<h4>Name: {project.name}</h4>
-							<p className='url'>Friendly URL: {project.friendlyUrl}</p>
-							<p className='image'>Image: {project.image}</p>
-							<p className='livelink'>Live Link: {project.livelink}</p>
-							<p className='codeUrl'>codeUrl: {project.codeUrl}</p>
-							<p className='description'>Description: {project.description}</p>
-							<p>Skills</p>
+							<p><span className='text-label'>Friendly URL:</span> {project.friendlyUrl}</p>
+							<p><span className='text-label'>Image:</span> {project.image}</p>
+							<p><span className='text-label'>Live Link:</span> {project.livelink}</p>
+							<p><span className='text-label'>codeUrl:</span> {project.codeUrl}</p>
+							<p><span className='text-label'>Description:</span> {project.description}</p>
+							<p><span className='text-label'>Skills</span></p>
 								{ project.skills.map((skill,i) =>
 									<div key={i + '-skill'} className='skillbox'>
 										<span className='skill-text'>{skill}</span>
@@ -395,13 +395,13 @@ const CreateProject = React.createClass({
 									/>
 						</div>
 						<div className='form-section'>
-							<label htmlFor='image'>Image: </label>
+							<label htmlFor='image'>Image Link: </label>
 								<input form='newproject-form' 
 									type='text' 
 									ref='newprojectImage' 
 									id='image' 
 									value={this.state.projectEdits.image || ''} 
-									placeholder={this.props.editProjectInput ? projectEdits.image : 'image link' } 
+									placeholder={this.props.editProjectInput ? projectEdits.image : 'http://www.imgur.com' } 
 									onChange={this.changeImage} 
 									/>
 						</div>
@@ -412,7 +412,7 @@ const CreateProject = React.createClass({
 									ref='newprojectlivelink' 
 									id='livelink' 
 									value={this.state.projectEdits.livelink || ''} 
-									placeholder={this.props.editProjectInput ? projectEdits.livelink : 'live site' } 
+									placeholder={this.props.editProjectInput ? projectEdits.livelink : 'http://www.heroku.com' } 
 									onChange={this.changeLiveLink} 
 									/>
 						</div>
@@ -423,7 +423,7 @@ const CreateProject = React.createClass({
 									ref='newprojectcodeUrl' 
 									id='codeUrl' 
 									value={this.state.projectEdits.codeUrl || ''} 
-									placeholder={this.props.editProjectInput ? projectEdits.codeUrl : 'url to code' } 
+									placeholder={this.props.editProjectInput ? projectEdits.codeUrl : 'https://www.github.com' } 
 									onChange={this.changeCodeUrl} 
 									/>
 						</div>
@@ -433,8 +433,9 @@ const CreateProject = React.createClass({
 									type='text' 
 									ref='newprojectDescription' 
 									id='description' 
+									rows='4' 
 									value={this.state.projectEdits.description || ''} 
-									placeholder={this.props.editProjectInput ? projectEdits.description : 'description' } 
+									placeholder={this.props.editProjectInput ? projectEdits.description : 'Describe project. What does it accomplish? What audience does it appeal to?' } 
 									onChange={this.changeDesc} >
 								</textarea>
 						</div>
@@ -446,7 +447,7 @@ const CreateProject = React.createClass({
 								</div>
 							)} 
 						</div>
-						<div className='form-section' >
+						<div className='form-section'>
 							<select 
 								className='skills-selector' 
 								ref='newSkill' 
