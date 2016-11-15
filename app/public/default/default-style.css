@@ -99,7 +99,7 @@ div.nav-link:hover, button#project-close:hover {
 div.project-item {
 	background-color: white;
 	width: 30%;
-	min-height: 130px;
+	min-height: 172px;
 	vertical-align: top;
 	padding: 9px;
 	margin: 3px 6px;
@@ -108,6 +108,14 @@ div.project-item {
 div.project-item p, #single-project p {
 	margin: 5px;
 	color: black;
+}
+.project-image {
+	width: 65px;
+
+}
+
+#proj-img {
+	width: 100px;
 }
 
 .skill {
@@ -130,8 +138,8 @@ div.project-item:hover {
 	background-color: white;
 	position: absolute;
 	top: 50px;
-	left: 23%;
-	width: 50%;
+	left: 16%;
+	width: 65%;
 	padding: 15px 20px;
 	-webkit-box-shadow: 4px 4px 25px 0px rgba(50, 50, 50, 1);
 	-moz-box-shadow:    4px 4px 25px 0px rgba(50, 50, 50, 1);
@@ -172,9 +180,10 @@ h3 {
 	font-size: 18px;
 }
 
-#proj-desc>span {
+#proj-desc>div {
 	display: inline-block;
 	margin: 4px 9px;
+	width: 79%;
 }
 
 #proj-livelink:hover, #proj-codeurl {
@@ -182,7 +191,9 @@ h3 {
 }
 
 .skill-box {
+	width: 70%;
 	margin: 25px 0;
+
 }
 
 img {
@@ -199,17 +210,21 @@ a:hover {
 }
 
 
-@media only screen and (min-width: 584px) and (max-width: 700px) {
+@media only screen and (min-width: 584px) and (max-width: 825px) {
 
 	#single-project {
 		left: 13%;
 		width: 70%;
 	}
 
+	#project-container {
+		padding-left: 4%;
+	}
+
 	div.project-item {
-		width: 85%;
-		display: block;
-		margin: 7px auto;
+		width: 45%;
+		display: inline-block;
+		margin: 7px;
 	}
 
 }

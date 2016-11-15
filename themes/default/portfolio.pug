@@ -6,14 +6,18 @@ block content
             p #{content}
             each project in projects
                 div(class='project-item', data-name= project.name, data-url= project.friendlyUrl, data-img= project.image, data-livelink= project.livelink, data-codeurl= project.codeUrl, data-desc= project.description, data-skills = project.skills)
-                    img(src='/public/default/page.png' )
+                    if project.image
+                        - var imageUrl = project.image
+                    else
+                        - var imageUrl = '/public/default/page.png'
+                    img(class='project-image', src= imageUrl )
                     p(class='project-name')= project.name
                     div(class='skill-box')
                         each skill in project.skills
                             span(class='skill')= skill 
         div(class='grey-out hidden')
         div(id='single-project', class='hidden')
-            img(src='/public/default/page.png' )
+            img(id='proj-img', src='')
             p(id='proj-name') Project Name: 
                 span
             p
@@ -22,9 +26,8 @@ block content
                 span | 
                 a(id='proj-codeurl') 
                     span Code Site
-            p(id='proj-desc') Description: 
-                br
-                span
+            div(id='proj-desc') Description: 
+                div
             p Skills:
             div(id='proj-skill-box')
             button(type='button', id='project-close') Close

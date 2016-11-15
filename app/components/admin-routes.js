@@ -18,6 +18,7 @@ const Root = React.createClass({
                     <Match pattern='/cms/pages' component={AdminPagesMain}/>
                     <Match pattern='/cms/projects' component={AdminProjectsMain} />
                     <Match pattern='/cms/skills' component={AdminSkillsMain} />
+                    <Match pattern='/cms/options' component={AdminOptionsMain} />
                     <Match pattern='/cms/users' component={AdminUsersMain} />
                     <Match pattern='/cms/themes' component={AdminThemesMain} />
                     <Miss component={AdminHome} />

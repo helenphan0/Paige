@@ -151,6 +151,18 @@ module.exports = function(app, passport) {
             });
         });
 
+        app.get('/cms/options/get-options', function(req, res) {
+            Option.find(function(err, options) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Internal Server Error'
+                    });
+                }
+
+                res.status(200).json(options).end();
+            })
+        })
+
     // Admin endpoint seperator ----------------------
     // PAGE endpoints --------------------------------
 
@@ -456,6 +468,7 @@ module.exports = function(app, passport) {
 
                 user.local.email = updateObj.local.email;
                 user.local.name = updateObj.local.name;
+                
                 if (user.local.password != updateObj.local.password) {
                     user.local.password = updateObj.local.password;
                     user.local.password = user.generateHash(user.local.password);
@@ -487,6 +500,99 @@ module.exports = function(app, passport) {
                     
                 }
                 res.redirect('/cms/users/get-users');
+            })
+        })
+
+    // Admin endpoint seperator -------------------
+    // OPTION, Themes endpoints -------------------
+
+        app.post('/cms/options/new-option', function(req, res) {
+
+            Option.findOne({ key: req.body.key}, function(err, option) {
+                if (err) {
+                    return res.status(500);
+                }
+
+                if (req.body.key === '') {
+                    return false;
+                }
+
+                if (option) {
+                    console.log(option.key + ' already exists');
+                    return res.status(200).redirect('/cms/options/get-options');
+                }
+
+                let newOption = new Option();
+                newOption.key = req.body.key;
+                newOption.value = req.body.value;
+                
+                newOption.save(function(err) {
+                    if (err) {
+                        res.status(500);
+                    }
+                    console.log('saved new option: ' + newOption.key + ' = ' + newOption.value);
+                    res.redirect('/cms/options/get-options');
+                });
+            })
+        })
+
+        // ---------------------- Admin endpoint seperator
+        // ----------------------
+
+        app.get('/cms/options/get-theme', function(req, res) {
+
+            Option.findOne({ key: 'theme'}, function(err, option) {
+                if (err) {
+                    return res.status(500);
+                }
+
+                console.log('theme retrieved: ' + option.value);
+                res.status(200).json(option).end();
+
+            })
+        })
+
+        // ---------------------- Admin endpoint seperator
+        // ----------------------
+
+        app.post('/cms/options/select-theme', function(req, res) {
+
+            Option.findOne({ key: 'theme'}, function(err, option) {
+                if (err) {
+                    return res.status(500);
+                }
+
+                if (req.body.key === '') {
+                    return false;
+                }
+
+                if (option) {
+                    option.value = req.body.value;
+                    
+                    option.save(function(err) {
+                        if (err) {
+                            return res.status(500);
+                        }
+
+                        console.log(option.key + ' updated: ' + option.value);
+                        return res.status(200).json(option).end();
+                    });
+                }
+
+                else {
+
+                    let newOption = new Option();
+                    newOption.key = 'theme';
+                    newOption.value = req.body.value;
+                    
+                    newOption.save(function(err) {
+                        if (err) {
+                            return res.status(500);
+                        }
+                        console.log('saved new option: ' + newOption.key + ' = ' + newOption.value);
+                        res.status(200).json(newOption).end();
+                    });
+                }
             })
         })
 
@@ -573,22 +679,35 @@ module.exports = function(app, passport) {
                 return res.status(404).json(null);
             }
 
-            // Fetch all projects
-            Project.find(function(err, projects) {
+            // Use option model to get chosen theme
+            Option.findOne({ key: 'theme'}, function(err, option) {
                 if (err) {
-                    return res.status(500).json({
-                        message: 'Internal Server Error'
-                    });
+                    return res.status(500);
                 }
 
-                // Use option model with theme
-                // file name of template needs to match friendlyUrl
-                res.render('../themes/default/' + req.params.friendlyUrl + '.pug', {
-                    title : page.title,
-                    friendlyUrl : page.friendlyUrl,
-                    content: page.content,
-                    projects: projects
-                });
+                if (!option) {
+                    console.log('theme not found');
+                }
+
+                // Fetch all projects
+                Project.find(function(err, projects) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Internal Server Error'
+                        });
+                    }
+
+                    let renderFile = '../themes/' + option.value + '/' + req.params.friendlyUrl + '.pug';
+                    console.log(renderFile);
+
+                    // file name of template needs to match friendlyUrl
+                    res.render(renderFile, {
+                        title : page.title,
+                        friendlyUrl : page.friendlyUrl,
+                        content: page.content,
+                        projects: projects
+                    });
+                })
             })
         });
     })
