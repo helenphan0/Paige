@@ -1,3 +1,8 @@
+// future enhancements 
+// allow additional options
+
+
+
 const Link = ReactRouter.Link;
 const BrowserRouter = ReactRouter.BrowserRouter
 

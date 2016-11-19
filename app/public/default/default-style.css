@@ -63,9 +63,7 @@ hr {
 #nav {
 	position: fixed;
 	right: 10%;
-	top: 12%;
-	z-index: 1;
-
+	top: 17px;
 }
 
 div.nav-link, .project-item, .skill {
@@ -80,6 +78,12 @@ div.nav-link, button#project-close {
 	text-decoration: none;
 	color: black;
 	border-radius: 4px;
+}
+
+div.nav-link {
+	-webkit-box-shadow: 2px 2px 10px 0px rgba(50, 50, 50, 0.74);
+	-moz-box-shadow:    2px 2px 10px 0px rgba(50, 50, 50, 0.74);
+	box-shadow:         2px 2px 10px 0px rgba(50, 50, 50, 0.74);
 }
 
 button#project-close {
@@ -186,8 +190,8 @@ h3 {
 	width: 79%;
 }
 
-#proj-livelink:hover, #proj-codeurl {
-	font-weight: bolder;
+#proj-livelink:hover, #proj-codeurl:hover {
+	font-weight: bold;
 }
 
 .skill-box {

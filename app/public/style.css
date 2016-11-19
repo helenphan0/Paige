@@ -7,6 +7,21 @@ body {
 	height: 100%;
 	overflow-x: hidden;
 	font-family: Arial, sans-serif;
+	background-color: #FAFAFA;
+}
+
+.logo {
+	width: 25%;
+}
+
+.paige.front {
+	margin-top: -20px;
+}
+
+.paige {
+	font-family: 'Abril Fatface', cursive;
+	font-size: 53px;
+	margin: 4px;
 }
 
 section, .page, .project, .user, .optionbox, .theme {
@@ -24,10 +39,11 @@ section, .page, .project, .user, .optionbox, .theme {
 }
 
 .index {
+	background-color: white;
 	width: 60%;
 	max-width: 550px;
 	margin: auto;
-	margin-top: 5%;
+	margin-top: 40px;
 	padding: 20px;
 	text-align: center;
 	-webkit-box-shadow: 2px 2px 5px 0px rgba(50, 50, 50, 0.4);
@@ -48,7 +64,7 @@ section, .page, .project, .user, .optionbox, .theme {
  	width: 67%;
  }
 
- .form-group {
+.form-group {
  	margin: 4px 9px;
  }
 
@@ -61,12 +77,16 @@ section, .page, .project, .user, .optionbox, .theme {
 	text-decoration: none;
 }
 
+.other-login-button:hover {
+	color: #FF1493;
+}
+
 .password2 {
 	margin-left: 109px;
 	margin-top: 3px;
 }
 
-input.submit.login, input.submit.signup {
+input.submit.login, input.submit.signup, a.signup, a.login, a.home {
 	-webkit-appearance: none;
 	background-color: #FF1493;
 	border: 0px;
@@ -80,18 +100,26 @@ input.submit.login, input.submit.signup {
 	padding: 2px 0px;
 }
 
-input.submit.login:hover, input.submit.signup:hover {
+input.submit.login:hover, input.submit.signup:hover, a.home:hover, 
+a.login:hover, a.signup:hover {
 	cursor: pointer;
 	background-color: #8B0A50;
+}
 
+.admin-logo {
+	position: fixed;
+	height: 60px;
+	top: 5px;
+	right: 5px;
+	z-index: 1;
 }
 
 .account-header {
+	border: none;
 	height: 55px;
-	width: 99%; 
+	width: 98%; 
 	padding: 7px 35px;
-	margin-right: 15px;
-	background-color: #DCDCDC;
+	margin: 0 5px;
 }
 
 ul {
@@ -124,23 +152,24 @@ li, button {
 	margin: 0px;
 }
 
-.page>h4, .project>h4, .user>h4, .options-view>h4, .options-view>h3 {
+.options-view>h4, .options-view>h3, .user>h4 {
 	margin: 2px;
 }
 
 #right-view h3 {
-	margin-top: 7px;
+	margin-top: 10px;
 	margin-bottom: 15px;
+
 }
 
 .admin-home-box, .pages-view, .projects-view, .skills-view, 
-.users-view, .options-view {
+.users-view, .options-view, .themes-view, .theme {
 	text-align: center;
 }
 
 .admin-home-text, .createpage-view, .createproject-view, 
 .createuser-view, .project, .page, .user, .optionbox, 
-#newoption-form, .theme {
+#newoption-form {
 	text-align: left;
 }
 
@@ -152,18 +181,22 @@ li, button {
 	width: 35%;
 }
 
-p.logout>a, a.login, a.signup, a.home {
+p.logout>a {
 	color: black;
 }
 
-p.logout>a:hover, a.login:hover, a.signup:hover, a.home:hover, .other-login-button:hover {
-	color: #FF1493;
+a.login, a.signup, a.home {
+	display: inline-block;
+	margin: 2px;
+	padding: 5px 12px;
+	text-decoration: none;
 }
 
 p.user-name {
 	text-align: right;
 	float: right;
 	margin-top: -15px;
+	margin-right: 25px;
 }
 
 #left-menu, #right-view {
@@ -175,12 +208,31 @@ p.user-name {
 	min-width: 105px;  
 	width: 10%;
 	vertical-align: top;
+	position: fixed;
 }
 
 #right-view {
-	width: 78%;
-	padding: 5px;
+	background-color: white;
+	border-radius: 5px;
+	padding: 5px 15px;
+	margin-top: 17px;
+	margin-left: 12%;
+	margin-right: 19px;
+	width: 85%;
 }
+
+/*
+#right-view:before {
+	content: '';
+	position: absolute;
+	border-top: 5px solid #949494;
+	border-right: 5px solid #949494;
+	top: 76px;
+	right: 23px;
+	width: 70%;
+	height: 100px;
+	z-index: 1;
+} */
 
 .form-section {
 	margin: 4px 0px;
@@ -219,7 +271,6 @@ button {
 	margin: 1px 3px;
 	padding: 3px 9px;
 	vertical-align: top;
-
 }
 
 li:hover, button:hover {
@@ -227,17 +278,23 @@ li:hover, button:hover {
 
 }
 
+.inner-details {
+	padding: 15px;
+}
+
 .page, .project, .user, .optionbox {
 	width: 47%;
 	vertical-align: top;
-	padding: 15px;
 	margin: 4px 6px;
+}
+
+.user {
+	padding: 15px 25px;
 }
 
 .theme {
 	border-radius: 3px;
 	width: 25%;
-	text-align: center;
 	margin: 4px 10px;
 	padding: 15px;
 }
@@ -250,6 +307,14 @@ li:hover, button:hover {
 	border: 5px solid #FF1493;
 }
 
+.h4-title {
+	background-color: lightgrey;
+	border: 1px solid lightgrey;
+	display: inline-block;
+	margin: 0;
+	padding: 5px 10px;
+	width: 100%;
+}
 
 .page:hover, .project:hover, .user:hover, .theme:hover {
 	-webkit-box-shadow: 2px 2px 10px 0px rgba(50, 50, 50, 0.74);
@@ -261,7 +326,7 @@ li:hover, button:hover {
 	margin-top: 8px;
 }
 
-.page>p, .project>p, .user>p, .optionbox>p {
+.inner-details>p, .optionbox>p {
 	font-size: 15px;
 	margin: 1px 4px;
 }
@@ -284,9 +349,11 @@ li:hover, button:hover {
 	border-radius: 6px;
 	position: fixed;
 	width: 60%;
-	top: 15%;
+	top: 20px;
+	bottom: 20px;
 	left: 20%;
-	padding: 35px;
+	padding: 20px 35px;
+	overflow-y: scroll;
 	z-index: 999;
 }
 
@@ -298,6 +365,15 @@ select {
 	display: block;
 	font-size: 15px;
 	margin: 12px auto;
+}
+
+#description {
+	max-height: 120px;
+	overflow: auto;
+}
+
+#description:hover {
+	border: 1px solid #FF1493;
 }
 
 .skillbox {
@@ -338,6 +414,8 @@ button:hover, .skill-delete:hover {
     
     #left-menu {
         width: 100%;
+        height: 100px;
+        top: 50px;
         min-height: 55px
     }
 
@@ -347,10 +425,14 @@ button:hover, .skill-delete:hover {
     	font-size: 14px;
     	width: 16%;
     	margin: 3px 5px;
+    	z-index: 1000;
     }
 
     #right-view {
-    	width: 100%;
+    	width: 98%;
+    	display: block;
+    	margin: auto;
+    	margin-top: 76px;
     }
 
     .page, .project, .user, .box {

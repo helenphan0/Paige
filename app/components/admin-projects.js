@@ -1,5 +1,6 @@
 const Link = ReactRouter.Link;
-const BrowserRouter = ReactRouter.BrowserRouter
+const BrowserRouter = ReactRouter.BrowserRouter;
+
 
 let listProjects = {};
 let projectEdits = {
@@ -144,33 +145,34 @@ const AdminProjectsList = React.createClass({
 
 					{this.props.projects.map((project, i) =>
 						<div key={project._id} className='project'>
-							<h4>Name: {project.name}</h4>
-							<p><span className='text-label'>Friendly URL:</span> {project.friendlyUrl}</p>
-							<p><span className='text-label'>Image:</span> {project.image}</p>
-							<p><span className='text-label'>Live Link:</span> {project.livelink}</p>
-							<p><span className='text-label'>codeUrl:</span> {project.codeUrl}</p>
-							<p><span className='text-label'>Description:</span> {project.description}</p>
-							<p><span className='text-label'>Skills</span></p>
-								{ project.skills.map((skill,i) =>
-									<div key={i + '-skill'} className='skillbox'>
-										<span className='skill-text'>{skill}</span>
-									</div>
-								)}
-							<div className='project-buttons'>
-								<button onClick={this.projectView} data-id={project._id} type='button'>View</button>
-								<button onClick={this.projectEdit} 
-									data-id={project._id} 
-									data-name={project.name} 
-									data-url={project.friendlyUrl} 
-									data-image={project.image} 
-									data-livelink={project.livelink} 
-									data-codeUrl={project.codeUrl} 
-									data-description={project.description} 
-									data-skills={project.skills} 
-									type='button'
-									>Edit
-								</button>
-								<button onClick={this.projectDelete} data-id={project._id} type='button'>Delete</button>
+							<h4 className='h4-title'>{project.name}</h4>
+							<div className='inner-details'>
+								<p><span className='text-label'>Friendly URL:</span> {project.friendlyUrl}</p>
+								<p><span className='text-label'>Image:</span> {project.image}</p>
+								<p><span className='text-label'>Live Link:</span> {project.livelink}</p>
+								<p><span className='text-label'>codeUrl:</span> {project.codeUrl}</p>
+								
+								<p><span className='text-label'>Skills</span></p>
+									{ project.skills.map((skill,i) =>
+										<div key={i + '-skill'} className='skillbox'>
+											<span className='skill-text'>{skill}</span>
+										</div>
+									)}
+								<div className='project-buttons'>
+									<button onClick={this.projectEdit} 
+										data-id={project._id} 
+										data-name={project.name} 
+										data-url={project.friendlyUrl} 
+										data-image={project.image} 
+										data-livelink={project.livelink} 
+										data-codeUrl={project.codeUrl} 
+										data-description={project.description} 
+										data-skills={project.skills} 
+										type='button'
+										>Edit
+									</button>
+									<button onClick={this.projectDelete} data-id={project._id} type='button'>Delete</button>
+								</div>
 							</div>
 						</div>
 					)}
@@ -179,6 +181,9 @@ const AdminProjectsList = React.createClass({
 		)
 	}
 });
+
+// for future implementation, AdminProjectsList button, to view Project
+// <button onClick={this.projectView} data-id={project._id} type='button'>View</button>
 
 AdminProjectsList.contextTypes = {
 	router: React.PropTypes.object
@@ -197,6 +202,9 @@ const CreateProject = React.createClass({
 			newProject._id = this.refs.projectID.value;
 		}
 		newProject.skills = projectEdits.skills || this.state.tempSkills;
+
+		let data = CKEDITOR.instances.description.getData();
+        newProject.description = data;
 
 		let actionUrl = event.target.getAttribute('data-url');
 		this.refs.projectForm.reset();
@@ -241,7 +249,6 @@ const CreateProject = React.createClass({
 		newProject.livelink = this.refs.newprojectlivelink.value;
 		newProject.codeUrl = this.refs.newprojectcodeUrl.value;
 		newProject.description = this.refs.newprojectDescription.value;
-
 		this.setState({ projectEdits: newProject });
 
 	},
@@ -253,7 +260,6 @@ const CreateProject = React.createClass({
 		newProject.livelink = this.refs.newprojectlivelink.value;
 		newProject.codeUrl = this.refs.newprojectcodeUrl.value;
 		newProject.description = this.refs.newprojectDescription.value;
-
 		this.setState({ projectEdits: newProject });
 
 	},
@@ -265,7 +271,6 @@ const CreateProject = React.createClass({
 		newProject.livelink = this.refs.newprojectlivelink.value;
 		newProject.codeUrl = this.refs.newprojectcodeUrl.value;
 		newProject.description = this.refs.newprojectDescription.value;
-
 		this.setState({ projectEdits: newProject });
 
 	},
@@ -277,7 +282,6 @@ const CreateProject = React.createClass({
 		newProject.livelink = event.target.value;
 		newProject.codeUrl = this.refs.newprojectcodeUrl.value;
 		newProject.description = this.refs.newprojectDescription.value;
-
 		this.setState({ projectEdits: newProject });
 
 	},
@@ -289,7 +293,6 @@ const CreateProject = React.createClass({
 		newProject.livelink = this.refs.newprojectlivelink.value;
 		newProject.codeUrl = event.target.value;
 		newProject.description = this.refs.newprojectDescription.value;
-
 		this.setState({ projectEdits: newProject });
 
 	},
@@ -301,7 +304,6 @@ const CreateProject = React.createClass({
 		newProject.livelink = this.refs.newprojectlivelink.value;
 		newProject.codeUrl = this.refs.newprojectcodeUrl.value;
 		newProject.description = event.target.value;
-
 		this.setState({ projectEdits: newProject });
 
 	},
@@ -324,7 +326,7 @@ const CreateProject = React.createClass({
 		newProject.skills.push(skillArg);
 		console.log(newProject.skills);
 		this.refs.newSkill.value = '';
-		this.setState({ tempSkills: newProject.skills});
+		this.setState({ tempSkills: newProject.skills });
 
 	},
 	skillInput: function(){
@@ -343,11 +345,14 @@ const CreateProject = React.createClass({
 		console.log(position);
 		newProject.skills = projectEdits.skills || this.state.tempSkills;
 		newProject.skills.splice(position, 1);
-		this.setState( {tempSkills: newProject.skills});
+		this.setState( { tempSkills: newProject.skills });
 	},
 	componentWillReceiveProps: function(nextProps) {
+		CKEDITOR.instances.description.setData(projectEdits.description);
 		this.setState({ projectEdits: projectEdits });
-
+	},
+	componentWillUnmount: function() {
+		CKEDITOR.instances.description.destroy();
 	},
 	render: function() {
 		// this is the dropdown
@@ -356,13 +361,22 @@ const CreateProject = React.createClass({
 		// list the skills currently on the project
 		let skillsAppend = projectEdits.skills || this.state.tempSkills;
 
-		// blank array pulled from data attribute turns to string, make it an array again, else it errors
+		// blank array pulled from data attribute turns to string, 
+		// make it an array again, else it errors
 		if (skillsAppend == "") {
 			skillsAppend = [];
 		}
 
 		// update the dropdown so it doesn't have what's already on project
 		skillsMap = skillsMap.filter(x => skillsAppend.indexOf(x) < 0);
+
+		// need a conditional so this happens only once
+		if (!CKEDITOR.instances.description) {
+			window.setTimeout(function() {
+   				CKEDITOR.replace('description', { height: 80 });
+   				CKEDITOR.instances.description.focus(); 
+			}, 100);
+		}  
 
 		return (
 			<div>
@@ -433,7 +447,8 @@ const CreateProject = React.createClass({
 									type='text' 
 									ref='newprojectDescription' 
 									id='description' 
-									rows='4' 
+									name='description' 
+									rows='2' 
 									value={this.state.projectEdits.description || ''} 
 									placeholder={this.props.editProjectInput ? projectEdits.description : 'Describe project. What does it accomplish? What audience does it appeal to?' } 
 									onChange={this.changeDesc} >
@@ -458,7 +473,6 @@ const CreateProject = React.createClass({
 									<option key={i + '-selector'} data-id={i} value={skill} >{skill}</option>
 									)}
 							</select>
-							
 						</div>
 						<button className={this.props.newProjectInput ? '' : 'hidden'} 
 							onClick={this.createProject} data-url='/cms/projects/new-project' 
@@ -485,4 +499,3 @@ const CreateProject = React.createClass({
 CreateProject.contextTypes = {
 	router: React.PropTypes.object
 }
-

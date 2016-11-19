@@ -17,9 +17,6 @@ const AdminMenu = React.createClass({
 				<Link className='admin-menu-link' to='/cms/skills'>
 					<li>Skills</li>
 				</Link>
-				<Link className='admin-menu-link' to='/cms/options'>
-					<li>Options</li>
-				</Link>
 				<Link className='admin-menu-link' to='/cms/users'>
 					<li>Users</li>
 				</Link>

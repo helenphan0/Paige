@@ -6,6 +6,7 @@ html(lang='en')
         include style
     body
         section.index
+            h4(class='paige') Paige
             h4 Create your account
             if message && message.length
                 p
@@ -24,8 +25,8 @@ html(lang='en')
                         input(type='password', class='password2', placeholder='Confirm your password')
                     div(class='form-group')
                         input(type='submit', class='submit signup', value='Submit')
-                p Have an account? 
-                    a(class='login', href='/login') Login Here
+                p Already have an account? 
+                    a(class='login', href='/login') Log In
             div(class='other-login')
                 p Log in or Register with
                 a(href='/auth/facebook', class='other-login-button') Facebook <i class="fa fa-facebook-official" aria-hidden="true"></i>

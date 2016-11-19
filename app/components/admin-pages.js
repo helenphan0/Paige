@@ -124,20 +124,21 @@ const AdminPagesList = React.createClass({
 
 					{this.props.pages.map((page, i) =>
 						<div key={page._id} className='page'>
-							<h4>Title: {page.title}</h4>
-							<p><span className='text-label'>Friendly URL:</span> {page.friendlyUrl}</p>
-							<p><span className='text-label'>Content:</span> {page.content}</p>
-							<div className='page-buttons'>
-								<button onClick={this.pageView} data-id={page._id} type='button'>View</button>
-								<button onClick={this.pageEdit} 
-									data-title={page.title} 
-									data-url={page.friendlyUrl} 
-									data-content={page.content} 
-									data-id={page._id} 
-									type='button' 
-									>Edit
-								</button>
-								<button onClick={this.pageDelete} data-id={page._id} type='button'>Delete</button>
+							<h4 className='h4-title'>{page.title}</h4>
+							<div className='inner-details'>
+								<p><span className='text-label'>Friendly URL:</span> {page.friendlyUrl}</p>
+								<p><span className='text-label'>Content:</span> {page.content}</p>
+								<div className='page-buttons'>
+									<button onClick={this.pageEdit} 
+										data-title={page.title} 
+										data-url={page.friendlyUrl} 
+										data-content={page.content} 
+										data-id={page._id} 
+										type='button' 
+										>Edit
+									</button>
+									<button onClick={this.pageDelete} data-id={page._id} type='button'>Delete</button>
+								</div>
 							</div>
 						</div>
 					)}
@@ -147,6 +148,9 @@ const AdminPagesList = React.createClass({
 		)
 	}
 });
+
+// for future implementation, AdminPagesList component, button to view
+// <button onClick={this.pageView} data-id={page._id} type='button'>View</button>
 
 AdminPagesList.contextTypes = {
 	router: React.PropTypes.object
@@ -165,6 +169,9 @@ const CreatePage = React.createClass({
 		if (this.refs.pageID.value != 0) {
 			newPage._id = this.refs.pageID.value
 		}
+
+		let data = CKEDITOR.instances.content.getData();
+        newPage.content = data;
 
 		let actionUrl = event.target.getAttribute('data-url');
 		this.refs.pageForm.reset();
@@ -227,10 +234,22 @@ const CreatePage = React.createClass({
 		this.setState({edits: newPage});
 	},
 	componentWillReceiveProps: function(nextProps) {
+		CKEDITOR.instances.content.setData(edits.content);
 		this.setState({ edits: edits });
-
+	},
+	componentWillUnmount: function() {
+		CKEDITOR.instances.content.destroy();
 	},
 	render: function() {
+
+		// need a conditional so this happens only once
+		if (!CKEDITOR.instances.content) {
+			window.setTimeout(function() {
+   				CKEDITOR.replace('content', { height: 80 });
+   				CKEDITOR.instances.content.focus(); 
+			}, 100);
+		} 
+
 		return (
 			<div>
 				<div onClick={this.clearForm} className={this.props.newPageInput || this.props.editPageInput ? 'grey-out' : 'hidden'}>
@@ -264,7 +283,7 @@ const CreatePage = React.createClass({
 								<textarea form='newpage-form' 
 									ref='newpageContent' 
 									id='content' 
-									rows='4' 
+									rows='2' 
 									value={this.state.edits.content || ''} 
 									placeholder={this.props.editPageInput ? edits.content : 'Content about the company.' } 
 									onChange={this.changeContent}>

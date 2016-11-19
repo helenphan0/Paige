@@ -11,7 +11,6 @@ $(document).ready(function() {
 		project.codeurl = $(this).closest('div').data('codeurl');
 		project.desc = $(this).closest('div').data('desc');
 		project.skills = $(this).closest('div').data('skills');
-	//	console.log(project.desc);
 
 		$('#proj-name').children('span').append(project.name);
 
@@ -21,13 +20,7 @@ $(document).ready(function() {
 
 		$('#proj-livelink').attr('src', project.livelink);
 		$('#proj-codeurl').attr('src', project.codeurl);
-		$('#proj-desc').children('div').text(project.desc);
-		console.log($('#proj-desc').children('div').text())
-
-	//	let tempHtml = $('#proj-desc').children('div').text();
-	//	tempHtml = tempHtml.replace(/\u21B5/g, '  SOME TEXT  ');
-	//	console.log(tempHtml);
-	//	$('#proj-desc').children('div').text(tempHtml);
+		$('#proj-desc').children('div').html(project.desc);
 
 		let spanHtml = '';
 		for (let i = 0; i < project.skills.length; i++) {
@@ -35,6 +28,7 @@ $(document).ready(function() {
 		}; 
 
 		$('#proj-skill-box').append(spanHtml);
+		window.scrollTo(0, 30);
 		$('.grey-out').removeClass('hidden')
 		$('#single-project').removeClass('hidden');
 

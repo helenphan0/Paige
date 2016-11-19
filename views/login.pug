@@ -6,7 +6,8 @@ html(lang='en')
         include style
     body
         section.index
-            h4 Login to your account
+            img(class='logo', src='/public/img/Paige.png')
+            h4 Log in to your account
             if message && message.length
                 p
                     strong #{message}
@@ -18,7 +19,7 @@ html(lang='en')
                     label(for='password') Password: 
                     input(type='password', id='password', name='password')
                 div(class='form-group')
-                    input(type='submit', class='submit login', value='Login')
+                    input(type='submit', class='submit login', value='Log In')
             div(class='other-login')
                 p Log in with
                 a(href='/auth/facebook', class='other-login-button') Facebook <i class="fa fa-facebook-official" aria-hidden="true"></i>
@@ -27,6 +28,6 @@ html(lang='en')
                 a(href='/auth/linkedin', class='other-login-button') LinkedIn <i class="fa fa-linkedin-square" aria-hidden="true"></i>
             p Need an account? 
                 a(class='signup', href='/signup') Sign Up
-            p Or return to the 
-                a(class='home', href='/') Home Page
+            p Or return 
+                a(class='home', href='/') Home 
         include scripts
