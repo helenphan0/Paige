@@ -3,13 +3,13 @@ block content
     div(id='portfolio-box')
         h3 #{title}
         div(id='project-container')
-            p #{content}
+            p !{content}
             each project in projects
                 div(class='project-item', data-name= project.name, data-url= project.friendlyUrl, data-img= project.image, data-livelink= project.livelink, data-codeurl= project.codeUrl, data-desc= project.description, data-skills = project.skills)
                     if project.image
                         - var imageUrl = project.image
                     else
-                        - var imageUrl = '/public/default/page.png'
+                        - var imageUrl = '/public/creative/page.png'
                     img(class='project-image', src= imageUrl )
                     p(class='project-name')= project.name
                     div(class='skill-box')

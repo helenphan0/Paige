@@ -3,7 +3,7 @@ block content
     div(id='portfolio-box')
         h3 #{title}
         div(id='project-container')
-            p #{content}
+            p !{content}
             each project in projects
                 div(class='project-item', data-name= project.name, data-url= project.friendlyUrl, data-img= project.image, data-livelink= project.livelink, data-codeurl= project.codeUrl, data-desc= project.description, data-skills = project.skills)
                     if project.image

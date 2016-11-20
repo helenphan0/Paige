@@ -6,21 +6,13 @@ html(lang='en')
         link(rel='stylesheet', type='text/css', href='/public/default/default-style.css')
         link(href='https://fonts.googleapis.com/css?family=Merriweather|Ubuntu:400,700' rel='stylesheet')
     body
-        section(id='nav')
-            a(class='nav-link', href= '/home' )
-                div(class='nav-link') Home
-            a(class='nav-link', href='/about')
-                div(class='nav-link') About
-            a(class='nav-link', href='/portfolio')
-                div(class='nav-link') Portfolio
-            a(class='nav-link')
-                div(class='nav-link') Contact
+        include nav-bar
         section(id='section-content')
             block content
                 div(class='home')
                     h4 #{title}
                     hr
-                    p #{content}
+                    p !{content}
         script(src='https://code.jquery.com/jquery.min.js')
         script(type='text/javascript', src='/public/default/default-app.js')
 

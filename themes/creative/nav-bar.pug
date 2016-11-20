@@ -1,0 +1,31 @@
+.nav-bar
+
+//- Change these values to your page's Friendly Urls
+
+- var home = 'home'
+- var about = 'about'
+- var portfolio = 'portfolio'
+
+//- Change these values to the text for each button on the nav bar. 
+
+- var homeText = 'Home'
+- var aboutText = 'About'
+- var portfolioText = 'Portfolio'
+
+//- =====================
+
+- var homeLink = '/' + home
+- var aboutLink = '/' + about
+- var portfolioLink = '/' + portfolio
+
+section(id='nav')
+    a(class='nav-link', href= homeLink )
+        div(class='nav-link')= homeText
+    a(class='nav-link', href= aboutLink)
+        div(class='nav-link')= aboutText
+    a(class='nav-link', href= portfolioLink)
+        div(class='nav-link')= portfolioText
+        
+//- Uncomment this line to add a fourth item
+    a(class='nav-link')
+        div(class='nav-link') Contact

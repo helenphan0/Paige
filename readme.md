@@ -1,1 +1,1 @@
-CMS
+Paige is a content management system.

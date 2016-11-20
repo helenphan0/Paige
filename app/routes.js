@@ -144,7 +144,6 @@ module.exports = function(app, passport) {
                         users[i].local.email = users[i].github.email;
                         users[i].local.password = users[i].github.token;
                     }
-
                 }
 
                 res.status(200).json(users).end();
@@ -203,6 +202,7 @@ module.exports = function(app, passport) {
     // ----------------------
 
         app.post('/cms/pages/delete/:id', function(req, res) {
+
             let id = req.body.id;
             Page.findByIdAndRemove(id, function(err, page) {
                 if (err) {
@@ -311,6 +311,7 @@ module.exports = function(app, passport) {
     // ----------------------
 
         app.post('/cms/projects/delete/:id', function(req, res) {
+
             let id = req.body.id;
             Project.findByIdAndRemove(id, function(err, project) {
                 if (err) {
@@ -343,7 +344,31 @@ module.exports = function(app, passport) {
                 }
 
                 if (project) {
-                    console.log(project.name + ' found');  
+                    console.log(project.name + ' found'); 
+
+                    // check for http or https on links
+                    let http = 'http';
+
+                    if (req.body.image) {
+                        imageBeg = req.body.image.split('').slice(0,4).join('');
+                        if (http != imageBeg) {
+                            project.image = 'http://' + project.image;
+                        };
+                    };
+
+                    if (req.body.livelink) {
+                        livelinkBeg = req.body.livelink.split('').slice(0,4).join('');
+                        if (http != livelinkBeg) {
+                            project.livelink = 'http://' + project.livelink;
+                        };
+                    };
+                    
+                    if (req.body.codeUrl) {
+                        codeUrlBeg = req.body.codeUrl.split('').slice(0,4).join('');
+                        if (http != codeUrlBeg) {
+                            project.codeUrl = 'http://' + project.codeUrl;
+                        };
+                    };
                     console.log('changes made ', project);
                 
                     project.save(function(err) {
@@ -394,6 +419,7 @@ module.exports = function(app, passport) {
     // ----------------------
 
         app.post('/cms/skills/delete/:id', function(req, res) {
+
             let id = req.body.id;
             Skill.findByIdAndRemove(id, function(err, skill) {
                 if (err) {
@@ -599,7 +625,7 @@ module.exports = function(app, passport) {
 
     // ====  Refresh page catch-all endpoint ========
 
-        app.get('/cms/*', function(req, res) {
+        app.get('/cms/*', isLoggedIn, function(req, res) {
             console.log('catch-all endpoint');
             res.redirect('/cms');
         })

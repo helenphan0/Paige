@@ -234,13 +234,6 @@ const CreatePage = React.createClass({
 		this.setState({edits: newPage});
 	},
 	componentWillReceiveProps: function(nextProps) {
-		CKEDITOR.instances.content.setData(edits.content);
-		this.setState({ edits: edits });
-	},
-	componentWillUnmount: function() {
-		CKEDITOR.instances.content.destroy();
-	},
-	render: function() {
 
 		// need a conditional so this happens only once
 		if (!CKEDITOR.instances.content) {
@@ -248,7 +241,18 @@ const CreatePage = React.createClass({
    				CKEDITOR.replace('content', { height: 80 });
    				CKEDITOR.instances.content.focus(); 
 			}, 100);
-		} 
+		};
+		
+		this.setState({ edits: edits });
+	},
+	componentWillUnmount: function() {
+		CKEDITOR.instances.content.destroy();
+	},
+	render: function() {
+
+		if (CKEDITOR.instances.content) {
+			CKEDITOR.instances.content.setData(edits.content);
+		}
 
 		return (
 			<div>

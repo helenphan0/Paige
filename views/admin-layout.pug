@@ -9,7 +9,7 @@ html(lang='en')
             img(class='admin-logo', src='/public/img/Paige-sm.png')
             h4 Welcome! 
             p(class='logout')
-                a(href='/logout') Log out
+                a(class='logout', href='/logout') Log out
             p(class='user-name') 
                 if user.local.name 
                     | #{user.local.name}
