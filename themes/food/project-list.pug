@@ -1,0 +1,16 @@
+.project-list
+    
+div(class='filter')
+    p(class='filter-title') View Projects by Skill
+    select(id='skills-selector', value='')
+        option(value='') Skills
+        each skill in skills
+            option(value= skill)= skill 
+
+div(id='results')
+
+div(class='template hidden')
+    div(class='project-item')
+        img(class='project-image' )
+        p(class='project-name')
+        div(class='skill-box')

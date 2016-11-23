@@ -38,7 +38,8 @@ hr {
 	width: 70%;
 }
 
-.home h4, .home p, .about h4, .about p, #portfolio-box>h3, #project-container>p {
+.home h4, .home p, .about h4, .about p, #portfolio-box>h3, 
+.filter-title, #project-container>p {
 	color: white;
 	margin: 5px;
 }
@@ -102,20 +103,21 @@ div.nav-link:hover, button#project-close:hover {
 
 div.project-item {
 	background-color: white;
-	width: 30%;
+	width: 45%;
 	min-height: 172px;
-	vertical-align: top;
-	padding: 9px;
 	margin: 3px 6px;
+	padding: 9px;
+	text-align: left;
+	vertical-align: top;
 }
 
 div.project-item p, #single-project p {
 	margin: 5px;
 	color: black;
 }
+
 .project-image {
 	width: 65px;
-
 }
 
 #proj-img {
@@ -141,9 +143,10 @@ div.project-item:hover {
 #single-project {
 	background-color: white;
 	position: absolute;
-	top: 50px;
+	top: 80px;
 	left: 16%;
 	width: 65%;
+	overflow-y: scroll;
 	padding: 15px 20px;
 	-webkit-box-shadow: 4px 4px 25px 0px rgba(50, 50, 50, 1);
 	-moz-box-shadow:    4px 4px 25px 0px rgba(50, 50, 50, 1);
@@ -168,6 +171,10 @@ h3 {
 	margin: auto;
 	padding-top: 20px;
 	margin-top: -20px;
+}
+
+#project-container {
+	text-align: center;
 }
 
 #project-container>p {

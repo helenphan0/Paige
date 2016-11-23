@@ -43,7 +43,50 @@ module.exports = function(app, passport) {
         failureFlash : true 
     }));
 
+    app.get('/cms/projects/get-projects', function(req, res) {
+        Project.find(function(err, projects) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Internal Server Error'
+                });
+            }
+            let fetchProjects = {
+                projects: projects
+            };
+            Skill.find(function(err, skills) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Internal Server Error'
+                    });
+                }
 
+                let skillsArr = [];
+
+                // skills result is an array of skills objects
+                // turn the result into an array with skill name values
+                for ( let i = 0; i < skills.length; i++ ) {
+                    skillsArr.push(skills[i].skill);
+                }
+                fetchProjects.skills = skillsArr;
+
+                res.status(200).json(fetchProjects).end();
+            });
+        });
+    });
+
+    app.get('/cms/projects/open-project/:id', function(req, res) {
+
+        let id = req.params.id;
+        Project.findById(id, function(err, project) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Internal Server Error'
+                });
+            }
+
+            res.status(200).json(project).end();
+        })
+    })
     // =====================================
     // ADMIN SECTION =======================
     // =====================================
@@ -723,18 +766,33 @@ module.exports = function(app, passport) {
                         });
                     }
 
-                    let renderFile = '../themes/' + option.value + '/' + req.params.friendlyUrl + '.pug';
-                    console.log(renderFile);
+                    Skill.find(function(err, skills) {
+                        if (err) {
+                            return res.status(500);
+                        }
 
-                    // file name of template needs to match friendlyUrl
-                    res.render(renderFile, {
-                        title : page.title,
-                        friendlyUrl : page.friendlyUrl,
-                        content: page.content,
-                        projects: projects
+                        let skillsArr = [];
+
+                        // skills result is an array of skills objects
+                        // turn the result into an array with skill name values
+                        for ( let i = 0; i < skills.length; i++ ) {
+                            skillsArr.push(skills[i].skill);
+                        }
+
+                        let renderFile = '../themes/' + option.value + '/' + req.params.friendlyUrl + '.pug';
+                        console.log(renderFile);
+
+                        // file name of template needs to match friendlyUrl
+                        res.render(renderFile, {
+                            title : page.title,
+                            friendlyUrl : page.friendlyUrl,
+                            content: page.content,
+                            projects: projects,
+                            skills: skillsArr
+                        });
                     });
-                })
-            })
+                });
+            });
         });
     })
 

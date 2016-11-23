@@ -1,5 +1,12 @@
 .nav-bar
 
+//- NOTE:
+    To switch out the current default pages to newly created pages on your site, you will need to have 
+    template files that match the Friendly Url of the new page. 
+
+    The following Friendly Urls are in use by the CMS: 'index', 'login', 'signup', 'cms'.
+    Make sure that your pages do not also utilize these Urls.
+
 //- Change these values to your page's Friendly Urls
 
 - var home = 'home'
@@ -13,6 +20,8 @@
 - var portfolioText = 'Portfolio'
 
 //- =====================
+//- Do not change below
+//- =====================
 
 - var homeLink = '/' + home
 - var aboutLink = '/' + about
@@ -25,7 +34,5 @@ section(id='nav')
         div(class='nav-link')= aboutText
     a(class='nav-link', href= portfolioLink)
         div(class='nav-link')= portfolioText
-        
-//- Uncomment this line to add a fourth item
     a(class='nav-link')
         div(class='nav-link') Contact

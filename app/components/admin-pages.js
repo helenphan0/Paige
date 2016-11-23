@@ -127,7 +127,6 @@ const AdminPagesList = React.createClass({
 							<h4 className='h4-title'>{page.title}</h4>
 							<div className='inner-details'>
 								<p><span className='text-label'>Friendly URL:</span> {page.friendlyUrl}</p>
-								<p><span className='text-label'>Content:</span> {page.content}</p>
 								<div className='page-buttons'>
 									<button onClick={this.pageEdit} 
 										data-title={page.title} 
