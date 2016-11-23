@@ -1,8 +1,6 @@
 // future enhancements 
 // allow additional options
 
-
-
 const Link = ReactRouter.Link;
 const BrowserRouter = ReactRouter.BrowserRouter
 
@@ -42,7 +40,6 @@ const AdminOptionsMain = React.createClass({
     		this.setState({ options: options })
     	}
     },	
-
 
 	render: function(){
 		let optionState = ( this.state.options == [] ? options : this.state.options);

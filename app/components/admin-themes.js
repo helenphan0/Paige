@@ -36,7 +36,7 @@ const AdminThemesMain = React.createClass({
 			key: 'theme',
 			value: theme
 		};
-		fetch('/cms/options/select-theme', {
+		fetch('/cms/options/update-option', {
 			method: 'POST',
 			headers: {
 				'Accept' : 'application/json',

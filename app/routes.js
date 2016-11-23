@@ -109,9 +109,18 @@ module.exports = function(app, passport) {
                     });
                 }
 
-                res.status(200).json(pages).end();
-            })
-        })
+                Option.findOne({key: 'default'}, function(err, option) {
+                    if (err) {
+                        return res.status(500);
+                    }
+                    let pageData = {};
+                    pageData.pages = pages;
+                    pageData.option = option;
+
+                    res.status(200).json(pageData).end();
+                });
+            });
+        });
 
         app.get('/cms/projects/get-projects', function(req, res) {
             Project.find(function(err, projects) {
@@ -624,9 +633,9 @@ module.exports = function(app, passport) {
         // ---------------------- Admin endpoint seperator
         // ----------------------
 
-        app.post('/cms/options/select-theme', function(req, res) {
+        app.post('/cms/options/update-option', function(req, res) {
 
-            Option.findOne({ key: 'theme'}, function(err, option) {
+            Option.findOne({ key: req.body.key}, function(err, option) {
                 if (err) {
                     return res.status(500);
                 }
@@ -645,22 +654,13 @@ module.exports = function(app, passport) {
 
                         console.log(option.key + ' updated: ' + option.value);
                         return res.status(200).json(option).end();
+                        
                     });
                 }
 
                 else {
-
-                    let newOption = new Option();
-                    newOption.key = 'theme';
-                    newOption.value = req.body.value;
-                    
-                    newOption.save(function(err) {
-                        if (err) {
-                            return res.status(500);
-                        }
-                        console.log('saved new option: ' + newOption.key + ' = ' + newOption.value);
-                        res.status(200).json(newOption).end();
-                    });
+                    console.log('option error, not found?');
+                    return res.end();
                 }
             })
         })

@@ -27,3 +27,10 @@ const AdminMenu = React.createClass({
 		)
 	}
 });
+
+
+/* for future implementation
+<Link className='admin-menu-link' to='/cms/options'>
+	<li>Options</li>
+</Link>
+*/

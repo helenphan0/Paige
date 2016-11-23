@@ -243,6 +243,18 @@ p.user-name {
 	margin: 10px auto;
 }
 
+#default {
+	height: 25px;
+}
+
+.default-text {
+	color: #76EE00;
+	float: right;
+	font-size: 14px;
+	font-style: italic;
+	padding: 10px 0;
+}
+
 label {
 	width: 109px;
 	vertical-align: top;

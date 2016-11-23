@@ -2,7 +2,8 @@ const Link = ReactRouter.Link;
 const BrowserRouter = ReactRouter.BrowserRouter
 
 let pages;
-
+let defaultId;
+let newId;
 let edits = {};
 let newPage = {};
 
@@ -19,7 +20,8 @@ const AdminPagesMain = React.createClass({
     fetch('/cms/pages/get-pages')
         .then((response) => response.json())
         .then((responseJson) => {
-            pages = responseJson;
+            pages = responseJson.pages;
+            defaultId = responseJson.option.value;
 
             // reset temp variable
             edits = {};
@@ -80,10 +82,20 @@ const AdminPagesList = React.createClass({
 		let titleEdit = event.target.getAttribute('data-title');
 		let friendlyUrlEdit = event.target.getAttribute('data-url');
 		let contentEdit = event.target.getAttribute('data-content');
+		let defaultEdit;
+		
+		if (idEdit == defaultId) {
+			defaultEdit = true;
+		}
+		else {
+			defaultEdit = false;
+		}
+
 		let objEdit = {
 			_id: idEdit,
 			title: titleEdit,
 			friendlyUrl: friendlyUrlEdit,
+			default: defaultEdit,
 			content: contentEdit
 		};
 		this.props.editPageInp(objEdit);
@@ -106,7 +118,8 @@ const AdminPagesList = React.createClass({
 		})
 		.then((response) => response.json())
 		.then((responseJson) => {
-			pages = responseJson;
+			pages = responseJson.pages;
+			defaultId = responseJson.option.value;
 			this.context.router.transitionTo('/cms/pages');
 			return pages; 
 		})
@@ -137,6 +150,7 @@ const AdminPagesList = React.createClass({
 										>Edit
 									</button>
 									<button onClick={this.pageDelete} data-id={page._id} type='button'>Delete</button>
+									<span className='default-text'>{page._id == defaultId ? 'Default Page' : ''}</span>
 								</div>
 							</div>
 						</div>
@@ -159,7 +173,9 @@ const CreatePage = React.createClass({
 	
 	getInitialState: function() {
 		return {
-			edits: {}
+			edits: {},
+			default: false, 
+			newId: null
 		}
 	},
 	
@@ -169,11 +185,12 @@ const CreatePage = React.createClass({
 			newPage._id = this.refs.pageID.value
 		}
 
-		let data = CKEDITOR.instances.content.getData();
-        newPage.content = data;
+		let text = CKEDITOR.instances.content.getData();
+        newPage.content = text;
 
 		let actionUrl = event.target.getAttribute('data-url');
 		this.refs.pageForm.reset();
+
 
 		if (newPage.friendlyUrl) {
 			// remove whitespace, change space to underscore
@@ -192,11 +209,37 @@ const CreatePage = React.createClass({
 		})
 		.then((response) => response.json())
 		.then((responseJson) => {
-			pages = responseJson;
+			pages = responseJson.pages;
 			this.refs.pageForm.reset();
+
+			if (newId) {
+				let idObj = {};
+				idObj = {
+					key: 'default',
+					value: newId
+				};
+				fetch('/cms/options/update-option', {
+					method: 'POST',
+					headers: {
+						'Accept' : 'application/json',
+						'Content-Type': 'application/json'
+					},
+				body: JSON.stringify(idObj)
+				})
+				.then((response) => response.json())
+				.then((responseJson) => {
+					console.log(responseJson.value);
+					defaultId = responseJson.value;
+					this.context.router.transitionTo('/cms/pages');
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+			};
 
 			// reset temp variable
 			newPage = {};
+			newId = '';
 			edits = {};
 
 			this.context.router.transitionTo('/cms/pages');
@@ -211,27 +254,47 @@ const CreatePage = React.createClass({
 		this.refs.pageForm.reset();
 		this.props.cancel();
 		newPage = {};
-		this.setState({edits: {} });
+		newId = null;
+		this.setState({edits: {}, default: false });
 
 	},
 	changeTitle: function(event) {
 		newPage.title = event.target.value;
 		newPage.friendlyUrl = this.refs.newpageUrl.value;
 		newPage.content = this.refs.newpageContent.value;
+		newPage.default = this.refs.default.checked;
 		this.setState({edits: newPage});
 	},
 	changeUrl: function(event) {
 		newPage.friendlyUrl = event.target.value;
 		newPage.title = this.refs.newpageTitle.value;
 		newPage.content = this.refs.newpageContent.value;
+		newPage.default = this.refs.default.checked;
 		this.setState({edits: newPage});
 	},
 	changeContent: function(event) {
 		newPage.content = event.target.value;
 		newPage.friendlyUrl = this.refs.newpageUrl.value;
 		newPage.title = this.refs.newpageTitle.value;
+		newPage.default = this.refs.default.checked;
 		this.setState({edits: newPage});
 	},
+	changeDefault: function(event){
+		var checked;
+		newPage.content = this.refs.newpageContent.value;
+		newPage.friendlyUrl = this.refs.newpageUrl.value;
+		newPage.title = this.refs.newpageTitle.value;
+		if (event.target.checked) {
+			newId = edits._id;
+			checked = true;
+		}
+		else {
+			newId = null;
+			checked = false;
+		}
+		console.log(newId, edits._id, checked)
+		this.setState({edits: newPage, default: checked, newId: newId}); 
+	}, 
 	componentWillReceiveProps: function(nextProps) {
 
 		// need a conditional so this happens only once
@@ -242,7 +305,7 @@ const CreatePage = React.createClass({
 			}, 100);
 		};
 		
-		this.setState({ edits: edits });
+		this.setState({ edits: edits, default: edits.default });
 	},
 	componentWillUnmount: function() {
 		CKEDITOR.instances.content.destroy();
@@ -279,6 +342,17 @@ const CreatePage = React.createClass({
 									value={this.state.edits.friendlyUrl || ''} 
 									placeholder={this.props.editPageInput ? edits.friendlyUrl : 'about_page' }  
 									onChange={this.changeUrl} 
+									/>
+						</div>
+						<div className={this.props.editPageInput ? 'form-section' : 'hidden'}>
+							<label className='default-label' htmlFor='default'>Default Page: </label>
+								<input type='checkbox' 
+									id='default' 
+									ref='default' 
+									data-id={edits._id} 
+									value={this.state.default || false} 
+									checked={this.state.default || false} 
+									onChange={this.changeDefault} 
 									/>
 						</div>
 						<div className='form-section'>
