@@ -104,13 +104,16 @@ div.nav-link:hover, button#project-close:hover {
 
 div.project-item {
 	background-color: white;
-	width: 45%;
-	min-height: 172px;
-	padding: 9px;
+	max-width: 340px;
+	width: 99%;
+	max-height: 281px;
+	min-height: 281px;
+	height: 99%;
 	margin: 3px 6px;
+	overflow: hidden;
+	padding: 9px;
 	text-align: left;
 	vertical-align: top;
-	
 }
 
 div.project-item p, #single-project p {
@@ -119,11 +122,17 @@ div.project-item p, #single-project p {
 }
 
 .project-image {
-	width: 65px;
+	display: block;
+	margin: auto;
+	max-width: 235px;
+	width: 99%;
+	max-height: 235px;
+	height: 99%;
 }
 
 #proj-img {
 	width: 100px;
+	float: right;
 }
 
 .skill {
@@ -209,9 +218,9 @@ h3 {
 
 }
 
-img {
-	float: right;
-	clear: left;
+#skills-selector {
+	font-size: 14px;
+	margin-bottom: 7px;
 }
 
 a {

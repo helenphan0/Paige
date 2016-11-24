@@ -12,7 +12,38 @@ module.exports = function(app, passport) {
     // =====================================
     app.get('/', function(req, res) {
 
-       res.render('index.pug', { message: req.flash('signupMessage') } ); 
+        Option.findOne({key: 'default'}, function(err, option){
+            
+            if (!option) {
+                return res.redirect('/login');
+            }
+
+            if (err) {
+                return res.status(500).json({
+                    message: 'Internal Server Error'
+                });
+            }
+
+            let id = option.value;
+            console.log(id);
+            Page.findById(id, function(err, page){
+                
+                if (!page) {
+                    return res.redirect('/login');
+                }
+
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Internal Server Error'
+                    });
+                }
+
+                let url = page.friendlyUrl;
+                return res.redirect('/' + url);
+            })
+        })
+
+    //   res.render('index.pug', { message: req.flash('signupMessage') } ); 
     });
 
     // =====================================

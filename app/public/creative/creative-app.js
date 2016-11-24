@@ -1,7 +1,7 @@
 function listProjects(project) {
 	var defaultImg = '/public/default/page.png';
 	var projectBox = $('.template .project-item').clone();
-	projectBox.attr('id', project._id);
+	projectBox.attr('data-id', project._id);
 
 	var projImg = projectBox.children('.project-image');
 	projImg.attr('src', project.image || defaultImg);
@@ -76,7 +76,7 @@ $(document).ready(function() {
 	getProjects();
 
     $('#results').on('click', '.project-item', function() {
-    	projId = $(this).attr('id');
+    	projId = $(this).attr('data-id');
     	openProject();
     	
 		window.scrollTo(0, 30);
