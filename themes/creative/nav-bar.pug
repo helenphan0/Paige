@@ -12,12 +12,14 @@
 - var home = 'home'
 - var about = 'about'
 - var portfolio = 'portfolio'
+- var contact = 'contact'
 
 //- Change these values to the text for each button on the nav bar. 
 
 - var homeText = 'Home'
 - var aboutText = 'About'
 - var portfolioText = 'Portfolio'
+- var contactText = 'Contact'
 
 //- =====================
 //- Do not change below
@@ -26,6 +28,7 @@
 - var homeLink = '/' + home
 - var aboutLink = '/' + about
 - var portfolioLink = '/' + portfolio
+- var contactLink = '/' + contact
 
 section(id='nav')
     a(class='nav-link', href= homeLink )
@@ -34,5 +37,5 @@ section(id='nav')
         div(class='nav-link')= aboutText
     a(class='nav-link', href= portfolioLink)
         div(class='nav-link')= portfolioText
-    a(class='nav-link')
-        div(class='nav-link') Contact
+    a(class='nav-link', href= contactLink)
+        div(class='nav-link')= contactText

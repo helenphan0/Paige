@@ -7,9 +7,10 @@ const Option = require('../app/models/option');
 
 module.exports = function(app, passport) { 
     
-    // =====================================
-    // HOME PAGE (with login links) ========
-    // =====================================
+// =================================
+// Default page entry point ========
+// =================================
+
     app.get('/', function(req, res) {
 
         Option.findOne({key: 'default'}, function(err, option){
@@ -25,7 +26,7 @@ module.exports = function(app, passport) {
             }
 
             let id = option.value;
-            console.log(id);
+            console.log('default page id: ' + id);
             Page.findById(id, function(err, page){
                 
                 if (!page) {
@@ -40,10 +41,8 @@ module.exports = function(app, passport) {
 
                 let url = page.friendlyUrl;
                 return res.redirect('/' + url);
-            })
-        })
-
-    //   res.render('index.pug', { message: req.flash('signupMessage') } ); 
+            });
+        });
     });
 
     // =====================================
@@ -74,6 +73,8 @@ module.exports = function(app, passport) {
         failureFlash : true 
     }));
 
+    // Populate portfolio page with projects
+
     app.get('/cms/projects/get-projects', function(req, res) {
         Project.find(function(err, projects) {
             if (err) {
@@ -103,7 +104,9 @@ module.exports = function(app, passport) {
                 res.status(200).json(fetchProjects).end();
             });
         });
-    });
+    });  
+
+    // Single project view
 
     app.get('/cms/projects/open-project/:id', function(req, res) {
 
@@ -129,8 +132,9 @@ module.exports = function(app, passport) {
             user : req.user 
         });
 
-    // ---------------------- Admin endpoint seperator
     // Endpoints to fetch all documents in Page, Project, Skill, and User collections
+
+        // Retrieve pages --------------
 
         app.get('/cms/pages/get-pages', function(req, res) {
             Page.find(function(err, pages) {
@@ -152,6 +156,8 @@ module.exports = function(app, passport) {
                 });
             });
         });
+
+        // Retrieve projects ------------
 
         app.get('/cms/projects/get-projects', function(req, res) {
             Project.find(function(err, projects) {
@@ -184,6 +190,8 @@ module.exports = function(app, passport) {
             });
         });
 
+        // Retrieve skills ------------
+
         app.get('/cms/skills/get-skills', function(req, res) {
             Skill.find(function(err, skills) {
                 if (err) {
@@ -194,6 +202,8 @@ module.exports = function(app, passport) {
                 res.status(200).json(skills).end();
             });
         });
+
+        // Retrieve users -------------
 
         app.get('/cms/users/get-users', function(req, res) {
             User.find(function(err, users) {
@@ -233,6 +243,8 @@ module.exports = function(app, passport) {
             });
         });
 
+        // Retrieve options -----------
+
         app.get('/cms/options/get-options', function(req, res) {
             Option.find(function(err, options) {
                 if (err) {
@@ -245,8 +257,8 @@ module.exports = function(app, passport) {
             })
         })
 
-    // Admin endpoint seperator ----------------------
-    // PAGE endpoints --------------------------------
+    // PAGE endpoints -------------------
+    // ----------------------------------
 
         app.post('/cms/pages/new-page', function(req, res) {
             
@@ -281,7 +293,8 @@ module.exports = function(app, passport) {
                 }
             })      
         }) 
-    // ---------------------- Admin endpoint seperator
+
+    // Delete page ----------
     // ----------------------
 
         app.post('/cms/pages/delete/:id', function(req, res) {
@@ -299,8 +312,9 @@ module.exports = function(app, passport) {
             })
         })
 
-    // ---------------------- Admin endpoint seperator
+    // Edit page ------------
     // ----------------------
+
         app.post('/cms/pages/edit-page/:id', function(req, res) {
 
             let id = req.body._id;
@@ -330,8 +344,9 @@ module.exports = function(app, passport) {
                 });
             })      
         })
-    // Admin endpoint seperator ---------------
-    // PROJECT endpoints ----------------------
+
+    // PROJECT endpoints -------
+    // -------------------------
 
         app.post('/cms/projects/new-project', function(req, res) {
             
@@ -356,6 +371,7 @@ module.exports = function(app, passport) {
                     project.friendlyUrl = req.body.friendlyUrl.trim().replace(/ /g, "_");
 
                     // check for http or https on links
+                    // add to url string if needed
                     let http = 'http';
                     project.image = req.body.image;
                     project.livelink = req.body.livelink;
@@ -390,8 +406,9 @@ module.exports = function(app, passport) {
                 }
             })      
         }) 
-    // ---------------------- Admin endpoint seperator
-    // ----------------------
+
+    // Delete project ---------
+    // ------------------------
 
         app.post('/cms/projects/delete/:id', function(req, res) {
 
@@ -408,8 +425,8 @@ module.exports = function(app, passport) {
             })
         })
 
-    // ---------------------- Admin endpoint seperator
-    // ----------------------
+    // Edit project ----------
+    // -----------------------
 
         app.post('/cms/projects/edit-project/:id', function(req, res) {
             
@@ -430,6 +447,7 @@ module.exports = function(app, passport) {
                     console.log(project.name + ' found'); 
 
                     // check for http or https on links
+                    // add to url string if needed
                     let http = 'http';
 
                     if (req.body.image) {
@@ -465,8 +483,8 @@ module.exports = function(app, passport) {
             })      
         })
 
-    // Admin endpoint seperator -------------------
-    // SKILL endpoints ----------------------------
+    // Add new skill -------------
+    // ---------------------------
 
         app.post('/cms/skills/new-skill', function(req, res) {
                 
@@ -498,8 +516,8 @@ module.exports = function(app, passport) {
             })      
         }) 
 
-    // ---------------------- Admin endpoint seperator
-    // ----------------------
+    // Delete skill --------------
+    // ---------------------------
 
         app.post('/cms/skills/delete/:id', function(req, res) {
 
@@ -516,8 +534,8 @@ module.exports = function(app, passport) {
             })
         })
 
-    // Admin endpoint seperator -------------------
-    // USER endpoints ----------------------------
+    // USER endpoints ---------
+    // ------------------------
 
         app.post('/cms/users/new-user', function(req, res) {
                 
@@ -552,8 +570,8 @@ module.exports = function(app, passport) {
             })      
         })
 
-    // ---------------------- Admin endpoint seperator
-    // ----------------------
+    // Edit admin user details -------
+    // -------------------------------
 
         app.post('/cms/users/edit-user/:id', function(req, res) {
             
@@ -595,8 +613,8 @@ module.exports = function(app, passport) {
             })      
         })
 
-    // ---------------------- Admin endpoint seperator
-    // ----------------------
+    // Delete admin user -----------
+    // -----------------------------
 
         app.post('/cms/users/delete/:id', function(req, res) {
             let id = req.body.id;
@@ -612,8 +630,8 @@ module.exports = function(app, passport) {
             })
         })
 
-    // Admin endpoint seperator -------------------
-    // OPTION, Themes endpoints -------------------
+    // OPTION, Themes endpoints -----
+    // ------------------------------
 
         app.post('/cms/options/new-option', function(req, res) {
 
@@ -645,8 +663,8 @@ module.exports = function(app, passport) {
             })
         })
 
-        // ---------------------- Admin endpoint seperator
-        // ----------------------
+        // Retrieve active theme -----
+        // ---------------------------
 
         app.get('/cms/options/get-theme', function(req, res) {
 
@@ -661,8 +679,8 @@ module.exports = function(app, passport) {
             })
         })
 
-        // ---------------------- Admin endpoint seperator
-        // ----------------------
+        // Update Option Value (theme, default)
+        // -----------------------------------
 
         app.post('/cms/options/update-option', function(req, res) {
 
@@ -704,9 +722,21 @@ module.exports = function(app, passport) {
             res.redirect('/cms');
         })
 
-// ----------------
-// ---------------- Admin endpoints above this line
-// ----------------
+// -------------------------------------------
+// ----------- Admin endpoints above this line
+// ------------------------------------------
+    });
+
+    // Page not found 
+    
+    app.get('/:url/*', function(req, res, next) {
+        if (req.params.url === 'cms') {
+            next();
+        }
+        else {
+            console.log('404 error');
+            res.status(404).render('notfound.pug');
+        }
     });
 
     // =====================================
@@ -762,9 +792,9 @@ module.exports = function(app, passport) {
         res.redirect('/');
     });
 
-    // =============
-    // DEFAULT THEME 
-    // =============
+// =======================================
+// Live site access point via Friendly Url 
+// =======================================
 
     app.get('/:friendlyUrl', function(req, res) {
 
@@ -774,9 +804,11 @@ module.exports = function(app, passport) {
                 return res.status(500);
             }
 
+            // Page 404 Error 
             if (!page) {
                 console.log('page not found from parameter: ' + req.params.friendlyUrl);
-                return res.status(404).json(null);
+                return res.status(404).render('notfound.pug');
+
             }
 
             // Use option model to get chosen theme
@@ -787,6 +819,7 @@ module.exports = function(app, passport) {
 
                 if (!option) {
                     console.log('theme not found');
+                    return res.redirect('/');
                 }
 
                 // Fetch all projects
@@ -811,7 +844,6 @@ module.exports = function(app, passport) {
                         }
 
                         let renderFile = '../themes/' + option.value + '/' + req.params.friendlyUrl + '.pug';
-                        console.log(renderFile);
 
                         // file name of template needs to match friendlyUrl
                         res.render(renderFile, {
@@ -825,7 +857,7 @@ module.exports = function(app, passport) {
                 });
             });
         });
-    })
+    });
 
 // ====== End of module exports
 // ======   

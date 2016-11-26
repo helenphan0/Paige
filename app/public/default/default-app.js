@@ -1,9 +1,11 @@
+var defaultImg = '/public/default/notebook1.jpg';
+
 function listProjects(project) {
-	var defaultImg = '/public/default/page.png';
+	
 	var projectBox = $('.template .project-item').clone();
 	projectBox.attr('data-id', project._id);
 
-	var projImg = projectBox.children('.project-image');
+	var projImg = projectBox.find('.project-image');
 	projImg.attr('src', project.image || defaultImg);
 
 	var projName = projectBox.children('.project-name');
@@ -26,11 +28,8 @@ function openProject() {
 		singleProj = result;
 
 		$('#proj-name').children('span').append(singleProj.name);
-
-		if (singleProj.image) {
-			$('#proj-img').attr('src', singleProj.image);
-		}
-
+		singleProj.image = singleProj.image || defaultImg;
+		$('#proj-img').attr('src', singleProj.image);
 		$('#proj-livelink').attr('href', singleProj.livelink);
 		$('#proj-codeurl').attr('href', singleProj.codeUrl);
 		$('#proj-desc').children('div').html(singleProj.description);
@@ -39,7 +38,10 @@ function openProject() {
 		for (let i = 0; i < singleProj.skills.length; i++) {
 			spanHtml += "<span class='skill'>" + singleProj.skills[i] + "</span>";
 		};
-		$('#proj-skill-box').append(spanHtml);  
+		$('#proj-skill-box').append(spanHtml);
+
+		$('.grey-out').removeClass('hidden')
+		$('#single-project').removeClass('hidden');
 
 	});
 }
@@ -79,14 +81,10 @@ $(document).ready(function() {
     	projId = $(this).attr('data-id');
     	openProject();
     	
-		window.scrollTo(0, 30);
-		$('.grey-out').removeClass('hidden')
-		$('#single-project').removeClass('hidden');
-
 		// exit out of single project view
 		$('button#project-close, .grey-out').click(function() {
 			$('#proj-name').children('span').empty();
-			$('#proj-img').attr('src', '/public/default/page.png');
+			$('#proj-img').attr('src', '/public/default/notebook1.jpg');
 			$('#proj-livelink').attr('href', '');
 			$('#proj-codeurl').attr('href', '');
 			$('#proj-desc').children('div').empty();

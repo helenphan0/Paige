@@ -1,0 +1,35 @@
+extends home.pug
+
+block content
+
+    //- Enter your email address
+    - var emailAddress = 'test@email.com'
+
+    //- Link variables (don't change)
+    - const mailto = 'mailto:'
+    - const http = 'http://'
+    - var emailLink = mailto + emailAddress
+
+    //- Change the following Urls for your contact details
+    - var linkedinLink = http + 'www.linkedin.com'
+    - var facebookLink = http + 'www.facebook.com'
+    - var twitterLink = http + 'www.twitter.com'
+    - var instagramLink = http + 'www.instagram.com'
+    - var snapchatLink = http + 'www.snapchat.com'
+
+    div(class='contact')
+        h4 #{title}
+        p !{content}
+        div(class='contact-links')
+            a(class='contact-link email', target='_blank', href= emailLink)
+                span(class='contact-text') Email <i class="fa fa-envelope" aria-hidden="true"></i>
+            a(class='contact-link', target='_blank', href= linkedinLink)
+                span(class='contact-text') LinkedIn <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+            a(class='contact-link', target='_blank', href= facebookLink)
+                span(class='contact-text') Facebook <i class="fa fa-facebook-official" aria-hidden="true"></i>
+            a(class='contact-link', target='_blank', href= twitterLink)
+                span(class='contact-text') Twitter <i class="fa fa-twitter-square" aria-hidden="true"></i>
+            a(class='contact-link')
+                span(class='contact-text', target='_blank', href= instagramLink) Instagram <i class="fa fa-instagram" aria-hidden="true"></i>
+            a(class='contact-link', target='_blank', href= snapchatLink)
+                span(class='contact-text') Snapchat <i class="fa fa-snapchat-square" aria-hidden="true"></i>

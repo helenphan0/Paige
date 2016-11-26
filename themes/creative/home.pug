@@ -3,8 +3,7 @@ html(lang='en')
     head
         title Home Page
         meta(charset='utf-8')
-        link(rel='stylesheet', type='text/css', href='/public/creative/creative-style.css')
-        link(href='https://fonts.googleapis.com/css?family=Abhaya+Libre:400,800|Gloria+Hallelujah' rel='stylesheet')
+        include styles
     body
         include nav-bar
         section(id='section-content')
@@ -13,6 +12,5 @@ html(lang='en')
                     h4 #{title}
                     hr
                     p !{content}
-        script(src='https://code.jquery.com/jquery.min.js')
-        script(type='text/javascript', src='/public/creative/creative-app.js')
+        include scripts
 

@@ -13,10 +13,6 @@ body {
     background-attachment: fixed;
 }
 
-section {
-	background-color: ;
-}
-
 .hidden {
 	display: none;
 }
@@ -28,9 +24,17 @@ section {
 	left: 10px;
 }
 
-.home, .about {
+.home, .about, .contact {
 	margin-left: 21%;
-	margin-top: 13%;
+	width: 70%;
+}
+
+.home, .about {
+	margin-top: 127px;
+}
+
+.contact {
+	margin-top: 100px;
 }
 
 hr {
@@ -39,12 +43,13 @@ hr {
 }
 
 .home h4, .home p, .about h4, .about p, 
-.filter-title, #portfolio-box>h3, #project-container>p {
+.filter-title, #portfolio-box>h3, 
+#project-container>p, .contact h4, .contact p {
 	color: #7FFFD4;
 	margin: 5px;
 }
 
-.home h4, .about h4, #portfolio-box>h3 {
+.home h4, .about h4, #portfolio-box>h3, .contact h4 {
 	font-weight: bolder;
 	font-family: 'Merriweather', sans-serif;
 }
@@ -53,11 +58,11 @@ hr {
 	font-size: 48px;
 }
 
-.about h4, #portfolio-box>h3 {
+.about h4, #portfolio-box>h3, .contact h4 {
 	font-size: 35px;
 }
 
-.home p, .about p {
+.home p, .about p, .contact p {
 	font-size: 19px;
 	max-width: 600px;
 }
@@ -66,23 +71,42 @@ hr {
 	position: fixed;
 	right: 10%;
 	top: 17px;
+	z-index: 1;
 }
 
-div.nav-link, .project-item, .skill {
+.contact-links {
+	margin-top: 25px;
+	width: 80%;
+}
+
+div.nav-link, .project-item, .skill, .contact-link {
 	display: inline-block;
 }
 
-div.nav-link, button#project-close {
+div.nav-link, button#project-close, .contact-link {
+	border-radius: 4px;
+	color: black;
 	height: 30px;
 	padding: 5px 15px;
-	margin: 1px 1px;
-	background-color: #7FFFD4;
 	text-decoration: none;
-	color: black;
-	border-radius: 4px;
 }
 
-div.nav-link {
+.contact-link {
+	background: #CDCDC1;
+	color: black;
+	margin: 5px;
+}
+
+.contact-link:hover {
+	background: darkgrey;
+}
+
+div.nav-link, button#project-close {
+	background-color: #7FFFD4;
+	margin: 1px 1px;
+}
+
+div.nav-link, .contact-link {
 	-webkit-box-shadow: 2px 2px 10px 0px rgba(50, 50, 50, 0.74);
 	-moz-box-shadow:    2px 2px 10px 0px rgba(50, 50, 50, 0.74);
 	box-shadow:         2px 2px 10px 0px rgba(50, 50, 50, 0.74);
@@ -106,12 +130,11 @@ div.project-item {
 	background-color: white;
 	max-width: 340px;
 	width: 99%;
-	max-height: 281px;
-	min-height: 281px;
+	max-height: 300px;
+	min-height: 300px;
 	height: 99%;
 	margin: 3px 6px;
-	overflow: hidden;
-	padding: 9px;
+	padding: 11px 15px;
 	text-align: left;
 	vertical-align: top;
 }
@@ -121,13 +144,16 @@ div.project-item p, #single-project p {
 	color: black;
 }
 
+.img-box {
+	max-height: 250px;
+	min-height: 250px;
+	height: 100%;
+	overflow: hidden;
+}
+
 .project-image {
 	display: block;
 	margin: auto;
-	max-width: 235px;
-	width: 99%;
-	max-height: 235px;
-	height: 99%;
 }
 
 #proj-img {
@@ -145,7 +171,8 @@ div.project-item p, #single-project p {
 
 div.project-item:hover {
 	background-color: #CDCDC1;
-	color: white;
+	cursor: pointer;
+	opacity: .95;
 	-webkit-box-shadow: 2px 2px 10px 0px rgba(50, 50, 50, 0.74);
 	-moz-box-shadow:    2px 2px 10px 0px rgba(50, 50, 50, 0.74);
 	box-shadow:         2px 2px 10px 0px rgba(50, 50, 50, 0.74);
@@ -153,10 +180,10 @@ div.project-item:hover {
 
 #single-project {
 	background-color: white;
-	position: absolute;
-	top: 80px;
-	left: 16%;
-	width: 65%;
+	position: fixed;
+	top: 95px;
+	left: 11%;
+	width: 77%;
 	overflow-y: scroll;
 	padding: 15px 20px;
 	-webkit-box-shadow: 4px 4px 25px 0px rgba(50, 50, 50, 1);
@@ -173,7 +200,7 @@ div.project-item:hover {
 	background: rgba(0,0,0,0.5);
 }
 
-h3 {
+h3, #project-container {
 	text-align: center;
 }
 
@@ -182,10 +209,6 @@ h3 {
 	margin: auto;
 	padding-top: 20px;
 	margin-top: 20px;
-}
-
-#project-container {
-	text-align: center;
 }
 
 #project-container>p {
@@ -232,7 +255,28 @@ a:hover {
 }
 
 
-@media only screen and (min-width: 584px) and (max-width: 825px) {
+@media only screen and (min-width: 480px) and (max-width: 600px) {
+
+	#nav {
+		right: 1%;
+	}
+
+	.contact-links {
+		margin: 25px auto;
+	}
+
+	.home, .about, .contact {
+		background: rgba(0,0,0,0.60);
+		text-align: center;
+		margin: auto;
+		padding: 20px;
+		width: 80%;
+	}
+
+	hr {
+		margin: auto;
+		width: 80%;
+	}
 
 	#single-project {
 		left: 13%;
@@ -251,7 +295,27 @@ a:hover {
 
 }
 
-@media only screen and (max-width: 584px) {
+@media only screen and (max-width: 480px) {
+
+	#nav {
+		right: 1%;
+	}
+
+	.contact-links {
+		margin: 25px auto;
+	}
+
+	.home, .about, .contact {
+		background: rgba(0,0,0,0.60);
+		text-align: center;
+		margin: auto;
+		padding: 20px;
+		width: 80%;
+	}
+
+	hr {
+		margin: auto;
+	}
 
 	#single-project {
 		left: 1%;
@@ -259,6 +323,8 @@ a:hover {
 	}
 
 	div.project-item {
+		display: inline-block;
+		max-width: 480px;
 		width: 95%;
 	}
 
