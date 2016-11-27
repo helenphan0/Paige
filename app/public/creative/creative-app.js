@@ -11,6 +11,16 @@ function listProjects(project) {
 	var projName = projectBox.children('.project-name');
 	projName.text(project.name);
 
+	var projSkills = projectBox.children('.skill-box');
+	var skillsArr = project.skills;
+	if (project.skills) {
+		skillsArr = project.skills.toString().split(',').join(', ');
+	}
+	projSkills.text(skillsArr);
+
+	var eyeball = '<div class="eye"><i class="fa fa-eye" aria-hidden="true"></i></div>';
+	projSkills.append(eyeball);
+
 	return projectBox;
 } 
 
@@ -48,7 +58,7 @@ function openProject() {
 		$('#proj-img').attr('src', singleProj.image);
 		$('#proj-livelink').attr('href', singleProj.livelink);
 		$('#proj-codeurl').attr('href', singleProj.codeUrl);
-		$('#proj-desc').children('div').html(singleProj.description);
+		$('#proj-desc').html(singleProj.description);
 
 		let spanHtml = '';
 		for (let i = 0; i < singleProj.skills.length; i++) {
@@ -82,12 +92,12 @@ $(document).ready(function() {
     	openProject();
 
 		// exit out of single project view
-		$('button#project-close, .grey-out').click(function() {
+		$('#project-close, .grey-out').click(function() {
 			$('#proj-name').children('span').empty();
 			$('#proj-img').attr('src', '/public/creative/notebook1.jpg');
 			$('#proj-livelink').attr('href', '');
 			$('#proj-codeurl').attr('href', '');
-			$('#proj-desc').children('div').empty();
+			$('#proj-desc').empty();
 			$('#proj-skill-box').empty();
 			spanHtml = '';
 

@@ -1,17 +1,16 @@
 .project
 div(class='grey-out hidden')
 div(id='single-project', class='hidden')
-    img(id='proj-img', src='')
-    p(id='proj-name') Project Name: 
+    div(class='proj-img-box')
+        img(id='proj-img', src='')
+    p(id='proj-name') 
         span
-    p
+    p(class='links')
         a(id='proj-livelink', target='_blank') 
             span Live Site 
         span | 
         a(id='proj-codeurl', target='_blank') 
             span Code Site
-    div(id='proj-desc') Description: 
-        div
-    p Skills:
+    div(id='proj-desc')
     div(id='proj-skill-box')
-    button(type='button', id='project-close') Close
+    p(id='project-close') X

@@ -41,6 +41,10 @@ hr {
 	margin: 5px;
 }
 
+button {
+	font-family: 'Abhaya Libre', serif;
+}
+
 .home h4, .about h4, #portfolio-box>h3, .contact h4 {
 	font-family: 'Gloria Hallelujah', cursive;
 }
@@ -74,11 +78,11 @@ div.nav-link, .project-item, .skill, .contact-link {
 	display: inline-block;
 }
 
-div.nav-link, button#project-close, .contact-link {
+div.nav-link, .contact-link {
 	border-radius: 4px;
 	color: black;
 	height: 32px;
-	padding: 6px 20px;
+	padding: 8px 20px;
 	text-decoration: none;
 }
 
@@ -92,7 +96,7 @@ div.nav-link, button#project-close, .contact-link {
 	background: #F4A460;
 }
 
-div.nav-link, button#project-close {
+div.nav-link {
 	background-color: #54FF9F;
 	margin: 1px 1px;
 }
@@ -103,39 +107,52 @@ div.nav-link, .contact-link {
 	box-shadow:         2px 2px 10px 0px rgba(50, 50, 50, 0.74);
 }
 
-button#project-close {
-	display: block;
-	margin: auto;
-	margin-top: 23px;
-	border: 0px;
-	font-size: 1em;
-}
-
-div.nav-link:hover, button#project-close:hover {
+div.nav-link:hover, #project-close:hover {
 	color: white;
 	background-color: #2E8B57;
 	cursor: pointer;
 }
 
+#project-close {
+	border: 1px solid lightgrey;
+	clear: right;
+	color: lightgrey;
+	display: block;
+	font-family: Arial;
+	font-size: 20px;
+	margin: 0 -15px 0 0;
+	padding: 4px;
+	position: relative;
+	float: right;
+	text-align: center;
+	width: 36px;
+}
+
 div.project-item {
-	background-color: white;
+	background: rgba(255,255,255,0.95);
+	filter: gray;
+	filter: grayscale(100%);
 	max-width: 340px;
 	width: 99%;
-	max-height: 300px;
-	min-height: 300px;
+	max-height: 320px;
+	min-height: 320px;
 	height: 99%;
-	margin: 3px 6px;
-	padding: 11px 15px;
+	margin: 7px;
+	padding: 15px 20px;
 	text-align: left;
 	vertical-align: top;
 }
 
-div.project-item p, #single-project p {
-	margin: 5px;
+div.project-item p {
+	background-color: white;
+	border-bottom: 1px solid lightgrey;
 	color: black;
+	margin: 0;
+	padding: 8px;
 }
 
 .img-box {
+	background-color: white;
 	max-height: 250px;
 	min-height: 250px;
 	height: 100%;
@@ -145,16 +162,20 @@ div.project-item p, #single-project p {
 .project-image {
 	display: block;
 	margin: auto;
+	min-width: 300px
 }
 
-#proj-img {
-	width: 100px;
+.proj-img-box {
+	max-height: 250px;
+	width: 200px;
 	float: right;
+	margin-bottom: 20px;
+	overflow: hidden;
 }
 
 .skill {
 	border-radius: 3px;
-	padding: 3px 10px;
+	padding: 5px 13px;
 	margin: 1px 2px;
 	color: black;
 	background-color: #54FF9F;
@@ -163,20 +184,20 @@ div.project-item p, #single-project p {
 div.project-item:hover {
 	background-color: #F4A460;
 	cursor: pointer;
-	opacity: .95;
-	-webkit-box-shadow: 2px 2px 10px 0px rgba(50, 50, 50, 0.74);
-	-moz-box-shadow:    2px 2px 10px 0px rgba(50, 50, 50, 0.74);
-	box-shadow:         2px 2px 10px 0px rgba(50, 50, 50, 0.74);
+	filter: none;
+
 }
 
 #single-project {
 	background-color: white;
+	font-size: 15px;
 	position: fixed;
 	top: 95px;
-	left: 11%;
-	width: 77%;
+	max-height: 80%;
+	left: 0;
+	width: 100%;
 	overflow-y: scroll;
-	padding: 15px 20px;
+	padding: 20px 35px;
 	-webkit-box-shadow: 4px 4px 25px 0px rgba(50, 50, 50, 1);
 	-moz-box-shadow:    4px 4px 25px 0px rgba(50, 50, 50, 1);
 	box-shadow:         4px 4px 25px 0px rgba(50, 50, 50, 1);
@@ -203,13 +224,13 @@ h3, #project-container {
 }
 
 #project-container>p {
-	font-size: 23px;
 	text-align: center;
 	margin: 15px;
 }
 
 #proj-skill-box {
 	margin: 10px 0;
+	width: 70%;
 }
 
 .project-name {
@@ -217,10 +238,14 @@ h3, #project-container {
 	font-size: 18px;
 }
 
-#proj-desc>div {
+#proj-desc, .links, #proj-name {
 	display: inline-block;
-	margin: 4px 9px;
-	width: 79%;
+	margin: 4px 5px;
+	width: 67%;
+}
+
+#proj-name {
+	font-size: 20px;
 }
 
 #proj-livelink:hover, #proj-codeurl:hover {
@@ -228,8 +253,30 @@ h3, #project-container {
 }
 
 .skill-box {
-	width: 70%;
-	margin: 25px 0;
+	background: transparent;
+	font-style: italic;
+	position: relative;
+	height: 280px;
+	top: -298px;
+	width: 100%;
+	margin: 10px 0;
+	opacity: 0;
+	padding: 20px 15px;
+	white-space: normal;
+}
+
+.skill-box:hover {
+	background: rgba(255,255,255,0.70);
+	opacity: 1;
+}
+
+.eye {
+	color: #6B6B6B;
+	font-size: 18px;
+	position: absolute;
+	right: 5px;
+	top: 220px;
+	width: 10%;
 }
 
 #skills-selector {
@@ -245,8 +292,8 @@ a:hover {
 	cursor: pointer;
 }
 
-/*
-@media only screen and (min-width: 550px) and (max-width: 765px) {
+
+@media only screen and (min-width: 550px) and (max-width: 753px) {
 
 	#nav {
 		right: 1%;
@@ -270,21 +317,37 @@ a:hover {
 	}
 
 	#single-project {
-		left: 13%;
-		width: 70%;
+		left: 9%;
+		padding: 10px 20px 10px 15px;
+		width: 80%;
 	}
 
 	#project-container {
 		padding-left: 4%;
 	}
 
-	div.project-item {
-		width: 45%;
-		display: inline-block;
-		margin: 7px;
+	.proj-img-box {
+		width: 99%;
+		margin: 5px auto;
+		text-align: center;
 	}
 
-} */
+	#proj-img {
+		width: 100%;
+	}
+
+	#proj-name, #proj-desc {
+		width: 95%;
+	}
+
+	div.project-item {
+		width: 85%;
+		display: inline-block;
+		margin: 7px;
+		max-width: 450px;
+	}
+
+} 
 
 @media only screen and (max-width: 550px) {
 
@@ -315,13 +378,29 @@ a:hover {
 	}
 
 	#single-project {
-		left: 1%;
+		left: 4%;
+		padding: 10px 20px 10px 15px;
 		width: 90%;
+	}
+
+	.proj-img-box {
+		width: 99%;
+		margin: 5px auto;
+		text-align: center;
+	}
+
+	#proj-img {
+		width: 100%;
+	}
+
+	#proj-name, #proj-desc {
+		width: 95%;
 	}
 
 	div.project-item {
 		display: inline-block;
 		max-width: 550px;
+		margin: 7px;
 		width: 95%;
 	}
 
