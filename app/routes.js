@@ -14,10 +14,6 @@ module.exports = function(app, passport) {
     app.get('/', function(req, res) {
 
         Option.findOne({key: 'default'}, function(err, option){
-            
-            if (!option) {
-                return res.redirect('/login');
-            }
 
             if (err) {
                 return res.status(500).json({
@@ -25,25 +21,29 @@ module.exports = function(app, passport) {
                 });
             }
 
-            let id = option.value;
-            console.log('default page id: ' + id);
-            Page.findById(id, function(err, page){
-                
-                if (!page) {
-                    return res.redirect('/login');
-                }
+            if (!option) {
+                performInstallation(res);
+            } else {
+                let id = option.value;
+                console.log('default page id: ' + id);
+                Page.findById(id, function(err, page){
+                    
+                    if (!page) {
+                        return res.redirect('/login');
+                    }
 
-                if (err) {
-                    return res.status(500).json({
-                        message: 'Internal Server Error'
-                    });
-                }
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Internal Server Error'
+                        });
+                    }
 
-                let url = page.friendlyUrl;
-                return res.redirect('/' + url);
-            });
+                    let url = page.friendlyUrl;
+                    return res.redirect('/' + url);
+                });
+            }
         });
-    });
+    });   
 
     // =====================================
     // LOGIN ===============================
@@ -62,10 +62,10 @@ module.exports = function(app, passport) {
     // =====================================
     // SIGNUP ==============================
     // =====================================
-    app.get('/signup', function(req, res) {
+    // app.get('/signup', function(req, res) {
 
-        res.render('signup.pug', { message: req.flash('signupMessage') });
-    });
+    //     res.render('signup.pug', { message: req.flash('signupMessage') });
+    // });
 
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect : '/cms', 
@@ -740,51 +740,6 @@ module.exports = function(app, passport) {
     });
 
     // =====================================
-    // FACEBOOK ROUTES =====================
-    // =====================================
-    // 'public_profile' SHOULD be added to the scope, contrary to facebook developer documentation
-    app.get('/auth/facebook', passport.authenticate('facebook', { scope : ['email', 'public_profile'] }));
-
-    app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', {
-            successRedirect : '/cms',
-            failureRedirect : '/'
-        }));
-
-    // =====================================
-    // GITHUB ROUTES =======================
-    // =====================================
-    app.get('/auth/github', passport.authenticate('github', { scope : ['user', 'public_repo', 'repo'] }));
-
-    app.get('/auth/github/callback',
-        passport.authenticate('github', {
-            successRedirect : '/cms',
-            failureRedirect : '/'
-        }));
-
-    // =====================================
-    // LINKEDIN ROUTES =====================
-    // =====================================
-    app.get('/auth/linkedin', passport.authenticate('linkedin', { scope : ['r_emailaddress', 'r_basicprofile'] }));
-
-    app.get('/auth/linkedin/callback',
-        passport.authenticate('linkedin', {
-            successRedirect : '/cms',
-            failureRedirect : '/'
-        }));
-
-    // =====================================
-    // GOOGLE ROUTES =======================
-    // =====================================
-    app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
-
-    app.get('/auth/google/callback',
-        passport.authenticate('google', {
-                successRedirect : '/cms',
-                failureRedirect : '/'
-        }));
-
-    // =====================================
     // LOGOUT ==============================
     // =====================================
     app.get('/logout', function(req, res) {
@@ -869,4 +824,249 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
     res.redirect('/');
+}
+
+    // =====================================
+    // INSTALLATION=========================
+    // ===================================== 
+
+function performInstallation(res){
+    var defaultID;
+
+    // create admin user
+    let newuser = new User();
+    newuser.local = {};
+    newuser.local.name = 'admin';
+    newuser.local.email = 'admin@email.com';
+    newuser.local.password = newuser.generateHash('admin');
+    
+    newuser.save(function(err) {
+        if (err) {
+            res.status(500);
+        }
+        console.log('Installation Step 1: Created Admin User ' + newuser.local.email);
+    });
+
+    // create pages, set home to default
+    let pages = [
+        {
+            "content" : "<p>Hello, welcome to my page. This is the Home page.</p>\n",
+            "friendlyUrl" : "home",
+            "title" : "Home Page",
+        },
+        {
+            "content" : "<p>This is the portfolio page. See my projects.</p>\n",
+            "friendlyUrl" : "portfolio",
+            "title" : "Portfolio",
+        },
+        {
+            "content" : "<p>This is the &#39;About&#39; Page. You can type whatever you want here.</p>\n",
+            "friendlyUrl" : "about",
+            "title" : "About",
+        },
+        {
+            "content" : "<p>Thank you for visiting my page! Feel free to contact me.</p>\n",
+            "friendlyUrl" : "contact",
+            "title" : "Contact Me",
+        }
+    ];
+
+    pages.map(function(p){
+        let page = new Page();
+        page.title = p.title;
+        page.friendlyUrl = p.friendlyUrl.trim().replace(/ /g, "_");
+        page.content = p.content;
+        
+        page.save(function(err) {
+            if (err) {
+                res.status(500);
+            }
+            if(page.friendlyUrl == 'home'){
+                let newOption = new Option();
+                newOption.key = "default";
+                newOption.value = page._id;
+                
+                newOption.save(function(err) {
+                    if (err) {
+                        res.status(500);
+                    }
+                }); 
+            }
+            console.log('Installation Step 2: Created Page ' + page.title);
+        });
+    });
+
+
+    // create projects
+    let projects = [       
+        {
+            "skills" : [ 
+                "Javascript", 
+                "Node.js", 
+                "Petting Dogs", 
+                "Sushi"
+            ],
+            "description" : "<p>We want the <strong>GitHub</strong> community to be a welcoming environment where people feel empowered to share their opinion.</p>\n\n<p>We are now accepting feedback on our proposed Community Guidelines.</p>\n",
+            "codeUrl" : "http://www.mspca.com",
+            "livelink" : "http://www.petfinder.com",
+            "image" : "",
+            "friendlyUrl" : "Rescue_Doggos",
+            "name" : "thinkful project"
+        },
+        {
+            "description" : "<p>Optional. Which base to use for representing a numeric value. <em>Must be an integer between 2 and 36.</em></p>\n\n<p><strong>2 - The number will show as a binary value </strong></p>\n\n<p>8 - The number will show as an octal value</p>\n\n<p><s>16 - The number will show as an hexadecimal value</s></p>\n",
+            "codeUrl" : "http://www.github.com",
+            "livelink" : "http://www.amazon.com",
+            "image" : "http://placekitten.com/400/300",
+            "friendlyUrl" : "this_is_another_test_with_spaces",
+            "name" : "Testing urls",
+            "skills" : [ 
+                "Eating", 
+                "Cooking", 
+                "Sleeping", 
+                "Buffets", 
+                "Sushi"
+            ],
+        },
+        {
+            "description" : "<p><em><strong>The escape() function encodes a string. This function makes a string portable, so it can be transmitted across any network to any computer that supports ASCII characters.</strong></em></p>\n\n<p><em><strong>more stuff</strong></em></p>\n\n<p><em><strong>This function encodes special characters, with the exception of: * @ - _ + </strong></em>.&nbsp;</p>\n",
+            "codeUrl" : "http://www.github.com",
+            "livelink" : "http://www.heroku.com",
+            "image" : "http://placekitten.com/350",
+            "friendlyUrl" : "friendly",
+            "name" : "Another URL test",
+            "skills" : [ 
+                "Eating", 
+                "Cooking", 
+                "Socket.io", 
+                "Sushi", 
+                "Typing"
+            ]
+        },
+        {
+            "description" : "<p>For those who want some background info, here&#39;s a short article explaining why overflow: hidden works.<strong> It has to do with the so-called block formatting context.</strong> This is part of W3C&#39;s spec (ie is not a hack) and is basically the region occupied by an element with a block-type flow. Every time it is applied, overflow: hidden creates a new block formatting context.</p>\n\n<p>But it&#39;s not the only property capable of triggering that behaviour. Quoting a presentation by Fiona Chan from Sydney Web Apps Group:</p>\n\n<p>float: left / right</p>\n\n<p>overflow: hidden / auto / scroll</p>\n\n<p>display: table-cell</p>\n\n<p>and any table-related values / inline-block position: absolute / fixed</p>\n",
+            "codeUrl" : "http://www.github.com ",
+            "livelink" : "http://www.google.com ",
+            "image" : "http://placekitten.com/450",
+            "friendlyUrl" : "this_is_a_url",
+            "name" : "New Page Test",
+            "skills" : [ 
+                "Buffets", 
+                "Express", 
+                "Cooking", 
+                "Eating", 
+                "Vacuuming", 
+                "UI/UX", 
+                "Redux"
+            ]
+        },
+        {
+            "description" : "<p>Good Friday to everyone, hopefully, it&#39;s full of nice surprises. We have also prepared something to show: this shot features a new full case study in Tubik design portfolio. The presentation shows UI/UX, branding and graphic design created for the Mac app&nbsp;<a href=\"http://swiftybeaver.tubikstudio.com/\">SwiftyBeaver</a>&nbsp;whose core target audience is developers. So, design solutions were determined with a variety of specific factors due to the nature of the product. Perhaps, you remember our previous shots showing some details of creative process and today we invite you to see&nbsp;<a href=\"http://swiftybeaver.tubikstudio.com/\">the full case</a>.</p>\n\n<p><strong>To share more ideas based on experience from design projects and concepts, we regularly update&nbsp;<a href=\"http://tubikstudio.com/blog/\">Tubik Blog</a>with new articles and share free ebooks. One of the books presents deep insights into&nbsp;<a href=\"http://tubikstudio.com/book/\">design for business goals</a>. Welcome to download or read online!</strong></p>\n",
+            "codeUrl" : "http://www.github.com  ",
+            "livelink" : "http://www.google.com   ",
+            "image" : "http://placekitten.com/270",
+            "friendlyUrl" : "wut_doo",
+            "name" : "Testing",
+            "skills" : [ 
+                "Javascript", 
+                "Angular", 
+                "Node.js", 
+                "Express", 
+                "Redux", 
+                "Interview"
+            ]
+        },
+        {
+            "description" : "<p>While practicing motocross in Hawaii, Sean Jones witnesses the brutal murder of an important American prosecutor by the powerful mobster Eddie Kim. He is protected and persuaded by the FBI agent Neville Flynn to testify against Eddie in Los Angeles.</p>\n\n<p>They embark in the red-eye Flight 121 of Pacific Air, occupying the entire first-class. However, Eddie dispatches hundred of different species of snakes airborne with a time operated device in the luggage to release the snakes in the flight with the intent of crashing the plane.</p>\n\n<p>Neville and the passengers have to struggle with the snakes to survive.&nbsp;<em>Written by&nbsp;<a href=\"http://www.imdb.com/search/title?plot_author=Claudio%20Carvalho,%20Rio%20de%20Janeiro,%20Brazil&amp;view=simple&amp;sort=alpha&amp;ref_=tt_stry_pl\">Claudio Carvalho, Rio de Janeiro, Brazil</a></em></p>\n",
+            "codeUrl" : "http://www.teefury.com",
+            "livelink" : "http://www.placekitten.com",
+            "image" : "",
+            "friendlyUrl" : "url_test_sample",
+            "name" : "Sample",
+            "skills" : [ 
+                "HTML", 
+                "Javascript", 
+                "Node.js", 
+                "Angular", 
+                "UI/UX", 
+                "Socket.io", 
+                "Redux", 
+                "Sleeping"
+            ]
+        }
+    ];
+
+    projects.map(function(p){
+        let project = new Project();
+        project.name = p.name;
+        project.friendlyUrl = p.friendlyUrl.trim().replace(/ /g, "_");
+        project.image = p.image;
+        project.livelink = p.livelink;
+        project.codeUrl = p.codeUrl;
+        project.description = p.description;
+        project.skills = p.skills;
+        
+        project.save(function(err) {
+            if (err) {
+                res.status(500);
+            }
+            console.log('Installation Step 3: Created Project ' + project.name);
+        });
+    });
+
+    // create skills
+
+    let skills = [
+        {"skill" : "HTML" },
+        {"skill" : "Javascript" },
+        {"skill" : "Node.js" },
+        {"skill" : "React" },
+        {"skill" : "Express" },
+        {"skill" : "Sleeping" },
+        {"skill" : "Cooking" },
+        {"skill" : "Eating" },
+        {"skill" : "Petting Dogs" },
+        {"skill" : "Angular" },
+        {"skill" : "Vacuuming" },
+        {"skill" : "Buffets" },
+        {"skill" : "Sushi" },
+        {"skill" : "UI/UX" },
+        {"skill" : "Socket.io" },
+        {"skill" : "Redux" },
+        {"skill" : "Typing" },
+        {"skill" : "Interview" }
+    ];
+    skills.map(function(s){
+        let newskill = new Skill();
+        newskill.skill = s.skill;
+        
+        newskill.save(function(err) {
+            if (err) {
+                res.status(500);
+            }
+            console.log('Installation Step 4: Created Skill ' + newskill.skill);
+        });
+    });
+
+    // set options, default & theme
+    let options = [
+        {
+            "value" : "default",
+            "key" : "theme",
+        }
+    ];
+    options.map(function(o){
+        let newOption = new Option();
+        newOption.key = o.key;
+        newOption.value = o.value;
+        
+        newOption.save(function(err) {
+            if (err) {
+                res.status(500);
+            }
+            console.log('Installation Step 5: Set Default Theme & Homepage');
+        }); 
+    });
+
+    res.render('installation.pug');
 }

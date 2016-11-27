@@ -11,6 +11,11 @@ const cookieParser = require('cookie-parser');
 
 const configDB = require('./config/database.js');
 
+if(typeof configDB.url === 'undefined'){
+	console.log('This appears to be your first time running Paige, please configure your database in the config/database.js file');
+	process.exit();
+}
+
 mongoose.Promise = global.Promise;
 mongoose.connect(configDB.url);
 
