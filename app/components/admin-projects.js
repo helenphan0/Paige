@@ -69,7 +69,6 @@ const AdminProjectsMain = React.createClass({
     },
     componentDidUpdate: function(){
     	if (this.state.projects != listProjects.projects) {
-    		console.log('main componentDidUpdate');
     		this.setState({ new: false, edit: false, projects: listProjects.projects })
     	}
     },

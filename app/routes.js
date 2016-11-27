@@ -99,7 +99,7 @@ module.exports = function(app, passport) {
                 for ( let i = 0; i < skills.length; i++ ) {
                     skillsArr.push(skills[i].skill);
                 }
-                fetchProjects.skills = skillsArr;
+                fetchProjects.skills = skillsArr.sort();
 
                 res.status(200).json(fetchProjects).end();
             });
@@ -183,7 +183,7 @@ module.exports = function(app, passport) {
                     for ( let i = 0; i < skills.length; i++ ) {
                         skillsArr.push(skills[i].skill);
                     }
-                    fetchProjects.skills = skillsArr;
+                    fetchProjects.skills = skillsArr.sort();
 
                     res.status(200).json(fetchProjects).end();
                 });
@@ -262,7 +262,7 @@ module.exports = function(app, passport) {
 
         app.post('/cms/pages/new-page', function(req, res) {
             
-            Page.findOne({ title: req.body.title}, function(err, page) {
+            Page.findOne({ friendlyUrl: req.body.friendlyUrl }, function(err, page) {
 
                 if (err) {
                     return res.status(500);
@@ -273,7 +273,7 @@ module.exports = function(app, passport) {
                 }
 
                 if (page) {
-                    console.log(page.title + ' already exists');
+                    console.log('FriendlyUrl ' + page.friendlyUrl + ' already exists');
                     return res.status(200).redirect('/cms/pages/get-pages');
                 }
 
@@ -842,6 +842,7 @@ module.exports = function(app, passport) {
                         for ( let i = 0; i < skills.length; i++ ) {
                             skillsArr.push(skills[i].skill);
                         }
+                        skillsArr.sort();
 
                         let renderFile = '../themes/' + option.value + '/' + req.params.friendlyUrl + '.pug';
 

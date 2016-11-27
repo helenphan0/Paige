@@ -12,9 +12,9 @@ function listProjects(project) {
 	projName.text(project.name);
 
 	var projSkills = projectBox.children('.skill-box');
-	var skillsArr = project.skills;
+	var skillsArr = [];
 	if (project.skills) {
-		skillsArr = project.skills.toString().split(',').join(', ');
+		skillsArr = project.skills.sort().toString().split(',').join(', ');
 	}
 	projSkills.text(skillsArr);
 
@@ -45,6 +45,7 @@ function openProject() {
 		$('#proj-desc').html(singleProj.description);
 
 		let spanHtml = '';
+		singleProj.skills.sort();
 		for (let i = 0; i < singleProj.skills.length; i++) {
 			spanHtml += "<span class='skill'>" + singleProj.skills[i] + "</span>";
 		};
