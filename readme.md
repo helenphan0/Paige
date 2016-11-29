@@ -1,4 +1,4 @@
-# ![Paige-sm](/Users/helenphan/Desktop/Projects/Paige/app/public/img/Paige-sm.png)Paige
+# ![Paige-sm](./app/public/img/Paige-sm.png)Paige
 
 Paige is a content management system (CMS). Create and manage your own portfolio site using Paige.
 
