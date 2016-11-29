@@ -9,7 +9,7 @@ module.exports = {
 			and visit the root url (/) to continue the installation process
 
 		*/
-
+		
 		//'url' : 'mongodb://localhost/paige'
 
 };

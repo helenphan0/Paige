@@ -7,6 +7,7 @@ html(lang='en')
     body
         section.index
             img(class='logo', src='/public/img/Paige.png')
+            h4(class='paige front') Paige
             h4 Log in to your account
             if message && message.length
                 p
@@ -20,9 +21,7 @@ html(lang='en')
                     input(type='password', id='password', name='password')
                 div(class='form-group')
                     input(type='submit', class='submit login', value='Log In')
-
-            p Need an account? 
-                a(class='signup', href='/signup') Sign Up
             p Or return 
                 a(class='home', href='/') Home 
+        include icon-att
         include scripts

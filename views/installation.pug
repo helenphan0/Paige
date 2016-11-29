@@ -6,12 +6,20 @@ html(lang='en')
         include style
     body
         section.index
-            h4(class='paige') Paige
-            h4 Installation Complete
+            img(class='logo', src='/public/img/Paige.png')
+            h4(class='paige front') Paige
+            h4 Installation Complete!
             section
-                p(class='login-instructions') Please login using the credentials below. Make sure to change your password and email upon login to secure the account.
-                p(class='login-username') username: admin@email.com
-                p(class='login-password') password: admin
+                p(class='login-instructions') Please login using the credentials below. 
+                div(class='cred')
+                    p(class='login-username') 
+                        span username: 
+                        | admin@email.com
+                    p(class='login-password') 
+                        span password: 
+                        | admin
+                p Make sure to change your password and email upon login to secure your account.
                 p
                     a(class='login', href='/login') Log In
+        include icon-att
         include scripts

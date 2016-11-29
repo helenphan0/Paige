@@ -422,6 +422,32 @@ button:hover, .skill-delete:hover {
 	cursor: pointer;
 }
 
+.cred {
+	border: 1px solid lightgrey;
+	margin: 0 auto;
+	padding: 10px;
+	width: 80%;
+}
+
+.cred>p {
+	margin: 2px;
+}
+
+.cred span {
+	font-weight: bold;
+}
+
+.att {
+	color: darkgrey;
+	font-size: 12px;
+	margin-top: 6px;
+	text-align: center;
+}
+
+.att a {
+	color: darkgrey;
+	text-decoration: none;
+}
 
 @media only screen and (max-width: 674px) {
 

@@ -296,6 +296,21 @@ a:hover {
 	cursor: pointer;
 }
 
+p.powered {
+	bottom: 4px;
+	color: darkgrey;
+	font-size: 14px;
+	margin: 0;
+	position: fixed;
+	left: 15px;
+}
+
+p.powered a {
+	color: darkgrey;
+	font-style: italic;
+	text-decoration: none;
+}
+
 
 @media only screen and (min-width: 500px) and (max-width: 753px) {
 

@@ -26,7 +26,6 @@ const AdminThemesMain = React.createClass({
     },
     componentDidUpdate: function(){
     	if (this.state.active != theme) {
-    		console.log('active theme updated');
     		this.setState({ active: theme })
     	}
     },	
@@ -56,8 +55,6 @@ const AdminThemesMain = React.createClass({
 
 	},
 	render: function(){
-
-		console.log('active theme is: ' + this.state.active);
 
 		return (
 			<div className='themes-view'>

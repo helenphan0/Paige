@@ -15,22 +15,6 @@ html(lang='en')
                     | #{user.local.name}
                     br
                     | #{user.local.email}
-                if user.facebook.name 
-                    | #{user.facebook.name}
-                    br
-                    | #{user.facebook.email}
-                if user.google.name 
-                    | #{user.google.name}
-                    br
-                    | #{user.google.email}
-                if user.github.name 
-                    | #{user.github.name}
-                    br
-                    | #{user.github.email}
-                if user.linkedin.name 
-                    | #{user.linkedin.name}
-                    br
-                    | #{user.linkedin.email}
         div(id='container')
         include scripts
         include components

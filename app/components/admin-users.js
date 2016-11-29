@@ -56,7 +56,6 @@ const AdminUsersMain = React.createClass({
     },
     editUserInp: function(data) {
     	userEdits = data;
-    	console.log(userEdits);
     	this.setState({edit: true});
 
     },
@@ -68,7 +67,6 @@ const AdminUsersMain = React.createClass({
     },
     componentDidUpdate: function(){
     	if (this.state.users != users) {
-    		console.log('users componentDidUpdate');
     		this.setState({ new: false, edit: false, users: users })
     	}
     },
@@ -188,8 +186,6 @@ const CreateUser = React.createClass({
 
 		let actionUrl = event.target.getAttribute('data-url');
 		this.refs.userForm.reset();
-
-		console.log('this is the edited user: ', newUser);
 
 		fetch(actionUrl, {
 			method: 'POST',

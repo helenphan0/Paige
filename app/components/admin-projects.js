@@ -55,7 +55,6 @@ const AdminProjectsMain = React.createClass({
     },
     editProjectInp: function(data) {
     	projectEdits = data;
-    	console.log(projectEdits);
     	this.setState({edit: true});
     },
     cancel: function() {
@@ -94,7 +93,7 @@ const AdminProjectsList = React.createClass({
 	projectView: function(event) {
 		let idView = event.target.getAttribute('data-id');
 		let urlView = '/cms/projects/view/' + idView;
-		console.log(urlView);
+
 	},
 	projectEdit: function(event) {
 		let objEdit = {};
@@ -323,7 +322,7 @@ const CreateProject = React.createClass({
 		}
 		newProject.skills = projectEdits.skills || this.state.tempSkills;
 		newProject.skills.push(skillArg);
-		console.log(newProject.skills);
+
 		this.refs.newSkill.value = '';
 		this.setState({ tempSkills: newProject.skills });
 
@@ -341,13 +340,21 @@ const CreateProject = React.createClass({
 			newProject._id = this.refs.projectID.value;
 		}
 		let position = event.target.getAttribute('data-id');
-		console.log(position);
+
 		newProject.skills = projectEdits.skills || this.state.tempSkills;
 		newProject.skills.splice(position, 1);
 		this.setState( { tempSkills: newProject.skills });
 	},
 	componentWillReceiveProps: function(nextProps) {
-		CKEDITOR.instances.description.setData(projectEdits.description);
+
+		// need a conditional so this happens only once
+		if (!CKEDITOR.instances.description) {
+			window.setTimeout(function() {
+   				CKEDITOR.replace('description', { height: 80 });
+   				CKEDITOR.instances.description.focus(); 
+			}, 100);
+		}
+
 		this.setState({ projectEdits: projectEdits });
 	},
 	componentWillUnmount: function() {
@@ -369,12 +376,9 @@ const CreateProject = React.createClass({
 		// update the dropdown so it doesn't have what's already on project
 		skillsMap = skillsMap.filter(x => skillsAppend.indexOf(x) < 0);
 
-		// need a conditional so this happens only once
-		if (!CKEDITOR.instances.description) {
-			window.setTimeout(function() {
-   				CKEDITOR.replace('description', { height: 80 });
-   				CKEDITOR.instances.description.focus(); 
-			}, 100);
+		// if CKEDITOR has replaced textarea, add project description for editting
+		if (CKEDITOR.instances.description) {
+			CKEDITOR.instances.description.setData(projectEdits.description);
 		}  
 
 		return (

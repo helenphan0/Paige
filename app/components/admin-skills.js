@@ -29,7 +29,6 @@ const AdminSkillsMain = React.createClass({
     },
     componentDidUpdate: function(){
     	if (this.state.skills != skills) {
-    		console.log('skills updated');
     		this.setState({ skills: skills })
     	}
     },

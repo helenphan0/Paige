@@ -8,30 +8,6 @@ const userSchema = new mongoose.Schema({
         email        : String,
         password     : String,
         name         : String
-    },
-    facebook         : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
-    },
-    google           : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
-    },
-    github           : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
-    },
-    linkedin           : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
     }
 
 });

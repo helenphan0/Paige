@@ -40,7 +40,6 @@ const AdminPagesMain = React.createClass({
     },
     editPageInp: function(data) {
     	edits = data;
-    	console.log(edits);
     	this.setState({edit: true});
 
     },
@@ -52,7 +51,6 @@ const AdminPagesMain = React.createClass({
     },
     componentDidUpdate: function(){
     	if (this.state.pages != pages) {
-    		console.log('pages componentDidUpdate');
     		this.setState({ new: false, edit: false, pages: pages })
     	}
     },
@@ -75,7 +73,7 @@ const AdminPagesList = React.createClass({
 	pageView: function(event) {
 		let idView = event.target.getAttribute('data-id');
 		let urlView = '/cms/pages/view/' + idView;
-		console.log(urlView);
+
 	},
 	pageEdit: function(event) {
 		let idEdit = event.target.getAttribute('data-id');
@@ -228,7 +226,6 @@ const CreatePage = React.createClass({
 				})
 				.then((response) => response.json())
 				.then((responseJson) => {
-					console.log(responseJson.value);
 					defaultId = responseJson.value;
 					this.context.router.transitionTo('/cms/pages');
 				})
@@ -292,7 +289,7 @@ const CreatePage = React.createClass({
 			newId = null;
 			checked = false;
 		}
-		console.log(newId, edits._id, checked)
+
 		this.setState({edits: newPage, default: checked, newId: newId}); 
 	}, 
 	componentWillReceiveProps: function(nextProps) {

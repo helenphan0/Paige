@@ -36,7 +36,6 @@ const AdminOptionsMain = React.createClass({
     },
     componentDidUpdate: function(){
     	if (this.state.options != options) {
-    		console.log('options updated');
     		this.setState({ options: options })
     	}
     },	

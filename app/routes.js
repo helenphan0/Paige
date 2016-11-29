@@ -62,10 +62,10 @@ module.exports = function(app, passport) {
     // =====================================
     // SIGNUP ==============================
     // =====================================
-    // app.get('/signup', function(req, res) {
+     app.get('/signup', function(req, res) {
 
-    //     res.render('signup.pug', { message: req.flash('signupMessage') });
-    // });
+         res.render('installation.pug', { message: req.flash('signupMessage') });
+     });
 
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect : '/cms', 
@@ -131,6 +131,9 @@ module.exports = function(app, passport) {
         res.render('admin-layout.pug', {
             user : req.user 
         });
+        // line 729
+    
+
 
     // Endpoints to fetch all documents in Page, Project, Skill, and User collections
 
@@ -212,7 +215,8 @@ module.exports = function(app, passport) {
                         message: 'Internal Server Error'
                     });
                 }
-
+            
+            
                 // use the local login for accounts created from back end
                 for (let i = 0; i < users.length; i++) {
 
@@ -237,7 +241,7 @@ module.exports = function(app, passport) {
                         users[i].local.email = users[i].github.email;
                         users[i].local.password = users[i].github.token;
                     }
-                }
+                }  
 
                 res.status(200).json(users).end();
             });
@@ -902,15 +906,14 @@ function performInstallation(res){
         {
             "skills" : [ 
                 "Javascript", 
-                "Node.js", 
-                "Petting Dogs", 
-                "Sushi"
+                "Node.js",
+                "Interview"
             ],
             "description" : "<p>We want the <strong>GitHub</strong> community to be a welcoming environment where people feel empowered to share their opinion.</p>\n\n<p>We are now accepting feedback on our proposed Community Guidelines.</p>\n",
             "codeUrl" : "http://www.mspca.com",
             "livelink" : "http://www.petfinder.com",
             "image" : "",
-            "friendlyUrl" : "Rescue_Doggos",
+            "friendlyUrl" : "doggos",
             "name" : "thinkful project"
         },
         {
@@ -919,13 +922,11 @@ function performInstallation(res){
             "livelink" : "http://www.amazon.com",
             "image" : "http://placekitten.com/400/300",
             "friendlyUrl" : "this_is_another_test_with_spaces",
-            "name" : "Testing urls",
+            "name" : "Testing Friendly URL",
             "skills" : [ 
-                "Eating", 
-                "Cooking", 
-                "Sleeping", 
-                "Buffets", 
-                "Sushi"
+                "React", 
+                "Javascript", 
+                "HTML"
             ],
         },
         {
@@ -936,11 +937,8 @@ function performInstallation(res){
             "friendlyUrl" : "friendly",
             "name" : "Another URL test",
             "skills" : [ 
-                "Eating", 
-                "Cooking", 
                 "Socket.io", 
-                "Sushi", 
-                "Typing"
+                "Interview"
             ]
         },
         {
@@ -951,28 +949,24 @@ function performInstallation(res){
             "friendlyUrl" : "this_is_a_url",
             "name" : "New Page Test",
             "skills" : [ 
-                "Buffets", 
+                "Angular",
                 "Express", 
-                "Cooking", 
-                "Eating", 
-                "Vacuuming", 
+                "HTML",  
                 "UI/UX", 
                 "Redux"
             ]
         },
         {
-            "description" : "<p>Good Friday to everyone, hopefully, it&#39;s full of nice surprises. We have also prepared something to show: this shot features a new full case study in Tubik design portfolio. The presentation shows UI/UX, branding and graphic design created for the Mac app&nbsp;<a href=\"http://swiftybeaver.tubikstudio.com/\">SwiftyBeaver</a>&nbsp;whose core target audience is developers. So, design solutions were determined with a variety of specific factors due to the nature of the product. Perhaps, you remember our previous shots showing some details of creative process and today we invite you to see&nbsp;<a href=\"http://swiftybeaver.tubikstudio.com/\">the full case</a>.</p>\n\n<p><strong>To share more ideas based on experience from design projects and concepts, we regularly update&nbsp;<a href=\"http://tubikstudio.com/blog/\">Tubik Blog</a>with new articles and share free ebooks. One of the books presents deep insights into&nbsp;<a href=\"http://tubikstudio.com/book/\">design for business goals</a>. Welcome to download or read online!</strong></p>\n",
+            "description" : "",
             "codeUrl" : "http://www.github.com  ",
             "livelink" : "http://www.google.com   ",
             "image" : "http://placekitten.com/270",
-            "friendlyUrl" : "wut_doo",
+            "friendlyUrl" : "react_project",
             "name" : "Testing",
-            "skills" : [ 
-                "Javascript", 
+            "skills" : [  
                 "Angular", 
                 "Node.js", 
-                "Express", 
-                "Redux", 
+                "Express",  
                 "Interview"
             ]
         },
@@ -981,8 +975,8 @@ function performInstallation(res){
             "codeUrl" : "http://www.teefury.com",
             "livelink" : "http://www.placekitten.com",
             "image" : "",
-            "friendlyUrl" : "url_test_sample",
-            "name" : "Sample",
+            "friendlyUrl" : "oceanic",
+            "name" : "Snakes on a Plane",
             "skills" : [ 
                 "HTML", 
                 "Javascript", 
@@ -990,8 +984,7 @@ function performInstallation(res){
                 "Angular", 
                 "UI/UX", 
                 "Socket.io", 
-                "Redux", 
-                "Sleeping"
+                "React", 
             ]
         }
     ];
@@ -1022,18 +1015,10 @@ function performInstallation(res){
         {"skill" : "Node.js" },
         {"skill" : "React" },
         {"skill" : "Express" },
-        {"skill" : "Sleeping" },
-        {"skill" : "Cooking" },
-        {"skill" : "Eating" },
-        {"skill" : "Petting Dogs" },
         {"skill" : "Angular" },
-        {"skill" : "Vacuuming" },
-        {"skill" : "Buffets" },
-        {"skill" : "Sushi" },
         {"skill" : "UI/UX" },
         {"skill" : "Socket.io" },
         {"skill" : "Redux" },
-        {"skill" : "Typing" },
         {"skill" : "Interview" }
     ];
     skills.map(function(s){
