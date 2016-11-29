@@ -4,7 +4,6 @@ const Project = require('../app/models/project');
 const Skill = require('../app/models/skill');
 const Option = require('../app/models/option');
 
-
 module.exports = function(app, passport) { 
     
 // =================================
@@ -131,9 +130,6 @@ module.exports = function(app, passport) {
         res.render('admin-layout.pug', {
             user : req.user 
         });
-        // line 729
-    
-
 
     // Endpoints to fetch all documents in Page, Project, Skill, and User collections
 
@@ -215,7 +211,6 @@ module.exports = function(app, passport) {
                         message: 'Internal Server Error'
                     });
                 }
-            
             
                 // use the local login for accounts created from back end
                 for (let i = 0; i < users.length; i++) {
@@ -718,7 +713,6 @@ module.exports = function(app, passport) {
             })
         })
 
-
     // ====  Refresh page catch-all endpoint ========
 
         app.get('/cms/*', isLoggedIn, function(req, res) {
@@ -748,7 +742,7 @@ module.exports = function(app, passport) {
     // =====================================
     app.get('/logout', function(req, res) {
         req.logout();
-        res.redirect('/');
+        res.redirect('/login');
     });
 
 // =======================================
@@ -827,7 +821,7 @@ module.exports = function(app, passport) {
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
-    res.redirect('/');
+    res.redirect('/login');
 }
 
     // =====================================
@@ -899,7 +893,6 @@ function performInstallation(res){
             console.log('Installation Step 2: Created Page ' + page.title);
         });
     });
-
 
     // create projects
     let projects = [       

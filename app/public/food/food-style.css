@@ -298,9 +298,9 @@ a:hover {
 }
 
 p.powered {
-	bottom: 3px;
+	bottom: 5px;
 	color: lightgrey;
-	font-size: 14px;
+	font-size: 15px;
 	margin: 0;
 	position: fixed;
 	right: 15px;
@@ -310,6 +310,10 @@ p.powered a {
 	color: lightgrey;
 	font-style: italic;
 	text-decoration: none;
+}
+
+p.powered a:hover {
+	color: #EE1289;
 }
 
 

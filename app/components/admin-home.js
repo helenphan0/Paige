@@ -16,7 +16,7 @@ const AdminHome = React.createClass({
                     <p>There are three themes included with Paige. Theme creation and management will be a future implementation. </p>
                     <h4>Advanced Options</h4>
                     <p>In order to make a new page live, it will need a template file whose file name matches the page's Friendly Url. Use the starter template 
-                    files as guidelines for your new pages.</p>
+                    files, located the themes folder, as guidelines for your new pages.</p>
                     <p>New template files should be saved in the same directories as the starter template files, under the theme that you wish to use.</p>
                     <p>After creating new pages with their respective template files, you can update the navigation bar of the site 
                     by editing the nav-bar template file.</p>

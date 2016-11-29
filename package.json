@@ -15,6 +15,7 @@
   "author": "Helen Phan",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.1.4",
     "babel-cli": "^6.16.0",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
@@ -23,6 +24,7 @@
     "express": "^4.14.0",
     "express-session": "^1.14.1",
     "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.17.2",
     "mongoose": "^4.6.3",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
