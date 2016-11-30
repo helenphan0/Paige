@@ -24,7 +24,7 @@ module.exports = function(app, passport) {
                 performInstallation(res);
             } else {
                 let id = option.value;
-                console.log('default page id: ' + id);
+
                 Page.findById(id, function(err, page){
                     
                     if (!page) {
@@ -61,14 +61,14 @@ module.exports = function(app, passport) {
     // =====================================
     // SIGNUP ==============================
     // =====================================
-     app.get('/signup', function(req, res) {
-
-         res.render('installation.pug', { message: req.flash('signupMessage') });
-     });
+    // app.get('/signup', function(req, res) {
+    //
+    //     res.render('installation.pug', { message: req.flash('signupMessage') });
+    // });
 
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect : '/cms', 
-        failureRedirect : '/signup', 
+        failureRedirect : '/login', 
         failureFlash : true 
     }));
 
@@ -1042,7 +1042,7 @@ function performInstallation(res){
             if (err) {
                 res.status(500);
             }
-            console.log('Installation Step 5: Set Default Theme & Homepage');
+            console.log('Installation Step 5: Set Default Theme');
         }); 
     });
 

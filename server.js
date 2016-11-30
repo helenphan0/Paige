@@ -12,7 +12,10 @@ const cookieParser = require('cookie-parser');
 const configDB = require('./config/database.js');
 
 if(typeof configDB.url === 'undefined'){
-	console.log('This appears to be your first time running Paige, please configure your database in the config/database.js file');
+	console.log('================================================================');
+	console.log(' This appears to be your first time running Paige');
+	console.log(' Please configure your database in the config/database.js file');
+	console.log('================================================================');
 	process.exit();
 }
 

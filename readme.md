@@ -1,6 +1,6 @@
 # ![Paige-logo](./app/public/img/Paige-logo.png)
 
-Paige is a content management system (CMS). Create and manage your own portfolio site using Paige.
+Paige is a content management system (CMS). Create and manage your own portfolio site using Paige!
 
 
 
