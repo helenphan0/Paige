@@ -297,12 +297,12 @@ a:hover {
 }
 
 p.powered {
-	bottom: 5px;
+	bottom: 15px;
 	color: darkgrey;
-	font-size: 15px;
+	font-size: 16px;
 	margin: 0;
 	position: fixed;
-	left: 15px;
+	left: 20px;
 }
 
 p.powered a {

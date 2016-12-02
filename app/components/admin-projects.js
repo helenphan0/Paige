@@ -212,8 +212,6 @@ const CreateProject = React.createClass({
 			newProject.friendlyUrl = newProject.friendlyUrl.trim().replace(/ /g, "_")
 		}
 
-		console.log('this is the edited page: ', newProject);
-
 		fetch(actionUrl, {
 			method: 'POST',
 			headers: {

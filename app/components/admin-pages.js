@@ -195,8 +195,6 @@ const CreatePage = React.createClass({
 			newPage.friendlyUrl = newPage.friendlyUrl.trim().replace(/ /g, "_");
 		}
 
-		console.log('this is the edited page: ', newPage);
-
 		fetch(actionUrl, {
 			method: 'POST',
 			headers: {

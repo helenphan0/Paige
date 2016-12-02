@@ -6,7 +6,7 @@ const AdminHome = React.createClass({
                 <div className='admin-home-text'>
                     <p>Start building your site!</p>
                     <h4>Quick Start</h4>
-                    <p>Paige comes with three starter pages: Home, About, and Portfolio. You can edit the page title and contents 
+                    <p>Paige comes with four starter pages: Home, About, Portfolio, and Contact. You can edit the page title and contents 
                     (for edits to the Friendly Url, see Advanced Options). </p>
                     <p>Create additional pages under the Page menu. The Friendly Url should be one or two words, 
                     and will be used to access your page's site on this domain.</p>

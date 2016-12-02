@@ -63,7 +63,7 @@ module.exports = function(app, passport) {
     // =====================================
     // app.get('/signup', function(req, res) {
     //
-    //     res.render('installation.pug', { message: req.flash('signupMessage') });
+    //     res.render('signup.pug', { message: req.flash('signupMessage') });
     // });
 
     app.post('/signup', passport.authenticate('local-signup', {
@@ -198,6 +198,17 @@ module.exports = function(app, passport) {
                         message: 'Internal Server Error'
                     });
                 }
+
+                // sort the list of skills
+                function compare(a,b) {
+                  if (a.skill < b.skill)
+                    return -1;
+                  if (a.skill > b.skill)
+                    return 1;
+                  return 0;
+                }
+                skills.sort(compare);
+                
                 res.status(200).json(skills).end();
             });
         });
@@ -329,9 +340,8 @@ module.exports = function(app, passport) {
                     return false;
                 }
 
-                if (page) {
-                    console.log(page.title + ' found');  
-                    console.log('changes made ', page);
+                if (page) { 
+                    console.log('changes made to ' + page.title);
                 }
     
                 page.save(function(err) {
@@ -469,7 +479,7 @@ module.exports = function(app, passport) {
                             project.codeUrl = 'http://' + project.codeUrl;
                         };
                     };
-                    console.log('changes made ', project);
+                    console.log('changes made to' + project.name);
                 
                     project.save(function(err) {
                         if (err) {
