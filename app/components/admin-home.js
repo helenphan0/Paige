@@ -23,6 +23,7 @@ const AdminHome = React.createClass({
                     <p>There are more template files under each theme's folder. In addition to the nav-bar file, you can also edit the contact file with your contact information. 
                     Add your own style sheets and scripts by linking them in the 
                     styles and scripts files. (Be sure not to use these file names in any of your pages' Friendly Urls.)</p>
+                    <p>Don't forget to update the Contact template and add your contact information.</p>
                 </div>
             </div>
         )
