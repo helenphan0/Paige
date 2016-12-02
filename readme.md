@@ -21,4 +21,22 @@ To install Paige:
 
 
 
+Paige screenshots:
+
+![login-screenshot](./app/public/img/login-screenshot.png)
+
+
+
+![admin-home-screenshot](./app/public/img/admin-home-screenshot.png)
+
+
+
+![admin-pages-screenshot](./app/public/img/admin-pages-screenshot.png)
+
+
+
+![admin-projects-screenshot](./app/public/img/admin-projects-screenshot.png)
+
+
+
 Icon made by [Freepik](http://www.freepik.com) from www.flaticon.com
