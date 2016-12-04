@@ -19,5 +19,5 @@ module.exports = {
 	// You can use the below url to keep a local mongo database
 	// 'url' : 'mongodb://localhost/paige'
 
-
+	
 };

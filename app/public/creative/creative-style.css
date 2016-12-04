@@ -167,7 +167,7 @@ div.project-item p {
 
 .proj-img-box {
 	max-height: 250px;
-	width: 200px;
+	width: 250px;
 	float: right;
 	margin-bottom: 20px;
 	overflow: hidden;
@@ -240,7 +240,7 @@ h3, #project-container {
 }
 
 #proj-desc, .links, #proj-name {
-	display: inline-block;
+	display: block;
 	margin: 4px 5px;
 	width: 67%;
 }
