@@ -14,5 +14,25 @@ div(class='template hidden')
         div(class='img-box')
             img(class='project-image' )
         p(class='project-name')
+            p(class='links')
+                a(class='proj-livelink')
+                    span Live Link
+                span  |  
+                a(class='proj-codelink')
+                    span Code Link
+            p(class='project-description')
         div(class='skill-box')
-        
+
+
+//- each project in projects
+//-     div(class='project-item')
+//-         div(class='img-box')
+//-             img(class='project-image', src= project.image || defaultImg)
+//-         p(class='project-name')= project.name
+//-         p
+//-             span= project.livelink 
+//-             span= project.codeUrl 
+//-         p= project.description
+//-         div(class='skill-box')
+//-             each skill in project.skills
+//-                 span= skill

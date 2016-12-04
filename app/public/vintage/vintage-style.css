@@ -6,7 +6,7 @@ body {
 	width: 100%;
 	overflow-x: hidden;
 	font-family: 'Ubuntu', sans-serif;
-	background-image: url('food3.jpg');
+	background-image: url('work-desk.jpeg');
 	background-size: cover;
 	background-repeat: no-repeat;
     background-position: top left;
@@ -20,7 +20,7 @@ body {
 #section-content {
 	position: absolute;
 	width: 100%;
-	top: 85px;
+	top: 50px;
 	left: 10px;
 }
 
@@ -30,7 +30,7 @@ body {
 }
 
 .home, .about {
-	margin-top: 127px;
+	margin-top: 140px;
 }
 
 .contact {

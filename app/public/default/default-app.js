@@ -11,6 +11,17 @@ function listProjects(project) {
 	var projName = projectBox.children('.project-name');
 	projName.text(project.name);
 
+	// live and code urls
+	var projLiveLink = projectBox.find('.proj-livelink');
+	projLiveLink.attr('src', project.liveLink);
+
+	var projCodeLink = projectBox.find('.proj-codelink');
+	projCodeLink.attr('src', project.codeUrl)
+
+	// description
+	var projDesc = projectBox.children('.project-description');
+	projDesc.html(project.description);
+
 	var projSkills = projectBox.children('.skill-box');
 	var skillsArr = [];
 	if (project.skills) {
@@ -18,8 +29,8 @@ function listProjects(project) {
 	}
 	projSkills.text(skillsArr);
 
-	var eyeball = '<div class="eye"><i class="fa fa-eye" aria-hidden="true"></i></div>';
-	projSkills.append(eyeball);
+	// var eyeball = '<div class="eye"><i class="fa fa-eye" aria-hidden="true"></i></div>';
+	// projSkills.append(eyeball);
 
 	return projectBox;
 }
@@ -89,22 +100,22 @@ $(document).ready(function() {
 	getProjects();
 
     $('#results').on('click', '.project-item', function() {
-    	projId = $(this).attr('data-id');
-    	openProject();
+    //	projId = $(this).attr('data-id');
+    //	openProject();
     	
 		// exit out of single project view
-		$('#project-close, .grey-out').click(function() {
-			$('#proj-name').children('span').empty();
-			$('#proj-img').attr('src', '/public/default/notebook1.jpg');
-			$('#proj-livelink').attr('href', '');
-			$('#proj-codeurl').attr('href', '');
-			$('#proj-desc').empty();
-			$('#proj-skill-box').empty();
-			spanHtml = '';
+		// $('#project-close, .grey-out').click(function() {
+		// 	$('#proj-name').children('span').empty();
+		// 	$('#proj-img').attr('src', '/public/default/notebook1.jpg');
+		// 	$('#proj-livelink').attr('href', '');
+		// 	$('#proj-codeurl').attr('href', '');
+		// 	$('#proj-desc').empty();
+		// 	$('#proj-skill-box').empty();
+		// 	spanHtml = '';
 
-			$('#single-project').addClass('hidden');
-			$('.grey-out').addClass('hidden');
-		});
+		// 	$('#single-project').addClass('hidden');
+		// 	$('.grey-out').addClass('hidden');
+		// });
 
 	});
 

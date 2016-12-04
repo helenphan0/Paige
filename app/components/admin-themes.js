@@ -67,8 +67,8 @@ const AdminThemesMain = React.createClass({
 					<div data-theme='creative' className={this.state.active == 'creative' ? 'active theme' : 'theme'} onClick={this.selectTheme}>
 						Creative
 					</div>
-					<div data-theme='food' className={this.state.active == 'food' ? 'active theme' : 'theme'} onClick={this.selectTheme}>
-						Food
+					<div data-theme='vintage' className={this.state.active == 'vintage' ? 'active theme' : 'theme'} onClick={this.selectTheme}>
+						Vintage
 					</div>
 				</div>
 			</div>

@@ -1,4 +1,4 @@
-var defaultImg = '/public/food/notebook1.jpg';
+var defaultImg = '/public/vintage/notebook1.jpg';
 
 function listProjects(project) {
 
@@ -94,7 +94,7 @@ $(document).ready(function() {
 		// exit out of single project view
 		$('#project-close, .grey-out').click(function() {
 			$('#proj-name').children('span').empty();
-			$('#proj-img').attr('src', '/public/food/notebook1.jpg');
+			$('#proj-img').attr('src', '/public/vintage/notebook1.jpg');
 			$('#proj-livelink').attr('href', '');
 			$('#proj-codeurl').attr('href', '');
 			$('#proj-desc').empty();
