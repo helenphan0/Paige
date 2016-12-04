@@ -136,7 +136,6 @@ div.nav-link:hover, #project-close:hover {
 }
 
 div.project-item {
-	/*background: rgba(255,255,255,0.95);*/
 	background-color: white;
 	filter: gray;
 	filter: grayscale(100%);
@@ -187,32 +186,7 @@ div.project-item p {
 }
 
 div.project-item:hover {
-	cursor: pointer;
 	filter: none;
-}
-
-#single-project {
-	background-color: white;
-	font-size: 14px;
-	position: fixed;
-	top: 95px;
-	max-height: 80%;
-	left: 0;
-	width: 100%;
-	overflow-y: scroll;
-	padding: 20px 35px;
-	-webkit-box-shadow: 4px 4px 25px 0px rgba(50, 50, 50, 1);
-	-moz-box-shadow:    4px 4px 25px 0px rgba(50, 50, 50, 1);
-	box-shadow:         4px 4px 25px 0px rgba(50, 50, 50, 1);
-}
-
-.grey-out {
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	width: 100%;
-	height: 100%;
-	background: rgba(0,0,0,0.5);
 }
 
 h3, #project-container {
@@ -230,11 +204,6 @@ h3, #project-container {
 	margin: 15px;
 }
 
-#proj-skill-box {
-	margin: 5px 0;
-	width: 70%;
-}
-
 .project-name {
 	font-family: 'Merriweather', sans-serif;
 	font-weight: bold;
@@ -243,14 +212,9 @@ h3, #project-container {
 	font-size: 18px;
 }
 
-#proj-desc, .links, #proj-name {
+.links {
 	display: inline-block;
 	margin: 4px 5px;
-
-}
-
-#proj-name {
-	font-size: 20px;
 }
 
 .proj-livelink:hover, .proj-codelink:hover {
@@ -263,21 +227,8 @@ h3, #project-container {
 	font-style: italic;
 	margin-top: 15px;
 	padding: 15px;
+	text-align: right;
 	white-space: normal;
-}
-
-/*.skill-box:hover {
-	background: rgba(255,255,255,0.70);
-	opacity: 1;
-}*/
-
-.eye {
-	color: #6B6B6B;
-	font-size: 18px;
-	position: absolute;
-	right: 5px;
-	top: 220px;
-	width: 10%;
 }
 
 #skills-selector {
