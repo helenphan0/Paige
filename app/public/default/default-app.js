@@ -13,10 +13,10 @@ function listProjects(project) {
 
 	// live and code urls
 	var projLiveLink = projectBox.find('.proj-livelink');
-	projLiveLink.attr('src', project.liveLink);
+	projLiveLink.attr('href', project.liveLink);
 
 	var projCodeLink = projectBox.find('.proj-codelink');
-	projCodeLink.attr('src', project.codeUrl)
+	projCodeLink.attr('href', project.codeUrl)
 
 	// description
 	var projDesc = projectBox.children('.project-description');
