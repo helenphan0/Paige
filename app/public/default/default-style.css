@@ -357,7 +357,8 @@ p.powered a:hover {
 	.img-box {
 		display: block;
 		float: none;
-		width: 99%;
+		max-width: 300px;
+		min-width: 300px;
 		max-height: 280px;
 		margin: 5px auto;
 	}
